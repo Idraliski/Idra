@@ -12,4 +12,4 @@ set_target_properties(Idra PROPERTIES
 )
 
 # Export include directories
-target_include_directories(Idra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Idra)
+target_include_directories(Idra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
