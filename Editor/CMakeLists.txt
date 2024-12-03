@@ -14,7 +14,7 @@ set_target_properties(Editor PROPERTIES
 target_link_libraries(Editor PRIVATE Idra)
 
 # Ensure the game engine headers are available
-target_include_directories(Editor PRIVATE ${CMAKE_SOURCE_DIR}/Idra/include)
+target_include_directories(Editor PRIVATE ${CMAKE_SOURCE_DIR}/Idra)
 
 add_custom_command(TARGET Editor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
