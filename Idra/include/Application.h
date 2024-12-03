@@ -1,19 +1,16 @@
 #pragma once
 
-#ifdef _WIN32
-	#ifdef IDRA_BUILD_DLL
-		#define IDRA_API __declspec(dllexport)
-	#else
-		#define IDRA_API __declspec(dllimport)
-	#endif
-#else
-	#error Idra only supports Windows!
-#endif //_WIN32
+namespace Idra {
 
-class Application
-{
+	class Application
+	{
 	public:
-	Application();
-	~Application();
-	void Run();
-};
+		Application();
+		~Application();
+		void Run();
+	};
+
+	// To be defined in the client
+	Application* CreateApplication();
+
+} // namespace Idra

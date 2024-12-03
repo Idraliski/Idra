@@ -1,25 +1,24 @@
 include_directories(include)
 
 # Define the editor executable
-add_executable(Sandbox 
+add_executable(Editor 
     "src/Editor.cpp" 
-    "src/Entrypoint.cpp"
 )
 
 # Set the output directory for the executable
-set_target_properties(Sandbox PROPERTIES
+set_target_properties(Editor PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
 # Link the editor with the game engine
-target_link_libraries(Sandbox PRIVATE Idra)
+target_link_libraries(Editor PRIVATE Idra)
 
 # Ensure the game engine headers are available
-target_include_directories(Sandbox PRIVATE ${CMAKE_SOURCE_DIR}/Idra/include)
+target_include_directories(Editor PRIVATE ${CMAKE_SOURCE_DIR}/Idra)
 
-add_custom_command(TARGET Sandbox POST_BUILD
+add_custom_command(TARGET Editor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Idra> $<TARGET_FILE_DIR:Sandbox>
+        $<TARGET_FILE:Idra> $<TARGET_FILE_DIR:Editor>
 )
 
 # Add any additional dependencies or compile definitions here
