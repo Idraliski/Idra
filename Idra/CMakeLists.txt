@@ -1,6 +1,9 @@
 include_directories(include)
 
-add_library(Idra SHARED "src/Application.cpp")
+add_library(Idra SHARED 
+    "src/Application.cpp" 
+    "include/EntryPoint.h"
+)
 
 # Set the output directories for the library
 set_target_properties(Idra PROPERTIES
@@ -10,4 +13,4 @@ set_target_properties(Idra PROPERTIES
 )
 
 # Export include directories
-#target_include_directories(Idra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Idra/include)
+target_include_directories(Idra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Idra/include)

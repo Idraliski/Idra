@@ -9,4 +9,4 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 add_subdirectory(Idra)
-add_subdirectory(Sandbox)
+add_subdirectory(Editor)

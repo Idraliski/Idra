@@ -1,13 +1,19 @@
 #include "Application.h"
+#include <iostream>
 
-Application::Application()
-{
-}
+namespace Idra {
 
-Application::~Application()
-{
-}
+	Application::Application()
+	{
+	}
 
-void Application::Run()
-{
-}
+	Application::~Application()
+	{
+	}
+
+	void Application::Run()
+	{
+		while (true);
+	}
+
+} // namespace Idra
