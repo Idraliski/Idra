@@ -1,0 +1,3 @@
+[submodule "Idra/vendor/spdlog"]
+	path = Idra/vendor/spdlog
+	url = https://github.com/gabime/spdlog

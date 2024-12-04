@@ -1,5 +1,4 @@
-#include "Application.h"
-#include <iostream>
+#include "Core/Application.h"
 
 namespace Idra {
 
