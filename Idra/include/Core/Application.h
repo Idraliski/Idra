@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Core.h"
+
 namespace Idra {
 
-	class Application
+	class IDRA_API Application
 	{
 	public:
 		Application();
