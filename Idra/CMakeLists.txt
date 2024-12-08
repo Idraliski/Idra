@@ -15,6 +15,7 @@ set_target_properties(Idra PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
+# set macro for exporting symbols for the engine
 target_compile_definitions(Idra PRIVATE IDRA_CORE_EXPORT)
 
 target_link_libraries(Idra PUBLIC spdlog)
