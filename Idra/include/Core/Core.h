@@ -8,3 +8,4 @@
 	#error Only Windows is supported!
 #endif
 
+#define BIT(x) (1 << x)
