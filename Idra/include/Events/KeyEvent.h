@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Idra {
 	class IDRA_API KeyEvent : public Event
 	{

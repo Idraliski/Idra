@@ -2,11 +2,6 @@
 
 #include "Core/Core.h"
 
-#include <functional>
-#include <string>
-#include <sstream>
-
-
 namespace Idra {
 
 	// Events in Idra are currently blocking, meaning when an event occurs it immediately gets dispatched and must be dealt with right then an there.
