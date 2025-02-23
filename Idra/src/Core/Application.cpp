@@ -1,5 +1,5 @@
+#include "IdraPCH.h"
 #include "Core/Application.h"
-
 
 #include "Events/ApplicationEvent.h" // #DEBUG
 #include "Core/Log.h" // #DEBUG
