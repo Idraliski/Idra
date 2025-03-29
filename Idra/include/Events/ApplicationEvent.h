@@ -2,7 +2,6 @@
 
 #include "Event.h"
 
-
 namespace Idra {
 
 	class IDRA_API WindowResizeEvent : public Event {
