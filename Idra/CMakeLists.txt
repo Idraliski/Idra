@@ -1,12 +1,15 @@
 include_directories(
     include
 )
+
 add_subdirectory(vendor)
 
 add_library(Idra SHARED 
     "src/Core/Application.cpp"
     "src/Core/Log.cpp"
-    "src/IdraPCH.cpp")
+    "src/IdraPCH.cpp" 
+    "src/Platform/WindowsWindow.cpp"
+)
 
 # Set the output directories for the library
 set_target_properties(Idra PROPERTIES
@@ -18,7 +21,8 @@ set_target_properties(Idra PROPERTIES
 # set macro for exporting symbols for the engine
 target_compile_definitions(Idra PRIVATE IDRA_CORE_EXPORT)
 
-target_link_libraries(Idra PUBLIC spdlog)
+# link the vendor libraries
+target_link_libraries(Idra PUBLIC spdlog glad glfw)
 
 # Precompile headers
 target_precompile_headers(Idra PRIVATE "include/IdraPCH.h")

@@ -2,13 +2,15 @@
 #include "Core/Application.h"
 
 #include "Events/ApplicationEvent.h" // #DEBUG
-#include "Core/Log.h" // #DEBUG
+
+#include <glad/glad.h>
 
 namespace Idra {
 
 	Application::Application()
 	{
 		IDRA_WARN("Application Created"); // #DEBUG
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application()
@@ -22,7 +24,12 @@ namespace Idra {
 		WindowResizeEvent e(1280, 720); // #DEBUG
 		IDRA_TRACE(e); // #DEBUG
 
-		while (true);
+		while (m_Running)
+		{
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
+		}
 	}
 
 } // namespace Idra
