@@ -22,7 +22,7 @@ set_target_properties(Idra PROPERTIES
 target_compile_definitions(Idra PRIVATE IDRA_CORE_EXPORT)
 
 # link the vendor libraries
-target_link_libraries(Idra PUBLIC spdlog glfw)
+target_link_libraries(Idra PUBLIC spdlog glad glfw)
 
 # Precompile headers
 target_precompile_headers(Idra PRIVATE "include/IdraPCH.h")
