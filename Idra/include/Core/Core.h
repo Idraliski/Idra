@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef _WIN32
 	#ifdef IDRA_CORE_EXPORT
 		#define IDRA_API __declspec(dllexport)
