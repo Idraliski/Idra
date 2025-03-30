@@ -39,6 +39,10 @@ namespace Idra {
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
+
+		// load GL functions
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		IDRA_CORE_ASSERT(status, "Failed to initialize Glad!");
 	}
 
 	void WindowsWindow::Shutdown()

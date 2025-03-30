@@ -3,6 +3,8 @@
 
 #include "Events/ApplicationEvent.h" // #DEBUG
 
+#include <glad/glad.h>
+
 namespace Idra {
 
 	Application::Application()
@@ -24,6 +26,8 @@ namespace Idra {
 
 		while (m_Running)
 		{
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
 			m_Window->OnUpdate();
 		}
 	}
