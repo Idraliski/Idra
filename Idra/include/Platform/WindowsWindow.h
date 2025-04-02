@@ -2,7 +2,6 @@
 
 #include "Core/Window.h"
 
-// Update the include path to match the correct relative path
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
