@@ -1,7 +1,3 @@
-include_directories(
-    include
-)
-
 add_subdirectory(vendor)
 
 add_library(Idra SHARED 
@@ -9,6 +5,8 @@ add_library(Idra SHARED
     "src/Core/Log.cpp"
     "src/IdraPCH.cpp" 
     "src/Platform/WindowsWindow.cpp"
+    "src/Core/Layer.cpp" 
+    "src/Core/LayerStack.cpp" 
 )
 
 # Set the output directories for the library
@@ -28,4 +26,4 @@ target_link_libraries(Idra PUBLIC spdlog glad glfw)
 target_precompile_headers(Idra PRIVATE "include/IdraPCH.h")
 
 # Export include directories
-target_include_directories(Idra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(Idra PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

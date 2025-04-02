@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../IdraPCH.h"
-#include "../Core/Core.h"
+#include "IdraPCH.h"
+#include "Core/Core.h"
 
 namespace Idra {
 

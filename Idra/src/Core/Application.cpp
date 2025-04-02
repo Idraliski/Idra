@@ -27,8 +27,22 @@ namespace Idra {
 		{
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for (Layer* layer : m_LayerStack)
+				layer->OnUpdate();
+
 			m_Window->OnUpdate();
 		}
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* overlay)
+	{
+		m_LayerStack.PushOverlay(overlay);
 	}
 
 	void Application::OnEvent(Event& e)
@@ -36,8 +50,16 @@ namespace Idra {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 
-		if(e.GetEventType() != EventType::MouseMoved) // #DEBUG
-			IDRA_TRACE("{0}", e); // #DEBUG
+		// Going backwards through the layer stack
+		// This way, the overlay layers will get the event first 
+		// and break if the event is handled
+		// and then the layers will get the event last
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

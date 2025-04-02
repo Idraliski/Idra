@@ -2,7 +2,8 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "../Events/ApplicationEvent.h"
+#include "Events/ApplicationEvent.h"
+#include "Core/LayerStack.h"
 
 namespace Idra {
 
@@ -15,11 +16,15 @@ namespace Idra {
 		void Run();
 
 		void OnEvent(Event& e);
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
+		LayerStack m_LayerStack;
 	};
 
 	// To be defined in the client

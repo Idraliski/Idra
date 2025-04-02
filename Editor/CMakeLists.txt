@@ -1,9 +1,7 @@
-include_directories(include)
-
 # Define the editor executable
 add_executable(Editor 
     "src/Editor.cpp" 
-)
+ "src/ExampleLayer.cpp")
 
 # Set the output directory for the executable
 set_target_properties(Editor PROPERTIES
@@ -13,6 +11,14 @@ set_target_properties(Editor PROPERTIES
 # Link the editor with the game engine
 target_link_libraries(Editor PRIVATE Idra)
 
+# set include directories
+target_include_directories(Editor PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Idra
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+
+# Copy the Idra library to the Editor's output directory
 add_custom_command(TARGET Editor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:Idra> $<TARGET_FILE_DIR:Editor>
