@@ -36,7 +36,8 @@ namespace Idra {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 
-		IDRA_TRACE("{0}", e); // #DEBUG
+		if(e.GetEventType() != EventType::MouseMoved) // #DEBUG
+			IDRA_TRACE("{0}", e); // #DEBUG
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

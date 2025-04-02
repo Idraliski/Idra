@@ -34,7 +34,7 @@ namespace Idra {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		IDRA_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+		IDRA_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height); // #DEBUG
 
 		if (!s_GLFWInitialized)
 		{
