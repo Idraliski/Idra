@@ -1,7 +1,7 @@
 # Define the editor executable
 add_executable(Editor 
     "src/Editor.cpp" 
-)
+ "src/ExampleLayer.cpp")
 
 # Set the output directory for the executable
 set_target_properties(Editor PROPERTIES
