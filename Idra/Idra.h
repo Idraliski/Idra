@@ -1,8 +1,9 @@
 #pragma once
 
-#include "include/Core/Application.h"
-#include "include/Core/Log.h"
+#include "Core/Application.h"
+#include "Core/Layer.h"
+#include "Core/Log.h"
 
 //---Entry Point---------------------
-#include "include/Core/EntryPoint.h"
+#include "Core/EntryPoint.h"
 //-----------------------------------

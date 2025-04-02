@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "../Events/ApplicationEvent.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Idra {
 
