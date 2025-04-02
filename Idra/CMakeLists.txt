@@ -5,6 +5,8 @@ add_library(Idra SHARED
     "src/Core/Log.cpp"
     "src/IdraPCH.cpp" 
     "src/Platform/WindowsWindow.cpp"
+    "src/Core/Layer.cpp" 
+    "src/Core/LayerStack.cpp" 
 )
 
 # Set the output directories for the library
