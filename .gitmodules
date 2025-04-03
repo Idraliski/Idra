@@ -1,3 +1,6 @@
 [submodule "Idra/vendor/spdlog"]
 	path = Idra/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Idra/Vendor/imgui"]
+	path = Idra/Vendor/imgui
+	url = https://github.com/Idraliski/imgui.git
