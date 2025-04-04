@@ -19,7 +19,12 @@ set_target_properties(Idra PROPERTIES
 )
 
 # set macro for exporting symbols for the engine
-target_compile_definitions(Idra PRIVATE IDRA_CORE_EXPORT GLFW_INCLUDE_NONE)
+target_compile_definitions(Idra PRIVATE 
+    IDRA_CORE_EXPORT 
+    GLFW_INCLUDE_NONE
+    IDRA_DEBUG
+)
+
 
 # link the vendor libraries
 target_link_libraries(Idra PUBLIC spdlog glad glfw imgui)
