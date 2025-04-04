@@ -9,7 +9,7 @@ public:
 	virtual ~ExampleLayer();
 
 	void OnUpdate() override;
-	void OnEvent(Idra::Event& event) override;
+	void OnEvent(Idra::Event& e) override;
 };
 
 

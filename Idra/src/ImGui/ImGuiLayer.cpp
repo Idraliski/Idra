@@ -58,7 +58,8 @@ namespace Idra
 
 	void ImGuiLayer::OnEvent(Event& e)
 	{
-		IDRA_INFO("ImGui Layer Event: {0}", e); // #DEBUG
+		if (e.GetEventType() != EventType::MouseMoved)
+			IDRA_INFO("ImGui Layer Event: {0}", e); // #DEBUG
 	}
 
 	void ImGuiLayer::Begin()
