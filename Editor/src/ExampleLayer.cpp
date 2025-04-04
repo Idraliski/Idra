@@ -11,10 +11,11 @@ ExampleLayer::~ExampleLayer()
 
 void ExampleLayer::OnUpdate() 
 {
-	//IDRA_INFO("ExampleLayer::Update");
+	//IDRA_INFO("ExampleLayer::Update"); // #DEBUG
 }
 
-void ExampleLayer::OnEvent(Idra::Event& event) 
+void ExampleLayer::OnEvent(Idra::Event& e) 
 {
-	IDRA_TRACE("{0}", event);
+	if (e.GetEventType() != Idra::EventType::MouseMoved)
+		IDRA_TRACE("Example Layer: {0}", e); // #DEBUG
 }
