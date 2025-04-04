@@ -154,7 +154,7 @@ namespace Idra
 		ImGuiIO& io = ImGui::GetIO();
 		int keycode = e.GetKeyCode();
 
-		if (keycode > 0 && keycode < ImGuiKey_NamedKey_COUNT)
+		if (keycode > 0)
 		{
 			io.AddInputCharacter((unsigned short)keycode);
 		}
