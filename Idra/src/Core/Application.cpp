@@ -5,8 +5,6 @@
 
 namespace Idra {
 
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1) // #DEBUG
-
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
@@ -16,7 +14,7 @@ namespace Idra {
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback(IDRA_BIND_EVENT_FN(Application::OnEvent));
 	}
 
 	Application::~Application()
@@ -53,7 +51,7 @@ namespace Idra {
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(IDRA_BIND_EVENT_FN(Application::OnWindowClose));
 
 		// Going backwards through the layer stack
 		// This way, the overlay layers will get the event first 
