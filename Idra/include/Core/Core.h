@@ -10,6 +10,10 @@
 	#error Only Windows is supported!
 #endif
 
+#ifdef IDRA_DEBUG
+	#define IDRA_ENABLE_ASSERTS
+#endif 
+
 #ifdef IDRA_ENABLE_ASSERTS
 	#define IDRA_ASSERT(x, ...) { if(!(x)) { IDRA_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 	#define IDRA_CORE_ASSERT(x, ...) { if(!(x)) { IDRA_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
