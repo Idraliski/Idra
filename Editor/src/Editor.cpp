@@ -8,11 +8,14 @@ class Editor : public Idra::Application
 public:
 	Editor() 
 	{
+		IDRA_INFO("Editor Created"); // #DEBUG
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Idra::ImGuiLayer());
 	}
 
 	~Editor() 
 	{
+		IDRA_INFO("Editor Destroyed"); // #DEBUG
 	}
 };
 

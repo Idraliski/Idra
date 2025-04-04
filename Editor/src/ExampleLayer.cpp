@@ -16,5 +16,5 @@ void ExampleLayer::OnUpdate()
 
 void ExampleLayer::OnEvent(Idra::Event& event) 
 {
-	IDRA_TRACE("{0}", event);
+	IDRA_TRACE("Example Layer: {0}", event);
 }
