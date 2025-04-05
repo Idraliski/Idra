@@ -10,7 +10,7 @@
 	#error Only Windows is supported!
 #endif
 
-#ifdef IDRA_DEBUG
+#ifdef IDRA_DEBUG_MODE
 	#define IDRA_ENABLE_ASSERTS
 #endif 
 
