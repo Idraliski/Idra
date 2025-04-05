@@ -4,11 +4,12 @@ add_library(Idra SHARED
     "src/Core/Application.cpp"
     "src/Core/Log.cpp"
     "src/IdraPCH.cpp" 
-    "src/Platform/WindowsWindow.cpp"
+    "src/Platform/Windows/WindowsWindow.cpp"
     "src/Core/Layer.cpp" 
     "src/Core/LayerStack.cpp"
     "src/ImGui/ImGuiLayer.cpp"
     "src/Platform/OpenGL/ImGuiOpenGLRenderer.cpp"
+    "src/Platform/Windows/WindowsInput.cpp"
 )
 
 # Set the output directories for the library
@@ -24,7 +25,6 @@ target_compile_definitions(Idra PRIVATE
     GLFW_INCLUDE_NONE
     IDRA_DEBUG
 )
-
 
 # link the vendor libraries
 target_link_libraries(Idra PUBLIC spdlog glad glfw imgui)

@@ -1,5 +1,6 @@
 #include "IdraPCH.h"
 #include "Core/Application.h"
+#include "Core/Input.h"
 
 #include <glad/glad.h>
 
@@ -33,6 +34,9 @@ namespace Idra {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			auto [x, y] = Input::GetMousePosition();// #DEBUG
+			IDRA_CORE_TRACE("{0}, {1}", x, y); // #DEBUG
 
 			m_Window->OnUpdate();
 		}
