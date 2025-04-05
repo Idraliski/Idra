@@ -3,8 +3,13 @@
 #include <spdlog/fmt/bundled/format.h>
 #include <glm/glm.hpp>
 
-// Custom formatters for glm types
-// Teach fmt (and therefore spdlog) how to format glm::vec3
+/*
+* 
+* @brief Custom formatters for glm types
+* @details This file contains custom formatters for glm types to be used with the fmt library (and therefore spdlog).
+* This allows for easy and readable logging of glm types using the macro IDRA_TRACE, IDRA_INFO, etc.
+*/
+
 template<>
 struct fmt::formatter<glm::vec3>
 {
