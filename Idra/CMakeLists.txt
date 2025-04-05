@@ -23,7 +23,7 @@ set_target_properties(Idra PROPERTIES
 target_compile_definitions(Idra PRIVATE 
     IDRA_CORE_EXPORT 
     GLFW_INCLUDE_NONE
-    IDRA_DEBUG
+    IDRA_DEBUG_MODE
 )
 
 # link the vendor libraries
