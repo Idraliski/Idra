@@ -27,7 +27,7 @@ target_compile_definitions(Idra PRIVATE
 )
 
 # link the vendor libraries
-target_link_libraries(Idra PUBLIC spdlog glad glfw imgui)
+target_link_libraries(Idra PUBLIC spdlog glad glfw imgui glm)
 
 # Precompile headers
 target_precompile_headers(Idra PRIVATE "include/IdraPCH.h")
