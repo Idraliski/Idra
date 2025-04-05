@@ -188,6 +188,7 @@ namespace Idra
 	{
 		switch (keycode)
 		{
+			// list taken from imgui_impl_glfw.cpp
 			case GLFW_KEY_TAB: return ImGuiKey_Tab;
 			case GLFW_KEY_LEFT: return ImGuiKey_LeftArrow;
 			case GLFW_KEY_RIGHT: return ImGuiKey_RightArrow;

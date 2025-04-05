@@ -1,6 +1,7 @@
 #pragma once
 
 #ifdef _WIN32
+	#define IDRA_WINDOW_GLFW
 	#ifdef IDRA_CORE_EXPORT
 		#define IDRA_API __declspec(dllexport)
 	#else
