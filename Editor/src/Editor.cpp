@@ -10,7 +10,7 @@ public:
 	{
 		IDRA_INFO("Editor Created"); // #DEBUG
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Idra::ImGuiLayer());
+		//PushOverlay(new Idra::ImGuiLayer());
 	}
 
 	~Editor() 

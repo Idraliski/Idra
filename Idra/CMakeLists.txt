@@ -7,9 +7,10 @@ add_library(Idra SHARED
     "src/Platform/Windows/WindowsWindow.cpp"
     "src/Core/Layer.cpp" 
     "src/Core/LayerStack.cpp"
-    "src/ImGui/ImGuiLayer.cpp"
-    "src/Platform/OpenGL/ImGuiOpenGLRenderer.cpp"
     "src/Platform/Windows/WindowsInput.cpp"
+    "src/ImGui/ImGuiLayer.cpp"
+    
+    "src/ImGui/ImGuiBuild.cpp"
 )
 
 # Set the output directories for the library
