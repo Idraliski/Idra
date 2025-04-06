@@ -19,9 +19,6 @@ namespace Idra
 		void End();
 
 	private:
-		void SetDarkThemeColors();
-
-	private:
 		float m_Time = 0.0f;
 	};
 
