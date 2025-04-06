@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Core/Core.h"
+
 #include "Core/Window.h"
 #include "Events/ApplicationEvent.h"
 #include "Core/LayerStack.h"
+
+#include "ImGui/ImGuiLayer.h"
 
 namespace Idra {
 
@@ -26,6 +29,7 @@ namespace Idra {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:

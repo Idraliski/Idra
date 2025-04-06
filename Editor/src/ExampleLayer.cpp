@@ -57,7 +57,7 @@ void ExampleLayer::OnEvent(Idra::Event& e)
 
 	if (e.GetEventType() == Idra::EventType::KeyPressed)
 	{
-		Idra::KeyPressedEvent& keyEvent = (Idra::KeyPressedEvent&)e;
-		IDRA_TRACE("Key Pressed: {0}", (char)keyEvent.GetKeyCode()); // #DEBUG
+		//Idra::KeyPressedEvent& keyEvent = (Idra::KeyPressedEvent&)e;
+		//IDRA_TRACE("Key Pressed: {0}", (char)keyEvent.GetKeyCode()); // #DEBUG
 	}
 }
