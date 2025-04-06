@@ -12,6 +12,8 @@ public:
 	void OnAttach() override;
 	void OnDetach() override;
 	void OnEvent(Idra::Event& e) override;
+
+	//void OnImGuiRender() override;
 };
 
 
