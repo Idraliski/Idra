@@ -25,8 +25,8 @@ void ExampleLayer::OnUpdate()
 */
 void ExampleLayer::OnImGuiRender()
 {
-	// @TODO ASSERTS are not defined properly currently
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
+
 	ImGui::Begin("Example Layer");
 	ImGui::Text("Hello from Example Layer!");
 	ImGui::End();

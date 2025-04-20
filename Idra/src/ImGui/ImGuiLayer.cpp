@@ -69,6 +69,8 @@ namespace Idra
 
 	void ImGuiLayer::OnImGuiRender()
 	{
+		IDRA_CORE_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
+
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);
 
