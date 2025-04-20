@@ -70,7 +70,11 @@ namespace Idra
 	void ImGuiLayer::OnImGuiRender()
 	{
 		static bool show = true;
-		ImGui::ShowDemoWindow();
+		ImGui::ShowDemoWindow(&show);
+
+		ImGui::Begin("ImGuiLayer");
+		ImGui::Text("Hello from ImGuiLayer!");
+		ImGui::End();
 	}
 
 	void ImGuiLayer::Begin()

@@ -1,6 +1,6 @@
 add_subdirectory(vendor)
 
-add_library(Idra SHARED 
+add_library(Idra STATIC 
     "src/Core/Application.cpp"
     "src/Core/Log.cpp"
     "src/IdraPCH.cpp" 
@@ -9,7 +9,6 @@ add_library(Idra SHARED
     "src/Core/LayerStack.cpp"
     "src/Platform/Windows/WindowsInput.cpp"
     "src/ImGui/ImGuiLayer.cpp"
-    
     "src/ImGui/ImGuiBuild.cpp"
 )
 

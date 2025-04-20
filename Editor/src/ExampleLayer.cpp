@@ -20,15 +20,17 @@ void ExampleLayer::OnUpdate()
 }
 
 /*
-* wont run as on attach and on detach, begin and end are not on the example layer
-* only on the imgui layer
+* If built as DLL, ImGui context is not shared across DLL boundaries.
+* Static Library builds are fine.
+*/
 void ExampleLayer::OnImGuiRender()
 {
+	// @TODO ASSERTS are not defined properly currently
+	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 	ImGui::Begin("Example Layer");
 	ImGui::Text("Hello from Example Layer!");
 	ImGui::End();
 }
-*/
 
 void ExampleLayer::OnAttach()
 {

@@ -13,7 +13,7 @@ public:
 	void OnDetach() override;
 	void OnEvent(Idra::Event& e) override;
 
-	//void OnImGuiRender() override;
+	void OnImGuiRender() override;
 };
 
 
