@@ -2,10 +2,14 @@
 
 #ifdef _WIN32
 	#define IDRA_WINDOW_GLFW
-	#ifdef IDRA_CORE_EXPORT
-		#define IDRA_API __declspec(dllexport)
+#	ifdef IDRA_BUILD_DLL
+		#ifdef IDRA_CORE_EXPORT
+			#define IDRA_API __declspec(dllexport)
+		#else
+			#define IDRA_API __declspec(dllimport)
+		#endif
 	#else
-		#define IDRA_API __declspec(dllimport)
+		#define IDRA_API
 	#endif
 #else
 	#error Only Windows is supported!
