@@ -22,6 +22,7 @@ void ExampleLayer::OnUpdate()
 /*
 * If built as DLL, ImGui context is not shared across DLL boundaries.
 * Static Library builds are fine.
+* If we want to DLL, switch the MSVC to use DLL runtime library, in CMake
 */
 void ExampleLayer::OnImGuiRender()
 {
