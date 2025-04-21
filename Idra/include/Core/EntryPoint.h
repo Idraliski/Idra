@@ -5,7 +5,7 @@ extern Idra::Application* Idra::CreateApplication();
 int main(int argc, char** argv) {
 	Idra::Log::Init();
 
-	IDRA_CORE_INFO("Hello! Idra Engine Started");
+	IDRA_CORE_CRITICAL("Welcome! Idra Engine Started");
 
 	// Create the application
 	auto app = Idra::CreateApplication();

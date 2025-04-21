@@ -5,7 +5,7 @@
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Idra {
 	static bool s_GLFWInitialized = false;
@@ -20,7 +20,10 @@ namespace Idra {
 		return new WindowsWindow(props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props) 
+	WindowsWindow::WindowsWindow(const WindowProps& props)
+		: m_Data()
+		, m_Window(nullptr)
+		, m_RenderingContext(nullptr)
 	{
 		Init(props);
 	}
@@ -54,13 +57,12 @@ namespace Idra {
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
+
+		m_RenderingContext = new OpenGLContext(m_Window);
+		m_RenderingContext->Init();
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
-
-		// load GL functions
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		IDRA_CORE_ASSERT(status, "Failed to initialize Glad!");
 
 		// Set GLFW callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
@@ -155,6 +157,7 @@ namespace Idra {
 
 	void WindowsWindow::Shutdown()
 	{
+		delete m_RenderingContext;
 		glfwDestroyWindow(m_Window);
 		glfwTerminate();
 	}
@@ -162,7 +165,7 @@ namespace Idra {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_RenderingContext->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
