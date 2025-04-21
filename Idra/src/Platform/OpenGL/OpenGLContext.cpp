@@ -16,9 +16,9 @@ namespace Idra {
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		IDRA_CORE_ASSERT(status, "Failed to initialize Glad!");
 
-		const std::string& vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
-		const std::string& renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-		const std::string& version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+		const char* vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+		const char* renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+		const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 
 		IDRA_CORE_INFO("OpenGL Info:");
 		IDRA_CORE_INFO("  Vendor: {0}", vendor);
