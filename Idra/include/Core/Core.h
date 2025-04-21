@@ -2,14 +2,14 @@
 
 #ifdef _WIN32
 	#define IDRA_WINDOW_GLFW
-#	ifdef IDRA_BUILD_DLL
+	#ifdef IDRA_BUILD_DLL
 		#ifdef IDRA_CORE_EXPORT
 			#define IDRA_API __declspec(dllexport)
 		#else
 			#define IDRA_API __declspec(dllimport)
 		#endif
 	#else
-		#define IDRA_API
+		#define IDRA_API // else ignore Macro, as we are building a static library
 	#endif
 #else
 	#error Only Windows is supported!

@@ -21,7 +21,6 @@ set_target_properties(Idra PROPERTIES
 
 # set macro for exporting symbols for the engine
 target_compile_definitions(Idra PRIVATE 
-    IDRA_CORE_EXPORT 
     GLFW_INCLUDE_NONE
     IDRA_DEBUG_MODE
 )
