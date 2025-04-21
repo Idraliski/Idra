@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Window.h"
+#include "Renderer/RenderingContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -27,6 +28,7 @@ namespace Idra {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		RenderingContext* m_RenderingContext;
 
 		struct WindowData
 		{

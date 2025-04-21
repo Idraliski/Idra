@@ -10,6 +10,7 @@ add_library(Idra STATIC
     "src/Platform/Windows/WindowsInput.cpp"
     "src/ImGui/ImGuiLayer.cpp"
     "src/ImGui/ImGuiBuild.cpp"
+    "src/Platform/OpenGL/OpenGLContext.cpp"
 )
 
 # Set the output directories for the library
