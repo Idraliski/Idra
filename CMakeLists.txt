@@ -13,7 +13,11 @@ add_subdirectory(Editor)
 
 set_target_properties(${CMAKE_TARGET_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
+# use the static runtime library for MSVC
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+# use the dynamic runtime library for MSVC
+# set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL$<$<CONFIG:Debug>:Debug>")
 
 install(TARGETS ${CMAKE_TARGET_NAME}
 	RUNTIME DESTINATION bin
