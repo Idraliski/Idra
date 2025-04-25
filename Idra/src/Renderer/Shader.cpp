@@ -147,8 +147,6 @@ namespace Idra {
 			IDRA_CORE_ASSERT(false, "Shader compilation failed!");
 		}
 
-		IDRA_CORE_INFO("Compiled {0} shader!", type == GL_VERTEX_SHADER ? "vertex" : "fragment"); // #DEBUG
-
 		return shader;
 	}
 }
