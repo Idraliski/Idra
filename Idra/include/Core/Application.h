@@ -8,6 +8,9 @@
 
 #include "ImGui/ImGuiLayer.h"
 
+//TEMP
+#include "Renderer/Shader.h"
+
 namespace Idra {
 
 	class IDRA_API Application
@@ -37,6 +40,8 @@ namespace Idra {
 		unsigned int m_VertexArray;
 		unsigned int m_VertexBuffer;
 		unsigned int m_IndexBuffer;
+
+		std::unique_ptr<Shader> m_Shader;
 	private:
 		static Application* s_Instance;
 	};

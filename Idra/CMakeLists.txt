@@ -1,16 +1,17 @@
 add_subdirectory(vendor)
 
 add_library(Idra STATIC 
-    "src/Core/Application.cpp"
-    "src/Core/Log.cpp"
     "src/IdraPCH.cpp" 
-    "src/Platform/Windows/WindowsWindow.cpp"
+    "src/Core/Application.cpp"
     "src/Core/Layer.cpp" 
     "src/Core/LayerStack.cpp"
-    "src/Platform/Windows/WindowsInput.cpp"
+    "src/Core/Log.cpp"
     "src/ImGui/ImGuiLayer.cpp"
     "src/ImGui/ImGuiBuild.cpp"
     "src/Platform/OpenGL/OpenGLContext.cpp"
+    "src/Platform/Windows/WindowsInput.cpp"
+    "src/Platform/Windows/WindowsWindow.cpp"
+    "src/Renderer/Shader.cpp"
 )
 
 # Set the output directories for the library
