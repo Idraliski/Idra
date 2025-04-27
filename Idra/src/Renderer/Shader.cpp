@@ -63,6 +63,9 @@ namespace Idra {
 
 		unsigned int glType;
 
+		// @TODO: check to see if vertex and fragment shaders are already attached
+		// maybe override it or just ignore it
+
 		switch (type)
 		{
 		case ShaderType::VERTEX_SHADER:
