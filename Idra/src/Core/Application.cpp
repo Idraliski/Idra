@@ -8,6 +8,26 @@ namespace Idra {
 
 	Application* Application::s_Instance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+		case ShaderDataType::Float:   return GL_FLOAT;
+		case ShaderDataType::Float2:  return GL_FLOAT;
+		case ShaderDataType::Float3:  return GL_FLOAT;
+		case ShaderDataType::Float4:  return GL_FLOAT;
+		case ShaderDataType::Mat3:    return GL_FLOAT;
+		case ShaderDataType::Mat4:    return GL_FLOAT;
+		case ShaderDataType::Int:     return GL_INT;
+		case ShaderDataType::Int2:    return GL_INT;
+		case ShaderDataType::Int3:    return GL_INT;
+		case ShaderDataType::Int4:    return GL_INT;
+		case ShaderDataType::Bool:    return GL_BOOL;
+		}
+		IDRA_CORE_ASSERT(false, "Unknown shader data type!");
+		return 0;
+	}
+
 	Application::Application()
 	{
 		IDRA_WARN("Application Created"); // #DEBUG
@@ -23,20 +43,36 @@ namespace Idra {
 		glGenVertexArrays(1, &m_VertexArray);
 		glBindVertexArray(m_VertexArray);
 
-		// Vertex data: position (x, y, z), texture coordinates (u, v)
-		float vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+		// Vertex data: position (x, y, z), colour (r, g, b, a)
+		float vertices[4 * 7] = {
+			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+			 0.5f,  0.5f, 0.0f, 0.2f, 0.8f, 0.5f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.6f, 0.4f, 0.4f, 1.0f,
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		BufferLayout bufferlayout = {
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" }
+		};
+
+		m_VertexBuffer->SetLayout(bufferlayout);
+
+		uint32_t index = 0;
+		const auto& layout = m_VertexBuffer->GetLayout();
+		for (const auto& element : layout) 
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index, 
+				element.GetComponentCount(), 
+				ShaderDataTypeToOpenGLBaseType(element.Type), 
+				element.Normalized ? GL_TRUE : GL_FALSE, 
+				m_VertexBuffer->GetLayout().GetStride(),
+				(const void*)element.Offset);
+			index++;
+		}
 
 		uint32_t indices[6] = {
 			0, 1, 2,
@@ -51,15 +87,15 @@ namespace Idra {
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
+			layout(location = 1) in vec4 a_Color;
 
-			out vec2 v_TexCoord;
+			out vec4 v_Color;
 			out vec3 v_Position;
 
 			void main()
 			{
 				gl_Position = vec4(a_Position, 1.0);
-				v_TexCoord = a_TexCoord;
+				v_Color = a_Color;
 				v_Position = a_Position;
 			}
 		)";
@@ -69,17 +105,17 @@ namespace Idra {
 		std::string fragmentSrc = R"(
 			#version 330 core
 
-			in vec2 v_TexCoord;
+			in vec4 v_Color;
 			in vec3 v_Position;
 
 			out vec4 color;
 
 			void main()
 			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0); //static color based on position
+				color = v_Color;
+				//color = vec4(v_Position * 0.5 + 0.5, 1.0); //static color based on position
 				//color = vec4(0.8, 0.2, 0.3, 1.0); //static uniform color
 
-				//color = texture(u_Texture, v_TexCoord);
 			}
 		)";
 
