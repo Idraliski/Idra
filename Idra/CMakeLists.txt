@@ -12,7 +12,9 @@ add_library(Idra STATIC
     "src/Platform/Windows/WindowsInput.cpp"
     "src/Platform/Windows/WindowsWindow.cpp"
     "src/Renderer/Shader.cpp"
-)
+    "src/Renderer/Buffer.cpp" 
+    "src/Renderer/Renderer.cpp"
+    "src/Platform/OpenGL/OpenGLBuffer.cpp")
 
 # Set the output directories for the library
 set_target_properties(Idra PROPERTIES
