@@ -38,11 +38,6 @@ namespace Idra {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		// TEMP
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<VertexArray> m_TriVA;
 	private:
 		static Application* s_Instance;
 	};

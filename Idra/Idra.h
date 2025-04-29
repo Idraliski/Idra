@@ -8,6 +8,8 @@
 #include "Core/KeyCodes.h"
 #include "Core/Input.h"
 
+#include "Renderer/Renderer.h"
+
 #include "ImGui/ImGuiLayer.h"
 
 //---Entry Point---------------------
