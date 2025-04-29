@@ -14,6 +14,12 @@ public:
 	void OnEvent(Idra::Event& e) override;
 
 	void OnImGuiRender() override;
+private:
+	// TEMP
+	std::shared_ptr<Idra::Shader> m_Shader;
+	std::shared_ptr<Idra::Shader> m_BlueShader;
+	std::shared_ptr<Idra::VertexArray> m_VertexArray;
+	std::shared_ptr<Idra::VertexArray> m_TriVA;
 };
 
 

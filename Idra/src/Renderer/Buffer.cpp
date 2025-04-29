@@ -69,11 +69,17 @@ namespace Idra {
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None: 
+			case RendererAPI::API::None: 
 				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 				return nullptr;
-			case RendererAPI::OpenGL: 
+			case RendererAPI::API::OpenGL:
 				return new OpenGLVertexBuffer(vertices, size);
+			case RendererAPI::API::DirectX:
+				IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
+				return nullptr;
+			case RendererAPI::API::Vulkan:
+				IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!");
+				return nullptr;
 		}
 
 		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -88,11 +94,17 @@ namespace Idra {
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None: 
+			case RendererAPI::API::None:
 				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!"); 
 				return nullptr;
-			case RendererAPI::OpenGL: 
+			case RendererAPI::API::OpenGL:
 				return new OpenGLIndexBuffer(indices, count);
+			case RendererAPI::API::DirectX:
+				IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
+				return nullptr;
+			case RendererAPI::API::Vulkan:
+				IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!");
+				return nullptr;
 		}
 
 		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
