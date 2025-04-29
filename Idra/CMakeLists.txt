@@ -14,7 +14,9 @@ add_library(Idra STATIC
     "src/Renderer/Shader.cpp"
     "src/Renderer/Buffer.cpp" 
     "src/Renderer/Renderer.cpp"
-    "src/Platform/OpenGL/OpenGLBuffer.cpp")
+    "src/Platform/OpenGL/OpenGLBuffer.cpp" 
+    "src/Renderer/VertexArray.cpp" 
+    "src/Platform/OpenGL/OpenGLVertexArray.cpp")
 
 # Set the output directories for the library
 set_target_properties(Idra PROPERTIES
