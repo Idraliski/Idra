@@ -1,8 +1,8 @@
 #include "IdraPCH.h"
+
 #include "Core/Application.h"
 #include "Core/Input.h"
-
-#include <glad/glad.h>
+#include "Renderer/Renderer.h"
 
 namespace Idra {
 
@@ -154,16 +154,21 @@ namespace Idra {
 
 		while (m_Running)
 		{
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
+			RenderCommand::Clear();
+
+			// Ideally, we would have a Renderer class that handles all the rendering
+			//Renderer::BeginScene(camera, lights, environment);
+
+			Renderer::BeginScene();
 
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
+			Renderer::Submit(m_VertexArray);
 
 			m_BlueShader->Bind();
-			m_TriVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_TriVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
+			Renderer::Submit(m_TriVA);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

@@ -1,0 +1,29 @@
+#include "Renderer/RendererAPI.h"
+
+#include "Platform/OpenGL/OpenGLRendererAPI.h"
+
+namespace Idra {
+	RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
+
+	RendererAPI* RendererAPI::Create()
+	{
+		switch (s_API)
+		{
+			case RendererAPI::API::None:
+				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+				return nullptr;
+			case RendererAPI::API::OpenGL:
+				return new OpenGLRendererAPI();
+			case RendererAPI::API::DirectX:
+				IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
+				return nullptr;
+			case RendererAPI::API::Vulkan:
+				IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!");
+				return nullptr;
+		}
+
+		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
+}

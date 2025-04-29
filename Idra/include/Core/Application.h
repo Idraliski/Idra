@@ -11,7 +11,6 @@
 //TEMP
 #include "Renderer/Shader.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
 
 namespace Idra {
