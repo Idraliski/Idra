@@ -8,26 +8,6 @@ namespace Idra {
 
 	Application* Application::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-		case ShaderDataType::Float:   return GL_FLOAT;
-		case ShaderDataType::Float2:  return GL_FLOAT;
-		case ShaderDataType::Float3:  return GL_FLOAT;
-		case ShaderDataType::Float4:  return GL_FLOAT;
-		case ShaderDataType::Mat3:    return GL_FLOAT;
-		case ShaderDataType::Mat4:    return GL_FLOAT;
-		case ShaderDataType::Int:     return GL_INT;
-		case ShaderDataType::Int2:    return GL_INT;
-		case ShaderDataType::Int3:    return GL_INT;
-		case ShaderDataType::Int4:    return GL_INT;
-		case ShaderDataType::Bool:    return GL_BOOL;
-		}
-		IDRA_CORE_ASSERT(false, "Unknown shader data type!");
-		return 0;
-	}
-
 	Application::Application()
 	{
 		IDRA_WARN("Application Created"); // #DEBUG
@@ -40,46 +20,53 @@ namespace Idra {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		// TEMP DRAW DATA
+		m_VertexArray.reset(VertexArray::Create());
 
 		// Vertex data: position (x, y, z), colour (r, g, b, a)
 		float vertices[4 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			 0.5f,  0.5f, 0.0f, 0.2f, 0.8f, 0.5f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 0.6f, 0.4f, 0.4f, 1.0f,
+			-0.75f, -0.75f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+			 0.75f, -0.75f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+			 0.75f,  0.75f, 0.0f, 0.2f, 0.8f, 0.5f, 1.0f,
+			-0.75f,  0.75f, 0.0f, 0.6f, 0.4f, 0.4f, 1.0f,
 		};
 
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-
+		std::shared_ptr<VertexBuffer> squareVB;
+		squareVB.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 		BufferLayout bufferlayout = {
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color" }
 		};
-
-		m_VertexBuffer->SetLayout(bufferlayout);
-
-		uint32_t index = 0;
-		const auto& layout = m_VertexBuffer->GetLayout();
-		for (const auto& element : layout) 
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-				element.GetComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(element.Type), 
-				element.Normalized ? GL_TRUE : GL_FALSE, 
-				m_VertexBuffer->GetLayout().GetStride(),
-				(const void*)element.Offset);
-			index++;
-		}
+		squareVB->SetLayout(bufferlayout);
+		m_VertexArray->AddVertexBuffer(squareVB);
 
 		uint32_t indices[6] = {
 			0, 1, 2,
 			2, 3, 0
 		};
+		std::shared_ptr<IndexBuffer> squareIB;
+		squareIB.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_VertexArray->SetIndexBuffer(squareIB);
 
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_TriVA.reset(VertexArray::Create());
+		float triVertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f,
+		};
+		std::shared_ptr<VertexBuffer> triVB;
+		triVB.reset(VertexBuffer::Create(triVertices, sizeof(triVertices)));
+		triVB->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" }
+		});
+		m_TriVA->AddVertexBuffer(triVB);
+
+		uint32_t triIndices[3] = {
+			0, 1, 2
+		};
+		std::shared_ptr<IndexBuffer> triIB;
+		triIB.reset(IndexBuffer::Create(triIndices, sizeof(triIndices) / sizeof(uint32_t)));
+		m_TriVA->SetIndexBuffer(triIB);
 
 		// TEMP
 		// Load and compile the vertex shader
@@ -105,10 +92,10 @@ namespace Idra {
 		std::string fragmentSrc = R"(
 			#version 330 core
 
+			layout(location = 0) out vec4 color;
+
 			in vec4 v_Color;
 			in vec3 v_Position;
-
-			out vec4 color;
 
 			void main()
 			{
@@ -120,6 +107,40 @@ namespace Idra {
 		)";
 
 		m_Shader = std::make_unique<Shader>(vertexSrc, fragmentSrc, "BasicShader");
+
+		// TEMP
+		// Load and compile the vertex shader
+		std::string blueVertexSrc = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+
+			out vec3 v_Position;
+
+			void main()
+			{
+				gl_Position = vec4(a_Position, 1.0);
+				v_Position = a_Position;
+			}
+		)";
+
+		// Load and compile the fragment shader
+		// This is a simple shader that just outputs the texture color
+		std::string blueFragmentSrc = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec4 v_Color;
+			in vec3 v_Position;
+
+			void main()
+			{
+				color = vec4(0.2, 0.3, 0.8, 1.0); //static uniform color
+			}
+		)";
+
+		m_BlueShader = std::make_unique<Shader>(blueVertexSrc, blueFragmentSrc, "BasicBlueShader");
 	}
 
 	Application::~Application()
@@ -137,8 +158,12 @@ namespace Idra {
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, 0);
+			m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
+
+			m_BlueShader->Bind();
+			m_TriVA->Bind();
+			glDrawElements(GL_TRIANGLES, m_TriVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
