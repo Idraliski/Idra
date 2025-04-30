@@ -25,22 +25,29 @@ ExampleLayer::ExampleLayer()
 	orthoCameraSpec.NearClip = 0.1f;
 	orthoCameraSpec.FarClip = 1'000.0f;
 
-	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &cameraSpec));
-	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
+	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &cameraSpec));
+	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
 
 	// TEMP DRAW DATA
 	m_VertexArray.reset(Idra::VertexArray::Create());
 
-	// Vertex data: position (x, y, z), colour (r, g, b, a)
-	float vertices[4 * 7] = {
-		-0.75f, -0.75f, -5.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-		 0.75f, -0.75f, -5.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-		 0.75f,  0.75f, -5.0f, 0.2f, 0.8f, 0.5f, 1.0f,
-		-0.75f,  0.75f, -5.0f, 0.6f, 0.4f, 0.4f, 1.0f,
+	// 8 vertices: position (x, y, z), color (r, g, b, a)
+	float cubeVertices[8 * 7] = {
+		// Front face
+		-0.75f, -0.75f,  -5.0f,  0.8f, 0.2f, 0.8f, 1.0f, // 0
+		 0.75f, -0.75f,  -5.0f,  0.2f, 0.3f, 0.8f, 1.0f, // 1
+		 0.75f,  0.75f,  -5.0f,  0.2f, 0.8f, 0.5f, 1.0f, // 2
+		-0.75f,  0.75f,  -5.0f,  0.6f, 0.4f, 0.4f, 1.0f, // 3
+
+		// Back face
+		-0.75f, -0.75f,  -3.5f,  0.5f, 0.1f, 0.9f, 1.0f, // 4
+		 0.75f, -0.75f,  -3.5f,  0.9f, 0.7f, 0.2f, 1.0f, // 5
+		 0.75f,  0.75f,  -3.5f,  0.2f, 0.6f, 0.3f, 1.0f, // 6
+		-0.75f,  0.75f,  -3.5f,  0.3f, 0.2f, 0.7f, 1.0f  // 7
 	};
 
 	std::shared_ptr<Idra::VertexBuffer> squareVB;
-	squareVB.reset(Idra::VertexBuffer::Create(vertices, sizeof(vertices)));
+	squareVB.reset(Idra::VertexBuffer::Create(cubeVertices, sizeof(cubeVertices)));
 	Idra::BufferLayout bufferlayout = {
 		{ Idra::ShaderDataType::Float3, "a_Position" },
 		{ Idra::ShaderDataType::Float4, "a_Color" }
@@ -48,32 +55,66 @@ ExampleLayer::ExampleLayer()
 	squareVB->SetLayout(bufferlayout);
 	m_VertexArray->AddVertexBuffer(squareVB);
 
-	uint32_t indices[6] = {
-		0, 1, 2,
-		2, 3, 0
+	unsigned int cubeIndices[36] = {
+		// Front face
+		0, 1, 2, 2, 3, 0,
+		// Right face
+		1, 5, 6, 6, 2, 1,
+		// Back face
+		5, 4, 7, 7, 6, 5,
+		// Left face
+		4, 0, 3, 3, 7, 4,
+		// Top face
+		3, 2, 6, 6, 7, 3,
+		// Bottom face
+		4, 5, 1, 1, 0, 4
 	};
 	std::shared_ptr<Idra::IndexBuffer> squareIB;
-	squareIB.reset(Idra::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+	squareIB.reset(Idra::IndexBuffer::Create(cubeIndices, sizeof(cubeIndices) / sizeof(uint32_t)));
 	m_VertexArray->SetIndexBuffer(squareIB);
 
 	m_TriVA.reset(Idra::VertexArray::Create());
-	float triVertices[3 * 3] = {
-		-0.5f, -0.5f, -4.0f,
-		 0.5f, -0.5f, -4.0f,
-		 0.0f,  0.5f, -4.0f,
+	// 6 vertices: front + back (x, y, z)
+	float prismVertices[6 * 3] = {
+		// Front face
+		-0.5f, -0.5f, -1.0f,
+		 0.5f, -0.5f, -1.0f,
+		 0.0f,  0.5f, -1.0f,
+
+		 // Back face
+		 -0.5f, -0.5f, -3.0f,
+		  0.5f, -0.5f, -3.0f,
+		  0.0f,  0.5f, -3.0f
 	};
+
 	std::shared_ptr<Idra::VertexBuffer> triVB;
-	triVB.reset(Idra::VertexBuffer::Create(triVertices, sizeof(triVertices)));
+	triVB.reset(Idra::VertexBuffer::Create(prismVertices, sizeof(prismVertices)));
 	triVB->SetLayout({
 		{ Idra::ShaderDataType::Float3, "a_Position" }
 		});
 	m_TriVA->AddVertexBuffer(triVB);
 
-	uint32_t triIndices[3] = {
-		0, 1, 2
+	unsigned int prismIndices[24] = {
+		// Front triangle
+		0, 1, 2,
+
+		// Back triangle
+		3, 5, 4,
+
+		// Side 1
+		0, 2, 5,
+		5, 3, 0,
+
+		// Side 2
+		1, 4, 5,
+		5, 2, 1,
+
+		// Side 3 (bottom)
+		0, 3, 1,
+		1, 3, 4
 	};
 	std::shared_ptr<Idra::IndexBuffer> triIB;
-	triIB.reset(Idra::IndexBuffer::Create(triIndices, sizeof(triIndices) / sizeof(uint32_t)));
+	triIB.reset(Idra::IndexBuffer::Create(prismIndices, sizeof(prismIndices) / sizeof(uint32_t)));
 	m_TriVA->SetIndexBuffer(triIB);
 
 	// TEMP
@@ -198,25 +239,6 @@ void ExampleLayer::OnAttach()
 {
 	IDRA_INFO("Example Layer Attached"); // #DEBUG
 
-	glm::vec3 test = { 1.0f, 2.0f, 3.0f };
-	IDRA_INFO("Test: {0}", test); // #DEBUG
-
-	glm::vec2 testVec2 = { 1.0f, 2.0f };
-	IDRA_INFO("TestVec2: {0}", testVec2); // #DEBUG
-
-	glm::vec4 testVec4 = { 1.0f, 2.0f, 3.0f, 4.0f };
-	IDRA_INFO("TestVec4: {0}", testVec4); // #DEBUG
-
-	glm::mat3 testMat3 = { 1.0f, 2.0f, 3.0f,
-						  4.0f, 5.0f, 6.0f,
-						  7.0f, 8.0f, 9.0f };
-	IDRA_INFO("TestMat3: {0}", testMat3); // #DEBUG
-
-	glm::mat4 testMat4 = { 1.0f, 2.0f, 3.0f, 4.0f,
-						  5.0f, 6.0f, 7.0f, 8.0f,
-						  9.0f, 10.0f, 11.0f, 12.0f,
-						  13.0f, 14.0f, 15.0f, 16.0f };
-	IDRA_INFO("TestMat: {0}", testMat4); // #DEBUG
 
 }
 
@@ -229,4 +251,59 @@ void ExampleLayer::OnEvent(Idra::Event& e)
 {
 	if (e.GetEventType() != Idra::EventType::MouseMoved)
 		IDRA_TRACE("Example Layer: {0}", e); // #DEBUG
+
+	if (e.GetEventType() == Idra::EventType::KeyPressed)
+	{
+		auto& keyEvent = static_cast<Idra::KeyPressedEvent&>(e);
+		OnKeyPressed(keyEvent);
+	}
+}
+
+bool ExampleLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
+{
+	float moveSpeed = 0.1f;
+	float rotateSpeed = 1.0f;
+
+	if (e.GetKeyCode() == IDRA_KEY_W) 
+	{
+		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetForward());
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_S)
+	{
+		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetForward());
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_A)
+	{
+		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetRight());
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_D)
+	{
+		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetRight());
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_Q)
+	{
+		m_Camera->SetRotation(m_Camera->GetRotation() + rotateSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_E)
+	{
+		m_Camera->SetRotation(m_Camera->GetRotation() - rotateSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_SPACE)
+	{
+		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetUp());
+		return true;
+	}
+	if (e.GetKeyCode() == IDRA_KEY_LEFT_CONTROL)
+	{
+		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetUp());
+		return true;
+	}
+
+	return false;
 }

@@ -28,6 +28,16 @@ namespace Idra {
 		IDRA_CORE_INFO("  Vendor: {0}", vendor);
 		IDRA_CORE_INFO("  Renderer: {0}", renderer);
 		IDRA_CORE_INFO("  Version: {0}", version);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT); // culling front because we are inverting the camera view matrix
+		glFrontFace(GL_CCW);
 	}
 
 	void OpenGLContext::SwapBuffers()

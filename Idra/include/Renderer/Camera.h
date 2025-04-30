@@ -58,7 +58,11 @@ namespace Idra {
 		void SetPosition(const glm::vec3& position) { m_Position = position; UpdateViewMatrix(); }
 
 		const glm::vec3& GetRotation() const { return m_Rotation; }
-		void SetRotation(const glm::vec3& rotation) { m_Rotation = rotation; SetOrientation(glm::quat(rotation)); }
+		void SetRotation(const glm::vec3& rotation) { m_Rotation = rotation; SetOrientation(glm::quat(glm::radians(rotation))); }
+
+		const glm::vec3 GetForward() const { return m_Orientation * glm::vec3(0.0f, 0.0f, -1.0f); }
+		const glm::vec3 GetRight() const { return m_Orientation * glm::vec3(1.0f, 0.0f, 0.0f); }
+		const glm::vec3 GetUp() const { return m_Orientation * glm::vec3(0.0f, 1.0f, 0.0f); }
 	protected:
 		// Quaternion rotation is used to represent the camera's orientation
 		// only used internally to update the view matrix
@@ -79,7 +83,7 @@ namespace Idra {
 		glm::mat4 m_ViewProjectionMatrix = { 1.0f };
 
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 m_Rotation = { 0.0f, 0.0f, -1.0f };
+		glm::vec3 m_Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::quat m_Orientation = { 1.0f, 0.0f, 0.0f, 0.0f };
 	};
 }
