@@ -8,7 +8,12 @@
 #include "Core/KeyCodes.h"
 #include "Core/Input.h"
 
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+
 #include "Renderer/Renderer.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Camera.h"
 
 #include "ImGui/ImGuiLayer.h"
 

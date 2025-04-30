@@ -6,20 +6,23 @@ add_library(Idra STATIC
     "src/Core/Layer.cpp"
     "src/Core/LayerStack.cpp"
     "src/Core/Log.cpp"
-    "src/ImGui/ImGuiLayer.cpp"
     "src/ImGui/ImGuiBuild.cpp"
+    "src/ImGui/ImGuiLayer.cpp"
     "src/Platform/OpenGL/OpenGLBuffer.cpp"
     "src/Platform/OpenGL/OpenGLContext.cpp"
     "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
     "src/Platform/OpenGL/OpenGLVertexArray.cpp"
     "src/Platform/Windows/WindowsInput.cpp"
     "src/Platform/Windows/WindowsWindow.cpp"
-    "src/Renderer/Shader.cpp"
     "src/Renderer/Buffer.cpp"
-    "src/Renderer/Renderer.cpp"
-    "src/Renderer/VertexArray.cpp"
-    "src/Renderer/RendererAPI.cpp"
+    "src/Renderer/Camera.cpp"
+    "src/Renderer/OrthographicCamera.cpp"
+    "src/Renderer/PerspectiveCamera.cpp"
     "src/Renderer/RenderCommand.cpp"
+    "src/Renderer/Renderer.cpp"
+    "src/Renderer/RendererAPI.cpp"
+    "src/Renderer/Shader.cpp"
+    "src/Renderer/VertexArray.cpp"
 )
 
 # Set the output directories for the library
@@ -33,6 +36,7 @@ set_target_properties(Idra PROPERTIES
 target_compile_definitions(Idra PRIVATE 
     GLFW_INCLUDE_NONE
     $<$<CONFIG:DEBUG>:IDRA_DEBUG_MODE>
+    GLM_ENABLE_EXPERIMENTAL
 )
 
 # link the vendor libraries

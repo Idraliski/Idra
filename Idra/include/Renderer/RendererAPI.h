@@ -28,6 +28,8 @@ namespace Idra {
 
 		static RendererAPI* Create();
 	private:
+		// @TODO: Set this to the renderer API of your choice
+		// in future we might want 1 viewport rendered in OpenGL and another in Vulkan
 		static API s_API;
 	};
 }
