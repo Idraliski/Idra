@@ -205,6 +205,8 @@ void ExampleLayer::OnUpdate()
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_TAB))
 		IDRA_TRACE("Tab key is pressed! (Poll!)"); // #DEBUG
 
+	ProcessKeyInput();
+
 	Idra::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
 	Idra::RenderCommand::Clear();
 
@@ -232,6 +234,8 @@ void ExampleLayer::OnImGuiRender()
 
 	ImGui::Begin("Example Layer");
 	ImGui::Text("Hello from Example Layer!");
+	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
+	ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
 	ImGui::End();
 }
 
@@ -251,59 +255,43 @@ void ExampleLayer::OnEvent(Idra::Event& e)
 {
 	if (e.GetEventType() != Idra::EventType::MouseMoved)
 		IDRA_TRACE("Example Layer: {0}", e); // #DEBUG
-
-	if (e.GetEventType() == Idra::EventType::KeyPressed)
-	{
-		auto& keyEvent = static_cast<Idra::KeyPressedEvent&>(e);
-		OnKeyPressed(keyEvent);
-	}
 }
 
-bool ExampleLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
+void ExampleLayer::ProcessKeyInput()
 {
-	float moveSpeed = 0.1f;
-	float rotateSpeed = 1.0f;
+	float moveSpeed = 0.05f;
+	float rotateSpeed = 0.5f;
 
-	if (e.GetKeyCode() == IDRA_KEY_W) 
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_W))
 	{
 		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetForward());
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_S)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_S))
 	{
 		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetForward());
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_A)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_A))
 	{
 		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetRight());
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_D)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_D))
 	{
 		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetRight());
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_Q)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_Q))
 	{
 		m_Camera->SetRotation(m_Camera->GetRotation() + rotateSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_E)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_E))
 	{
 		m_Camera->SetRotation(m_Camera->GetRotation() - rotateSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_SPACE)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_SPACE))
 	{
 		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetUp());
-		return true;
 	}
-	if (e.GetKeyCode() == IDRA_KEY_LEFT_CONTROL)
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_LEFT_CONTROL))
 	{
 		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetUp());
-		return true;
 	}
-
-	return false;
 }

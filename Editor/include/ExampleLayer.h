@@ -15,7 +15,7 @@ public:
 
 	void OnImGuiRender() override;
 private:
-	bool OnKeyPressed(Idra::KeyPressedEvent& e);
+	void ProcessKeyInput();
 private:
 	// TEMP
 	std::shared_ptr<Idra::Shader> m_Shader;

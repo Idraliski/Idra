@@ -67,4 +67,18 @@ namespace Idra {
 		// if its row-major, the order is model * view * proj
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
+
+	void Camera::SetRotation(const glm::vec3& rotation)
+	{ 
+		auto wrap = [](float angle) {
+			return glm::mod(angle + 180.0f, 360.0f) - 180.0f;
+		};
+		m_Rotation = rotation; 
+		// clamp rotation to 360 degrees
+		m_Rotation.x = wrap(rotation.x);
+		m_Rotation.y = wrap(rotation.y);
+		m_Rotation.z = wrap(rotation.z);
+
+		SetOrientation(glm::quat(glm::radians(rotation))); 
+	}
 }

@@ -58,7 +58,7 @@ namespace Idra {
 		void SetPosition(const glm::vec3& position) { m_Position = position; UpdateViewMatrix(); }
 
 		const glm::vec3& GetRotation() const { return m_Rotation; }
-		void SetRotation(const glm::vec3& rotation) { m_Rotation = rotation; SetOrientation(glm::quat(glm::radians(rotation))); }
+		void SetRotation(const glm::vec3& rotation);
 
 		const glm::vec3 GetForward() const { return m_Orientation * glm::vec3(0.0f, 0.0f, -1.0f); }
 		const glm::vec3 GetRight() const { return m_Orientation * glm::vec3(1.0f, 0.0f, 0.0f); }
