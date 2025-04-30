@@ -20,6 +20,10 @@ namespace Idra {
 		const char* renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 		const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 
+		m_Vendor = vendor ? vendor : "Unknown Vendor";
+		m_Renderer = renderer ? renderer : "Unknown Renderer";
+		m_Version = version ? version : "Unknown Version";
+
 		IDRA_CORE_INFO("OpenGL Info:");
 		IDRA_CORE_INFO("  Vendor: {0}", vendor);
 		IDRA_CORE_INFO("  Renderer: {0}", renderer);
