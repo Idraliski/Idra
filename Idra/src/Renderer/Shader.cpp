@@ -1,6 +1,7 @@
 #include "Renderer/Shader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Idra {
 	Shader::Shader(const Path& vertexSrc, const Path& fragmentSrc, const std::string& name)
@@ -11,8 +12,8 @@ namespace Idra {
 		m_RendererID = glCreateProgram();
 		IDRA_CORE_ASSERT(m_RendererID, "Failed to create shader program!");
 
-		unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrc.string());
-		unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrc.string());
+		GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrc.string());
+		GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrc.string());
 
 		glAttachShader(m_RendererID, vertexShader);
 		glAttachShader(m_RendererID, fragmentShader);
@@ -39,29 +40,29 @@ namespace Idra {
 		glUseProgram(0);
 	}
 
-	void Shader::SetUniform1f(const Path& name, float value)
+	void Shader::SetUniform1f(const std::string& name, float value)
 	{
-		int location = glGetUniformLocation(m_RendererID, name.string().c_str());
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(location, value);
 	}
 
-	void Shader::SetUniform1i(const Path& name, int value)
+	void Shader::SetUniform1i(const std::string& name, int value)
 	{
-		int location = glGetUniformLocation(m_RendererID, name.string().c_str());
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value);
 	}
 
-	void Shader::SetUniformMat4f(const Path& name, const glm::mat4& matrix)
+	void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 	{
-		int location = glGetUniformLocation(m_RendererID, name.string().c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void Shader::AttachShader(const Path& src, ShaderType type)
 	{
 		IDRA_CORE_ASSERT(m_RendererID, "Shader program not created!");
 
-		unsigned int glType;
+		GLuint glType;
 
 		// @TODO: check to see if vertex and fragment shaders are already attached
 		// maybe override it or just ignore it
@@ -97,7 +98,7 @@ namespace Idra {
 			return;
 		}
 
-		unsigned int shader = CompileShader(glType, src.string());
+		GLuint shader = CompileShader(glType, src.string());
 
 		glAttachShader(m_RendererID, shader);
 		glLinkProgram(m_RendererID);
@@ -107,7 +108,7 @@ namespace Idra {
 
 	unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 	{
-		unsigned int shader = glCreateShader(type);
+		GLuint shader = glCreateShader(type);
 
 		// Attach the shader source code to GL
 		const char* src = source.c_str();
@@ -115,11 +116,11 @@ namespace Idra {
 		glCompileShader(shader);
 
 		// Check for compilation errors
-		int result;
+		GLint result;
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 		if (result == GL_FALSE)
 		{
-			int length = 0;
+			GLint length = 0;
 			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
 			std::vector<char> message(length);

@@ -31,9 +31,9 @@ namespace Idra {
 		void Bind() const;
 		void Unbind() const;
 
-		void SetUniform1f(const Path& name, float value);
-		void SetUniform1i(const Path& name, int value);
-		void SetUniformMat4f(const Path& name, const glm::mat4& matrix);
+		void SetUniform1f(const std::string& name, float value);
+		void SetUniform1i(const std::string& name, int value);
+		void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
 		void AttachShader(const Path& src, ShaderType type);
 	private:
