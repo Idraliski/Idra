@@ -21,6 +21,7 @@ add_library(Idra STATIC
     "src/Renderer/RenderCommand.cpp"
     "src/Renderer/Renderer.cpp"
     "src/Renderer/RendererAPI.cpp"
+    "src/Renderer/RendererContext.cpp"
     "src/Renderer/Shader.cpp"
     "src/Renderer/VertexArray.cpp"
 )
