@@ -2,16 +2,11 @@
 
 #include "Core/Core.h"
 
+#include "Core/LayerStack.h"
 #include "Core/Window.h"
 #include "Events/ApplicationEvent.h"
-#include "Core/LayerStack.h"
-
 #include "ImGui/ImGuiLayer.h"
-
-//TEMP
-#include "Renderer/Shader.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/VertexArray.h"
+#include "Renderer/Camera.h"
 
 namespace Idra {
 
@@ -30,6 +25,7 @@ namespace Idra {
 
 		inline Window& GetWindow() { return *m_Window; }
 		inline static Application& Get() { return *s_Instance; }
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
@@ -40,6 +36,7 @@ namespace Idra {
 
 	private:
 		static Application* s_Instance;
+	
 	};
 
 	// To be defined in the client

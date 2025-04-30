@@ -8,15 +8,35 @@
 ExampleLayer::ExampleLayer()
 	: Layer("Example")
 {
+	auto width = Idra::Application::Get().GetWindow().GetWidth();
+	auto height = Idra::Application::Get().GetWindow().GetHeight();
+
+	Idra::PerspectiveCameraSpec cameraSpec;
+	cameraSpec.FOV = 45.0f;
+	cameraSpec.AspectRatio = (float)width / (float)height;
+	cameraSpec.NearClip = 0.1f;
+	cameraSpec.FarClip = 1'000.0f;
+
+	Idra::OrthographicCameraSpec orthoCameraSpec;
+	orthoCameraSpec.Left = -1.0f;
+	orthoCameraSpec.Right = 1.0f;
+	orthoCameraSpec.Bottom = -1.0f;
+	orthoCameraSpec.Top = 1.0f;
+	orthoCameraSpec.NearClip = 0.1f;
+	orthoCameraSpec.FarClip = 1'000.0f;
+
+	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &cameraSpec));
+	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
+
 	// TEMP DRAW DATA
 	m_VertexArray.reset(Idra::VertexArray::Create());
 
 	// Vertex data: position (x, y, z), colour (r, g, b, a)
 	float vertices[4 * 7] = {
-		-0.75f, -0.75f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-		 0.75f, -0.75f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-		 0.75f,  0.75f, 0.0f, 0.2f, 0.8f, 0.5f, 1.0f,
-		-0.75f,  0.75f, 0.0f, 0.6f, 0.4f, 0.4f, 1.0f,
+		-0.75f, -0.75f, -5.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+		 0.75f, -0.75f, -5.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+		 0.75f,  0.75f, -5.0f, 0.2f, 0.8f, 0.5f, 1.0f,
+		-0.75f,  0.75f, -5.0f, 0.6f, 0.4f, 0.4f, 1.0f,
 	};
 
 	std::shared_ptr<Idra::VertexBuffer> squareVB;
@@ -38,9 +58,9 @@ ExampleLayer::ExampleLayer()
 
 	m_TriVA.reset(Idra::VertexArray::Create());
 	float triVertices[3 * 3] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f,
+		-0.5f, -0.5f, -4.0f,
+		 0.5f, -0.5f, -4.0f,
+		 0.0f,  0.5f, -4.0f,
 	};
 	std::shared_ptr<Idra::VertexBuffer> triVB;
 	triVB.reset(Idra::VertexBuffer::Create(triVertices, sizeof(triVertices)));
@@ -59,7 +79,7 @@ ExampleLayer::ExampleLayer()
 	// TEMP
 	// Load and compile the vertex shader
 	std::string vertexSrc = R"(
-			#version 330 core
+			#version 460 core
 
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
@@ -67,18 +87,20 @@ ExampleLayer::ExampleLayer()
 			out vec4 v_Color;
 			out vec3 v_Position;
 
+			uniform mat4 u_ViewProjection;
+
 			void main()
 			{
-				gl_Position = vec4(a_Position, 1.0);
 				v_Color = a_Color;
 				v_Position = a_Position;
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
 	// Load and compile the fragment shader
 	// This is a simple shader that just outputs the texture color
 	std::string fragmentSrc = R"(
-			#version 330 core
+			#version 460 core
 
 			layout(location = 0) out vec4 color;
 
@@ -94,7 +116,7 @@ ExampleLayer::ExampleLayer()
 			}
 		)";
 
-	m_Shader = std::make_unique<Idra::Shader>(vertexSrc, fragmentSrc, "BasicShader");
+	m_Shader = std::make_shared<Idra::Shader>(vertexSrc, fragmentSrc, "BasicShader");
 
 	// TEMP
 	// Load and compile the vertex shader
@@ -105,10 +127,12 @@ ExampleLayer::ExampleLayer()
 
 			out vec3 v_Position;
 
+			uniform mat4 u_ViewProjection;
+
 			void main()
 			{
-				gl_Position = vec4(a_Position, 1.0);
 				v_Position = a_Position;
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -148,8 +172,10 @@ void ExampleLayer::OnUpdate()
 
 	Idra::Renderer::BeginScene();
 	m_Shader->Bind();
+	m_Shader->SetUniformMat4f("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
 	Idra::Renderer::Submit(m_VertexArray);
 	m_BlueShader->Bind();
+	m_BlueShader->SetUniformMat4f("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
 	Idra::Renderer::Submit(m_TriVA);
 	Idra::Renderer::EndScene();
 }

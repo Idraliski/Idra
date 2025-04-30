@@ -21,6 +21,7 @@ target_include_directories(Editor PRIVATE
 # Define if in debug build
 target_compile_definitions(Editor PRIVATE 
     $<$<CONFIG:Debug>:IDRA_DEBUG_MODE>
+    GLM_ENABLE_EXPERIMENTAL
 )
 
 # Copy the Idra library to the Editor's output directory

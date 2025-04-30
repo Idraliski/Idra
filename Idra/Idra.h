@@ -9,6 +9,8 @@
 #include "Core/Input.h"
 
 #include "Renderer/Renderer.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Camera.h"
 
 #include "ImGui/ImGuiLayer.h"
 

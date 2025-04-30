@@ -20,6 +20,8 @@ private:
 	std::shared_ptr<Idra::Shader> m_BlueShader;
 	std::shared_ptr<Idra::VertexArray> m_VertexArray;
 	std::shared_ptr<Idra::VertexArray> m_TriVA;
+
+	std::unique_ptr<Idra::Camera> m_Camera;
 };
 
 
