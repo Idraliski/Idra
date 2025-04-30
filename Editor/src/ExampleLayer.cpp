@@ -236,7 +236,20 @@ void ExampleLayer::OnImGuiRender()
 	ImGui::Text("Hello from Example Layer!");
 	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
 	ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
+	ImGui::Text("RendererAPI Info: ");
+	ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
+	ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
+	ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
 	ImGui::End();
+
+	/** some ideas for future on rendering a viewport in imgui
+	// Render scene to an offscreen framebuffer (FBO)
+	ImTextureID sceneTexture = (ImTextureID)(intptr_t)myFramebuffer->GetColorAttachmentRendererID();
+
+	ImGui::Begin("Scene");
+	ImGui::Image(sceneTexture, ImVec2(width, height));
+	ImGui::End();
+	*/
 }
 
 void ExampleLayer::OnAttach()
