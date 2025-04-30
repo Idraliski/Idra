@@ -3,6 +3,7 @@
 #include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace Idra {
+	// @TODO: Set this to the renderer API of your choice
 	RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
 
 	RendererAPI* RendererAPI::Create()
