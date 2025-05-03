@@ -27,6 +27,8 @@ namespace Idra {
 		const std::string& GetVersion() const override { return m_RenderingContext->GetVersion(); }
 
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
+
+		virtual float GetTime() const override;
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();

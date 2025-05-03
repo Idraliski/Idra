@@ -65,7 +65,7 @@ namespace Idra
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnImGuiRender()
+	void ImGuiLayer::OnImGuiRender(Timestep ts)
 	{
 		IDRA_CORE_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
