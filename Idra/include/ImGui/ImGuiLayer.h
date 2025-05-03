@@ -13,7 +13,7 @@ namespace Idra
 
 		void OnAttach() override;
 		void OnDetach() override;
-		void OnImGuiRender() override;
+		void OnImGuiRender(Timestep ts) override;
 
 		void Begin();
 		void End();

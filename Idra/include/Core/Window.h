@@ -43,6 +43,8 @@ namespace Idra {
 
 		virtual void* GetNativeWindow() const = 0;
 
+		virtual float GetTime() const = 0;
+
 		static Window* Create(const WindowProps& props = WindowProps());
 	};
 } // namespace Idra

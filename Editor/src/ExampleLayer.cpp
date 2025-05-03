@@ -200,12 +200,9 @@ ExampleLayer::~ExampleLayer()
 {
 }
 
-void ExampleLayer::OnUpdate() 
+void ExampleLayer::OnUpdate(Idra::Timestep ts) 
 {
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_TAB))
-		IDRA_TRACE("Tab key is pressed! (Poll!)"); // #DEBUG
-
-	ProcessKeyInput();
+	ProcessKeyInput(ts);
 
 	Idra::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
 	Idra::RenderCommand::Clear();
@@ -228,18 +225,37 @@ void ExampleLayer::OnUpdate()
 * Static Library builds are fine.
 * If we want to DLL, switch the MSVC to use DLL runtime library, in CMake
 */
-void ExampleLayer::OnImGuiRender()
+void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
+	// refresh FPS only after the FPS update interval
+	if (m_FPSUpdateCounter > m_FPSUpdateInterval)
+	{
+		m_FPSUpdateCounter = 0.0f;
+		m_CurrentFPS = 1.0f / ts;
+	}
+	else
+	{
+		m_FPSUpdateCounter += ts;
+	}
+
+
 	ImGui::Begin("Example Layer");
-	ImGui::Text("Hello from Example Layer!");
-	ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
-	ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
-	ImGui::Text("RendererAPI Info: ");
-	ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
-	ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
-	ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
+	ImGui::Text("FPS: %.1f", m_CurrentFPS);
+	if(ImGui::TreeNode("Camera")) 
+	{
+		ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
+		ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
+		ImGui::TreePop();
+	}
+	if (ImGui::TreeNode("RendererAPI Info: "))
+	{
+		ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
+		ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
+		ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
+		ImGui::TreePop();
+	}
 	ImGui::End();
 
 	/** some ideas for future on rendering a viewport in imgui
@@ -255,8 +271,6 @@ void ExampleLayer::OnImGuiRender()
 void ExampleLayer::OnAttach()
 {
 	IDRA_INFO("Example Layer Attached"); // #DEBUG
-
-
 }
 
 void ExampleLayer::OnDetach()
@@ -270,10 +284,10 @@ void ExampleLayer::OnEvent(Idra::Event& e)
 		IDRA_TRACE("Example Layer: {0}", e); // #DEBUG
 }
 
-void ExampleLayer::ProcessKeyInput()
+void ExampleLayer::ProcessKeyInput(Idra::Timestep ts)
 {
-	float moveSpeed = 0.05f;
-	float rotateSpeed = 0.5f;
+	float moveSpeed = 5.0f * ts;
+	float rotateSpeed = 50.0f * ts;
 
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_W))
 	{

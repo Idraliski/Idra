@@ -182,5 +182,10 @@ namespace Idra {
 		return m_Data.VSync;
 	}
 
+	float WindowsWindow::GetTime() const
+	{
+		return (float)glfwGetTime();
+	}
+
 
 }

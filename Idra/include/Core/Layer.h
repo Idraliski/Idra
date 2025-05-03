@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Core.h"
+#include "Core/Core.h"
+#include "Core/Timestep.h"
 #include "Events/Event.h"
 
 namespace Idra {
@@ -13,8 +14,8 @@ namespace Idra {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
-		virtual void OnImGuiRender() {}
+		virtual void OnUpdate(Timestep ts) {}
+		virtual void OnImGuiRender(Timestep ts) {}
 		virtual void OnEvent(Event& event) {}
 
 		inline const std::string& GetName() const { return m_DebugName; }
