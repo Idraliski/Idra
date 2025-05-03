@@ -11,6 +11,7 @@ add_library(Idra STATIC
     "src/Platform/OpenGL/OpenGLBuffer.cpp"
     "src/Platform/OpenGL/OpenGLContext.cpp"
     "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
+    "src/Platform/OpenGL/OpenGLShader.cpp"
     "src/Platform/OpenGL/OpenGLVertexArray.cpp"
     "src/Platform/Windows/WindowsInput.cpp"
     "src/Platform/Windows/WindowsWindow.cpp"

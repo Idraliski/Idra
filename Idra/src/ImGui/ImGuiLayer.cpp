@@ -73,7 +73,13 @@ namespace Idra
 		ImGui::ShowDemoWindow(&show);
 
 		ImGui::Begin("ImGuiLayer");
-		ImGui::Text("Hello from ImGuiLayer!");
+		if (ImGui::TreeNode("RendererAPI Info: "))
+		{
+			ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
+			ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
+			ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
+			ImGui::TreePop();
+		}
 		ImGui::End();
 	}
 

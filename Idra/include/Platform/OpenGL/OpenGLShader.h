@@ -4,6 +4,8 @@
 
 #include "Renderer/Shader.h"
 
+#include <glm/glm.hpp>
+
 namespace Idra {
 	class IDRA_API OpenGLShader : public Shader
 	{
