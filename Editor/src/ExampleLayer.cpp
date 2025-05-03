@@ -230,14 +230,14 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
 	// refresh FPS only after the FPS update interval
-	if (m_LastTime > m_FPSUpdateInterval)
+	if (m_FPSUpdateCounter > m_FPSUpdateInterval)
 	{
-		m_LastTime = 0.0f;
+		m_FPSUpdateCounter = 0.0f;
 		m_CurrentFPS = 1.0f / ts;
 	}
 	else
 	{
-		m_LastTime += ts;
+		m_FPSUpdateCounter += ts;
 	}
 
 

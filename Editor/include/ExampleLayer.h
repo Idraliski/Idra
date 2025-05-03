@@ -20,7 +20,7 @@ private:
 
 private:
 	float m_FPSUpdateInterval = 0.4f;
-	float m_LastTime = 0.0f;
+	float m_FPSUpdateCounter = 0.0f;
 	float m_CurrentFPS = 0.0f;
 
 	// TEMP
