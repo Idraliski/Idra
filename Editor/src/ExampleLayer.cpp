@@ -11,11 +11,11 @@ ExampleLayer::ExampleLayer()
 	auto width = Idra::Application::Get().GetWindow().GetWidth();
 	auto height = Idra::Application::Get().GetWindow().GetHeight();
 
-	Idra::PerspectiveCameraSpec cameraSpec;
-	cameraSpec.FOV = 45.0f;
-	cameraSpec.AspectRatio = (float)width / (float)height;
-	cameraSpec.NearClip = 0.1f;
-	cameraSpec.FarClip = 1'000.0f;
+	Idra::PerspectiveCameraSpec perspCameraSpec;
+	perspCameraSpec.FOV = 45.0f;
+	perspCameraSpec.AspectRatio = (float)width / (float)height;
+	perspCameraSpec.NearClip = 0.1f;
+	perspCameraSpec.FarClip = 1'000.0f;
 
 	Idra::OrthographicCameraSpec orthoCameraSpec;
 	orthoCameraSpec.Left = -1.0f;
@@ -25,7 +25,7 @@ ExampleLayer::ExampleLayer()
 	orthoCameraSpec.NearClip = 0.1f;
 	orthoCameraSpec.FarClip = 1'000.0f;
 
-	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &cameraSpec));
+	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec));
 	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
 
 	// TEMP DRAW DATA
