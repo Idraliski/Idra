@@ -255,8 +255,6 @@ void ExampleLayer::OnImGuiRender()
 void ExampleLayer::OnAttach()
 {
 	IDRA_INFO("Example Layer Attached"); // #DEBUG
-
-
 }
 
 void ExampleLayer::OnDetach()

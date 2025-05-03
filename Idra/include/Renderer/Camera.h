@@ -82,6 +82,8 @@ namespace Idra {
 		glm::mat4 m_ViewMatrix = { 1.0f };
 		glm::mat4 m_ViewProjectionMatrix = { 1.0f };
 
+		// Transform data
+		// @TODO: Move this to a component system once ECS is implemented
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::quat m_Orientation = { 1.0f, 0.0f, 0.0f, 0.0f };
