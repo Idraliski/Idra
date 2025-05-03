@@ -1,9 +1,9 @@
 #pragma once
 
-#include "IdraPCH.h"
-
 #include "Core/Core.h"
-#include "glm/glm.hpp"
+
+#include <filesystem>
+#include <string>
 
 namespace Idra {
 	using Path = ::std::filesystem::path;
@@ -21,25 +21,11 @@ namespace Idra {
 	class IDRA_API Shader
 	{
 	public:
-		Shader(const Path& vertexSrc, const Path& fragmentSrc, const std::string& name);
-		~Shader();
+		virtual ~Shader() = default;
 
-		void SetName(const std::string& name) { m_Name = name; }
-		const std::string& GetName() const { return m_Name; }
-		uint32_t GetRendererID() const { return m_RendererID; }
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 
-		void Bind() const;
-		void Unbind() const;
-
-		void SetUniform1f(const std::string& name, float value);
-		void SetUniform1i(const std::string& name, int value);
-		void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
-
-		void AttachShader(const Path& src, ShaderType type);
-	private:
-		unsigned int CompileShader(unsigned int type, const std::string& source);
-
-		uint32_t m_RendererID;
-		std::string m_Name;
+		static Shader* Create(const Path& vertexSrc, const Path& fragmentSrc);		
 	};
 }

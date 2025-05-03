@@ -1,9 +1,13 @@
 #include "ExampleLayer.h"
 
-#include <glm/glm.hpp>
+//--TEMP--
+#include "Platform/OpenGL/OpenGLShader.h"
+//--------
+
 #include <Math/MathFormatters.h>
 #include <imgui.h>
 #include <memory>
+#include <glm/gtc/type_ptr.hpp>
 
 ExampleLayer::ExampleLayer()
 	: Layer("Example")
@@ -157,11 +161,11 @@ ExampleLayer::ExampleLayer()
 			}
 		)";
 
-	m_Shader = std::make_shared<Idra::Shader>(vertexSrc, fragmentSrc, "BasicShader");
+	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
 
 	// TEMP
 	// Load and compile the vertex shader
-	std::string blueVertexSrc = R"(
+	std::string flatColourVertexSrc = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
@@ -179,21 +183,21 @@ ExampleLayer::ExampleLayer()
 
 	// Load and compile the fragment shader
 	// This is a simple shader that just outputs the texture color
-	std::string blueFragmentSrc = R"(
+	std::string flatColourFragmentSrc = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
 
-			in vec4 v_Color;
 			in vec3 v_Position;
+			uniform vec3 v_Color;
 
 			void main()
 			{
-				color = vec4(0.2, 0.3, 0.8, 1.0); //static uniform color
+				color = vec4(v_Color, 1.0);
 			}
 		)";
 
-	m_BlueShader = std::make_unique<Idra::Shader>(blueVertexSrc, blueFragmentSrc, "BasicBlueShader");
+	m_FlatColourShader.reset(Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc));
 }
 
 ExampleLayer::~ExampleLayer()
@@ -210,13 +214,11 @@ void ExampleLayer::OnUpdate(Idra::Timestep ts)
 	// Ideally, we would have a Renderer class that handles all the rendering
 	//Renderer::BeginScene(camera, lights, environment);
 
-	Idra::Renderer::BeginScene();
-	m_Shader->Bind();
-	m_Shader->SetUniformMat4f("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
-	Idra::Renderer::Submit(m_VertexArray);
-	m_BlueShader->Bind();
-	m_BlueShader->SetUniformMat4f("u_ViewProjection", m_Camera->GetViewProjectionMatrix());
-	Idra::Renderer::Submit(m_TriVA);
+	Idra::Renderer::BeginScene(m_Camera);
+	Idra::Renderer::Submit(m_Shader ,m_VertexArray);
+	m_FlatColourShader->Bind();
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
+	Idra::Renderer::Submit(m_FlatColourShader, m_TriVA);
 	Idra::Renderer::EndScene();
 }
 
@@ -249,13 +251,7 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 		ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
 		ImGui::TreePop();
 	}
-	if (ImGui::TreeNode("RendererAPI Info: "))
-	{
-		ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
-		ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
-		ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
-		ImGui::TreePop();
-	}
+	ImGui::ColorEdit3("Triangle Colour", glm::value_ptr(m_Colour));
 	ImGui::End();
 
 	/** some ideas for future on rendering a viewport in imgui

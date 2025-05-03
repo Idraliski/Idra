@@ -2,6 +2,8 @@
 
 #include "Idra.h"
 
+#include <glm/glm.hpp>
+
 class ExampleLayer : public Idra::Layer
 {
 public:
@@ -23,13 +25,15 @@ private:
 	float m_FPSUpdateCounter = 0.0f;
 	float m_CurrentFPS = 0.0f;
 
+	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
+
 	// TEMP
 	std::shared_ptr<Idra::Shader> m_Shader;
-	std::shared_ptr<Idra::Shader> m_BlueShader;
+	std::shared_ptr<Idra::Shader> m_FlatColourShader;
 	std::shared_ptr<Idra::VertexArray> m_VertexArray;
 	std::shared_ptr<Idra::VertexArray> m_TriVA;
 
-	std::unique_ptr<Idra::Camera> m_Camera;
+	std::shared_ptr<Idra::Camera> m_Camera;
 };
 
 
