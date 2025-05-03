@@ -11,11 +11,17 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
-#include "Renderer/Renderer.h"
-#include "Renderer/Shader.h"
+//---Renderer------------------------
 #include "Renderer/Camera.h"
 
+#include "Renderer/Renderer.h"
+#include "Renderer/RenderCommand.h"
+
+#include "Renderer/Shader.h"
+#include "Renderer/VertexArray.h"
+
 #include "ImGui/ImGuiLayer.h"
+//-----------------------------------
 
 //---Entry Point---------------------
 //#include "Core/EntryPoint.h"

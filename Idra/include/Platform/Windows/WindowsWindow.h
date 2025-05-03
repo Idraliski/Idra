@@ -3,7 +3,7 @@
 #include "Core/Window.h"
 #include "Renderer/RenderingContext.h"
 
-#include <GLFW/glfw3.h>
+struct GLFWwindow;
 
 namespace Idra {
 	class WindowsWindow : public Window
@@ -22,13 +22,17 @@ namespace Idra {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		const std::string& GetVendor() const override { return m_RenderingContext->GetVendor(); }
+		const std::string& GetRenderer() const override { return m_RenderingContext->GetRenderer(); }
+		const std::string& GetVersion() const override { return m_RenderingContext->GetVersion(); }
+
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
-		RenderingContext* m_RenderingContext;
+		std::unique_ptr<RenderingContext> m_RenderingContext;
 
 		struct WindowData
 		{
