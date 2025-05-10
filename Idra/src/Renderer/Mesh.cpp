@@ -17,20 +17,6 @@ namespace Idra {
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 	}
 
-	Mesh::Mesh(float* vBO, uint32_t vBOsize, const BufferLayout& bLO, uint32_t* iBO, uint32_t iBOsize)
-	{
-		m_VertexArray.reset(VertexArray::Create());
-
-		std::shared_ptr<VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(VertexBuffer::Create(vBO, vBOsize));
-		vertexBuffer->SetLayout(bLO);
-		m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-		std::shared_ptr<IndexBuffer> indexBuffer;
-		indexBuffer.reset(IndexBuffer::Create(iBO, iBOsize));
-		m_VertexArray->SetIndexBuffer(indexBuffer);
-	}
-
 	void Mesh::Bind() const 
 	{
 		m_VertexArray->Bind();

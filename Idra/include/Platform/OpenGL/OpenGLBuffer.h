@@ -9,7 +9,6 @@ namespace Idra {
 	{
 	public:
 		OpenGLVertexBuffer(const std::vector<float>& vertices);
-		OpenGLVertexBuffer(float* vertices, uint32_t size);
 		virtual ~OpenGLVertexBuffer();
 
 		virtual void Bind() const override;
@@ -26,7 +25,6 @@ namespace Idra {
 	{
 	public:
 		OpenGLIndexBuffer(const std::vector<uint32_t> indices);
-		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
 		virtual ~OpenGLIndexBuffer();
 
 		virtual void Bind() const override;

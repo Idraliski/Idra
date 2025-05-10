@@ -24,6 +24,8 @@ private:
 	void ProcessKeyInput(Idra::Timestep ts);
 	void ProcessMouseInput(Idra::Timestep ts);
 
+	bool OnKeyPressed(Idra::KeyPressedEvent& e);
+
 private:
 	float m_FPSUpdateInterval = 0.4f;
 	float m_FPSUpdateCounter = 0.0f;

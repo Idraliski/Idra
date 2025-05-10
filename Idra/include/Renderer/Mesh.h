@@ -10,7 +10,6 @@ namespace Idra {
 	{
 	public:
 		Mesh(const std::vector<float>& vBO, const BufferLayout& bLO, const std::vector<uint32_t>& iBO);
-		Mesh(float* vBO, uint32_t vBOsize, const BufferLayout& bLO,  uint32_t* iBO, uint32_t iBOsize);
 		~Mesh() = default;
 
 		void Bind() const;

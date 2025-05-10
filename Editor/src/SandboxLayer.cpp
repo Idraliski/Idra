@@ -34,7 +34,7 @@ SandboxLayer::SandboxLayer()
 
 	// TEMP DRAW DATA
 	// 8 vertices: position (x, y, z), color (r, g, b, a)
-	float cubeVertices[8 * 7] = {
+	std::vector<float> cubeVertices = {
 		// Front face
 		-0.75f, -0.75f,  -5.0f,  0.8f, 0.2f, 0.8f, 1.0f, // 0
 		 0.75f, -0.75f,  -5.0f,  0.2f, 0.3f, 0.8f, 1.0f, // 1
@@ -51,7 +51,7 @@ SandboxLayer::SandboxLayer()
 		{ Idra::ShaderDataType::Float3, "a_Position" },
 		{ Idra::ShaderDataType::Float4, "a_Color" }
 	};
-	unsigned int cubeIndices[36] = {
+	std::vector<uint32_t> cubeIndices = {
 		// Front face
 		0, 1, 2, 2, 3, 0,
 		// Right face
@@ -65,10 +65,10 @@ SandboxLayer::SandboxLayer()
 		// Bottom face
 		4, 5, 1, 1, 0, 4
 	};
-	m_CubeMesh = std::make_shared<Idra::Mesh>(cubeVertices, sizeof(cubeVertices), cubeBufferlayout, cubeIndices, sizeof(cubeIndices) / sizeof(uint32_t));
+	m_CubeMesh = std::make_shared<Idra::Mesh>(cubeVertices, cubeBufferlayout, cubeIndices);
 
 	// 6 vertices: front + back (x, y, z)
-	float prismVertices[6 * 3] = {
+	std::vector<float> prismVertices = {
 		// Front face
 		-0.5f, -0.5f, -1.0f,
 		 0.5f, -0.5f, -1.0f,
@@ -82,7 +82,7 @@ SandboxLayer::SandboxLayer()
 	Idra::BufferLayout triangleBufferLayout{
 		{ Idra::ShaderDataType::Float3, "a_Position" }
 		};
-	unsigned int prismIndices[24] = {
+	std::vector<uint32_t> prismIndices = {
 		// Front triangle
 		0, 1, 2,
 
@@ -101,7 +101,7 @@ SandboxLayer::SandboxLayer()
 		0, 3, 1,
 		1, 3, 4
 	};
-	m_TriangleMesh = std::make_shared<Idra::Mesh>(prismVertices, sizeof(prismVertices), triangleBufferLayout, prismIndices, sizeof(prismIndices) / sizeof(uint32_t));
+	m_TriangleMesh = std::make_shared<Idra::Mesh>(prismVertices, triangleBufferLayout, prismIndices);
 
 	// TEMP
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
@@ -204,6 +204,8 @@ void SandboxLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
 	m_EditorCameraController->OnEvent(*m_Camera, e);
+
+	dispatcher.Dispatch<Idra::KeyPressedEvent>(IDRA_BIND_EVENT_FN(SandboxLayer::OnKeyPressed));
 }
 
 void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
@@ -214,4 +216,11 @@ void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
 void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
 {
 	
+}
+
+bool SandboxLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
+{
+	if (e.GetKeyCode() == IDRA_KEY_ESCAPE)
+		Idra::Application::Get().SetRunning(false);
+	return false;
 }
