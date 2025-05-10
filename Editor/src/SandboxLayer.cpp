@@ -140,11 +140,6 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	Idra::Renderer::EndScene();
 }
 
-/*
-* If built as DLL, ImGui context is not shared across DLL boundaries.
-* Static Library builds are fine.
-* If we want to DLL, switch the MSVC to use DLL runtime library, in CMake
-*/
 void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
