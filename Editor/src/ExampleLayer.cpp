@@ -242,9 +242,15 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 		m_FPSUpdateCounter += ts;
 	}
 
-
-	ImGui::Begin("Example Layer");
+	ImGui::Begin("Main Menu");
 	ImGui::Text("FPS: %.1f", m_CurrentFPS);
+	if (ImGui::TreeNode("RendererAPI Info: "))
+	{
+		ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
+		ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
+		ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
+		ImGui::TreePop();
+	}
 	if(ImGui::TreeNode("Camera")) 
 	{
 		ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
