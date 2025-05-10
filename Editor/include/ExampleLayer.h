@@ -26,10 +26,6 @@ private:
 	float m_FPSUpdateCounter = 0.0f;
 	float m_CurrentFPS = 0.0f;
 
-	bool isCameraLooking = false;
-
-	glm::vec2 m_LastMousePos = { 0.0f, 0.0f };
-
 	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
 	// TEMP
@@ -39,6 +35,7 @@ private:
 	std::shared_ptr<Idra::VertexArray> m_TriVA;
 
 	std::shared_ptr<Idra::Camera> m_Camera;
+	std::shared_ptr<Idra::CameraController> m_EditorCameraController;
 };
 
 
