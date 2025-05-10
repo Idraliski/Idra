@@ -17,14 +17,14 @@ namespace Idra {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Mesh>& mesh)
 	{
 		shader->Bind();
 		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
 
 		// @TODO: put this into a render queue
-		vertexArray->Bind();
-		RenderCommand::DrawIndexed(vertexArray);
+		mesh->Bind();
+		RenderCommand::DrawIndexed(mesh->GetVertexArray());
 	}
 
 }

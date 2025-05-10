@@ -1,4 +1,4 @@
-#include "Sandbox.h"
+#include "SandboxLayer.h"
 
 //--TEMP--
 #include "Platform/OpenGL/OpenGLShader.h"
@@ -33,10 +33,8 @@ SandboxLayer::SandboxLayer()
 	m_EditorCameraController.reset(Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera));
 
 	// TEMP DRAW DATA
-	m_VertexArray.reset(Idra::VertexArray::Create());
-
 	// 8 vertices: position (x, y, z), color (r, g, b, a)
-	float cubeVertices[8 * 7] = {
+	std::vector<float> cubeVertices = {
 		// Front face
 		-0.75f, -0.75f,  -5.0f,  0.8f, 0.2f, 0.8f, 1.0f, // 0
 		 0.75f, -0.75f,  -5.0f,  0.2f, 0.3f, 0.8f, 1.0f, // 1
@@ -49,17 +47,11 @@ SandboxLayer::SandboxLayer()
 		 0.75f,  0.75f,  -3.5f,  0.2f, 0.6f, 0.3f, 1.0f, // 6
 		-0.75f,  0.75f,  -3.5f,  0.3f, 0.2f, 0.7f, 1.0f  // 7
 	};
-
-	std::shared_ptr<Idra::VertexBuffer> squareVB;
-	squareVB.reset(Idra::VertexBuffer::Create(cubeVertices, sizeof(cubeVertices)));
-	Idra::BufferLayout bufferlayout = {
+	Idra::BufferLayout cubeBufferlayout = {
 		{ Idra::ShaderDataType::Float3, "a_Position" },
 		{ Idra::ShaderDataType::Float4, "a_Color" }
 	};
-	squareVB->SetLayout(bufferlayout);
-	m_VertexArray->AddVertexBuffer(squareVB);
-
-	unsigned int cubeIndices[36] = {
+	std::vector<uint32_t> cubeIndices = {
 		// Front face
 		0, 1, 2, 2, 3, 0,
 		// Right face
@@ -73,13 +65,10 @@ SandboxLayer::SandboxLayer()
 		// Bottom face
 		4, 5, 1, 1, 0, 4
 	};
-	std::shared_ptr<Idra::IndexBuffer> squareIB;
-	squareIB.reset(Idra::IndexBuffer::Create(cubeIndices, sizeof(cubeIndices) / sizeof(uint32_t)));
-	m_VertexArray->SetIndexBuffer(squareIB);
+	m_CubeMesh = std::make_shared<Idra::Mesh>(cubeVertices, cubeBufferlayout, cubeIndices);
 
-	m_TriVA.reset(Idra::VertexArray::Create());
 	// 6 vertices: front + back (x, y, z)
-	float prismVertices[6 * 3] = {
+	std::vector<float> prismVertices = {
 		// Front face
 		-0.5f, -0.5f, -1.0f,
 		 0.5f, -0.5f, -1.0f,
@@ -90,15 +79,10 @@ SandboxLayer::SandboxLayer()
 		  0.5f, -0.5f, -3.0f,
 		  0.0f,  0.5f, -3.0f
 	};
-
-	std::shared_ptr<Idra::VertexBuffer> triVB;
-	triVB.reset(Idra::VertexBuffer::Create(prismVertices, sizeof(prismVertices)));
-	triVB->SetLayout({
+	Idra::BufferLayout triangleBufferLayout{
 		{ Idra::ShaderDataType::Float3, "a_Position" }
-		});
-	m_TriVA->AddVertexBuffer(triVB);
-
-	unsigned int prismIndices[24] = {
+		};
+	std::vector<uint32_t> prismIndices = {
 		// Front triangle
 		0, 1, 2,
 
@@ -117,9 +101,7 @@ SandboxLayer::SandboxLayer()
 		0, 3, 1,
 		1, 3, 4
 	};
-	std::shared_ptr<Idra::IndexBuffer> triIB;
-	triIB.reset(Idra::IndexBuffer::Create(prismIndices, sizeof(prismIndices) / sizeof(uint32_t)));
-	m_TriVA->SetIndexBuffer(triIB);
+	m_TriangleMesh = std::make_shared<Idra::Mesh>(prismVertices, triangleBufferLayout, prismIndices);
 
 	// TEMP
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
@@ -151,18 +133,13 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	//Renderer::BeginScene(camera, lights, environment);
 
 	Idra::Renderer::BeginScene(m_Camera);
-	Idra::Renderer::Submit(m_Shader ,m_VertexArray);
+	Idra::Renderer::Submit(m_Shader, m_CubeMesh);
 	m_FlatColourShader->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
-	Idra::Renderer::Submit(m_FlatColourShader, m_TriVA);
+	Idra::Renderer::Submit(m_FlatColourShader, m_TriangleMesh);
 	Idra::Renderer::EndScene();
 }
 
-/*
-* If built as DLL, ImGui context is not shared across DLL boundaries.
-* Static Library builds are fine.
-* If we want to DLL, switch the MSVC to use DLL runtime library, in CMake
-*/
 void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
@@ -222,6 +199,8 @@ void SandboxLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
 	m_EditorCameraController->OnEvent(*m_Camera, e);
+
+	dispatcher.Dispatch<Idra::KeyPressedEvent>(IDRA_BIND_EVENT_FN(SandboxLayer::OnKeyPressed));
 }
 
 void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
@@ -232,4 +211,11 @@ void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
 void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
 {
 	
+}
+
+bool SandboxLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
+{
+	if (e.GetKeyCode() == IDRA_KEY_ESCAPE)
+		Idra::Application::Get().SetRunning(false);
+	return false;
 }

@@ -79,6 +79,7 @@ namespace Idra {
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 
+		static VertexBuffer* Create(const std::vector<float>&);
 		static VertexBuffer* Create(float* vertices, uint32_t size);
 	};
 
@@ -92,6 +93,7 @@ namespace Idra {
 
 		virtual uint32_t GetCount() const = 0;
 
+		static IndexBuffer* Create(const std::vector<uint32_t>& indices);
 		static IndexBuffer* Create(uint32_t* indices, uint32_t count);
 	};
 }

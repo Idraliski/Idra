@@ -21,7 +21,7 @@
 #include "Renderer/RenderCommand.h"
 
 #include "Renderer/Shader.h"
-#include "Renderer/VertexArray.h"
+#include "Renderer/Mesh.h"
 
 #include "ImGui/ImGuiLayer.h"
 //-----------------------------------

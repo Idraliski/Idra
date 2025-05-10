@@ -30,7 +30,7 @@ namespace Idra {
 	{
 		IDRA_INFO("Application Running"); // #DEBUG
 
-		while (m_Running)
+		while (m_IsRunning)
 		{
 			float time = m_Window->GetTime();
 			Timestep ts = time - m_LastFrameTime;
@@ -77,7 +77,7 @@ namespace Idra {
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
-		m_Running = false;
+		m_IsRunning = false;
 		return true;
 	}
 
