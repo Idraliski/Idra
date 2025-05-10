@@ -6,7 +6,6 @@
 #include "Core/Input.h"
 #include "Core/KeyCodes.h"
 #include "Core/MouseButtonCodes.h"
-#include "Events/MouseEvent.h"
 
 namespace Idra {
 	EditorCameraController::EditorCameraController(bool isCameraLooking, bool isCameraMoving)
@@ -28,25 +27,38 @@ namespace Idra {
 
 	void EditorCameraController::OnEvent(Camera& camera, Event& e)
 	{
-		if (e.GetEventType() == Idra::EventType::MouseButtonPressed)
-			if (Idra::Input::IsMouseButtonPressed(IDRA_MOUSE_BUTTON_2))
-			{
-				e.Handled = true;
-				m_IsCameraLooking = true;
+		EventDispatcher Dispatcher(e);
+		Dispatcher.Dispatch<MouseButtonPressedEvent>(IDRA_BIND_EVENT_FN(EditorCameraController::OnMouseButtonPressed));
+		Dispatcher.Dispatch<MouseButtonReleasedEvent>(IDRA_BIND_EVENT_FN(EditorCameraController::OnMouseButtonReleased));
+	}
 
-				auto mousePos = Idra::Input::GetMousePosition();
-				m_LastMousePos = { mousePos.first, mousePos.second };
+	bool EditorCameraController::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseButton() == IDRA_MOUSE_BUTTON_2)
+		{
+			m_IsCameraLooking = true;
 
-				Idra::Application::Get().GetWindow().SetCursorMode(Idra::CursorMode::Disabled);
-			}
-		if (e.GetEventType() == Idra::EventType::MouseButtonReleased)
-			if (Idra::Input::IsMouseButtonReleased(IDRA_MOUSE_BUTTON_2))
-			{
-				e.Handled = true;
-				m_IsCameraLooking = false;
+			auto mousePos = Idra::Input::GetMousePosition();
+			m_LastMousePos = { mousePos.first, mousePos.second };
 
-				Idra::Application::Get().GetWindow().SetCursorMode(Idra::CursorMode::Normal);
-			}
+			Idra::Application::Get().GetWindow().SetCursorMode(Idra::CursorMode::Disabled);
+			return true;
+		}
+
+		return false;
+	}
+
+	bool EditorCameraController::OnMouseButtonReleased(MouseButtonReleasedEvent& e)
+	{
+		if (e.GetMouseButton() == IDRA_MOUSE_BUTTON_2)
+		{
+			m_IsCameraLooking = false;
+
+			Idra::Application::Get().GetWindow().SetCursorMode(Idra::CursorMode::Normal);
+			return true;
+		}
+
+		return false;
 	}
 
 	void EditorCameraController::ProcessMouseInput(Camera& camera, Timestep ts)

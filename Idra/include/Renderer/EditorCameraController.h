@@ -4,6 +4,8 @@
 
 #include "Renderer/CameraController.h"
 
+#include "Events/MouseEvent.h"
+
 #include <glm/glm.hpp>
 
 namespace Idra {
@@ -21,6 +23,9 @@ namespace Idra {
 
 		const glm::vec2& GetLastMousePos() const { return m_LastMousePos; }
 		void SetLastMousePos(const glm::vec2& pos) { m_LastMousePos = pos; }
+
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+		bool OnMouseButtonReleased(MouseButtonReleasedEvent& e);
 
 	private:
 		void ProcessMouseInput(Camera& camera, Timestep ts);
