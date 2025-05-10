@@ -3,6 +3,7 @@ add_subdirectory(vendor)
 add_library(Idra STATIC 
     "src/IdraPCH.cpp"
     "src/Core/Application.cpp"
+    "src/Core/FileLoader.cpp"
     "src/Core/Layer.cpp"
     "src/Core/LayerStack.cpp"
     "src/Core/Log.cpp"

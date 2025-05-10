@@ -1,7 +1,7 @@
 #include "Idra.h"
 #include "Core/EntryPoint.h"
 
-#include "ExampleLayer.h"
+#include "SandboxLayer.h"
 
 class Editor : public Idra::Application
 {
@@ -9,7 +9,7 @@ public:
 	Editor() 
 	{
 		IDRA_INFO("Editor Created"); // #DEBUG
-		PushLayer(new ExampleLayer());
+		PushLayer(new SandboxLayer());
 	}
 
 	~Editor() 

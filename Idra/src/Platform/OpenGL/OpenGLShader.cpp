@@ -1,6 +1,7 @@
 #include "IdraPCH.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Core/FileLoader.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -13,8 +14,12 @@ namespace Idra {
 		m_RendererID = glCreateProgram();
 		IDRA_CORE_ASSERT(m_RendererID, "Failed to create shader program!");
 
-		GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrc.string());
-		GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrc.string());
+		// Load the shader source code from file
+		std::string vertexSrcStr = FileLoader::LoadFileAsString(vertexSrc);
+		std::string fragmentSrcStr = FileLoader::LoadFileAsString(fragmentSrc);
+
+		GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrcStr);
+		GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrcStr);
 
 		glAttachShader(m_RendererID, vertexShader);
 		glAttachShader(m_RendererID, fragmentShader);
@@ -116,7 +121,10 @@ namespace Idra {
 			return;
 		}
 
-		GLuint shader = CompileShader(glType, src.string());
+		// Load the shader source code from file
+		std::string shaderSrc = FileLoader::LoadFileAsString(src);
+
+		GLuint shader = CompileShader(glType, shaderSrc);
 
 		glAttachShader(m_RendererID, shader);
 		glLinkProgram(m_RendererID);

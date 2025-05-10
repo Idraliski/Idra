@@ -1,4 +1,4 @@
-#include "ExampleLayer.h"
+#include "Sandbox.h"
 
 //--TEMP--
 #include "Platform/OpenGL/OpenGLShader.h"
@@ -9,7 +9,8 @@
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 
-ExampleLayer::ExampleLayer()
+
+SandboxLayer::SandboxLayer()
 	: Layer("Example")
 {
 	// Camera Init
@@ -121,89 +122,21 @@ ExampleLayer::ExampleLayer()
 	m_TriVA->SetIndexBuffer(triIB);
 
 	// TEMP
-	// Load and compile the vertex shader
-	std::string vertexSrc = R"(
-			#version 460 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			out vec4 v_Color;
-			out vec3 v_Position;
-
-			uniform mat4 u_ViewProjection;
-
-			void main()
-			{
-				v_Color = a_Color;
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
-			}
-		)";
-
-	// Load and compile the fragment shader
-	// This is a simple shader that just outputs the texture color
-	std::string fragmentSrc = R"(
-			#version 460 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec4 v_Color;
-			in vec3 v_Position;
-
-			void main()
-			{
-				color = v_Color;
-				//color = vec4(v_Position * 0.5 + 0.5, 1.0); //static color based on position
-				//color = vec4(0.8, 0.2, 0.3, 1.0); //static uniform color
-
-			}
-		)";
-
+	Path vertexSrc = "Assets/Shaders/Basic.vert";
+	Path fragmentSrc = "Assets/Shaders/Basic.frag";
 	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
 
-	// TEMP
-	// Load and compile the vertex shader
-	std::string flatColourVertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-
-			out vec3 v_Position;
-
-			uniform mat4 u_ViewProjection;
-
-			void main()
-			{
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
-			}
-		)";
-
-	// Load and compile the fragment shader
-	// This is a simple shader that just outputs the texture color
-	std::string flatColourFragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			uniform vec3 v_Color;
-
-			void main()
-			{
-				color = vec4(v_Color, 1.0);
-			}
-		)";
-
+	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
+	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
 	m_FlatColourShader.reset(Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc));
 }
 
-ExampleLayer::~ExampleLayer()
+SandboxLayer::~SandboxLayer()
 {
+	IDRA_INFO("Example Layer Destroyed"); // #DEBUG
 }
 
-void ExampleLayer::OnUpdate(Idra::Timestep ts) 
+void SandboxLayer::OnUpdate(Idra::Timestep ts)
 {
 	ProcessKeyInput(ts);
 	ProcessMouseInput(ts);
@@ -230,7 +163,7 @@ void ExampleLayer::OnUpdate(Idra::Timestep ts)
 * Static Library builds are fine.
 * If we want to DLL, switch the MSVC to use DLL runtime library, in CMake
 */
-void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
+void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
@@ -275,28 +208,28 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 	*/
 }
 
-void ExampleLayer::OnAttach()
+void SandboxLayer::OnAttach()
 {
 	IDRA_INFO("Example Layer Attached"); // #DEBUG
 }
 
-void ExampleLayer::OnDetach()
+void SandboxLayer::OnDetach()
 {
 	IDRA_INFO("Example Layer Detached"); // #DEBUG
 }
 
-void ExampleLayer::OnEvent(Idra::Event& e) 
+void SandboxLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
 	m_EditorCameraController->OnEvent(*m_Camera, e);
 }
 
-void ExampleLayer::ProcessKeyInput(Idra::Timestep ts)
+void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
 {
 	
 }
 
-void ExampleLayer::ProcessMouseInput(Idra::Timestep ts)
+void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
 {
 	
 }

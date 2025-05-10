@@ -1,7 +1,7 @@
 # Define the editor executable
 add_executable(Editor 
     "src/Editor.cpp" 
-    "src/ExampleLayer.cpp"
+    "src/SandboxLayer.cpp"
 )
 
 # Set the output directory for the executable
@@ -28,6 +28,13 @@ target_compile_definitions(Editor PRIVATE
 add_custom_command(TARGET Editor POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:Idra> $<TARGET_FILE_DIR:Editor>
+)
+
+# put assets in the same directory as the executable
+add_custom_command(TARGET Editor POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/Assets"
+    "$<TARGET_FILE_DIR:Editor>/Assets"
 )
 
 # Add any additional dependencies or compile definitions here
