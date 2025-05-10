@@ -1,6 +1,7 @@
 #include "IdraPCH.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Core/FileLoader.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -14,8 +15,8 @@ namespace Idra {
 		IDRA_CORE_ASSERT(m_RendererID, "Failed to create shader program!");
 
 		// Load the shader source code from file
-		std::string vertexSrcStr = LoadShaderFile(vertexSrc);
-		std::string fragmentSrcStr = LoadShaderFile(fragmentSrc);
+		std::string vertexSrcStr = FileLoader::LoadFileAsString(vertexSrc);
+		std::string fragmentSrcStr = FileLoader::LoadFileAsString(fragmentSrc);
 
 		GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrcStr);
 		GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrcStr);
@@ -80,29 +81,6 @@ namespace Idra {
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	const std::string OpenGLShader::LoadShaderFile(const Path& filepath) 
-	{
-		// Load GLSL shader source from file
-		std::ifstream file_stream(filepath);
-
-		// Check if the file was opened successfully
-		if (!file_stream.is_open())
-		{
-			IDRA_CORE_ERROR("Failed to open shader file: {0}", filepath.string());
-			return "";
-		}
-
-		auto shader_file_contents =
-			std::string(std::istreambuf_iterator<char>(file_stream),
-				std::istreambuf_iterator<char>());
-
-
-		// Check if the file is empty
-		IDRA_CORE_ASSERT(!shader_file_contents.empty(), "Shader file is empty!");
-
-		return shader_file_contents;
-	}
-
 	void OpenGLShader::AttachShader(const Path& src, ShaderType type)
 	{
 		IDRA_CORE_ASSERT(m_RendererID, "Shader program not created!");
@@ -144,7 +122,7 @@ namespace Idra {
 		}
 
 		// Load the shader source code from file
-		std::string shaderSrc = LoadShaderFile(src);
+		std::string shaderSrc = FileLoader::LoadFileAsString(src);
 
 		GLuint shader = CompileShader(glType, shaderSrc);
 

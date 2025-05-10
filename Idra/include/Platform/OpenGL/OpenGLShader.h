@@ -29,11 +29,12 @@ namespace Idra {
 		void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
 		void AttachShader(const Path& src, ShaderType type);
+
 	private:
-		const std::string LoadShaderFile(const Path& filepath);
 		unsigned int CompileShader(unsigned int type, const std::string& source);
 		int GetUniformLocation(const std::string& name);
 
+	private:
 		uint32_t m_RendererID = 0;
 		std::unordered_map<std::string, int> m_UniformLocationCache;
 	};

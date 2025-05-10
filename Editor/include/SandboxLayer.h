@@ -3,16 +3,15 @@
 #include "Idra.h"
 
 #include <glm/glm.hpp>
-
 #include <filesystem>
 
 using Path = std::filesystem::path;
 
-class ExampleLayer : public Idra::Layer
+class SandboxLayer : public Idra::Layer
 {
 public:
-	ExampleLayer();
-	virtual ~ExampleLayer();
+	SandboxLayer();
+	virtual ~SandboxLayer();
 
 	void OnUpdate(Idra::Timestep ts) override;
 	void OnAttach() override;

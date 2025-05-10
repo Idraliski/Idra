@@ -1,4 +1,4 @@
-#include "ExampleLayer.h"
+#include "Sandbox.h"
 
 //--TEMP--
 #include "Platform/OpenGL/OpenGLShader.h"
@@ -10,7 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-ExampleLayer::ExampleLayer()
+SandboxLayer::SandboxLayer()
 	: Layer("Example")
 {
 	// Camera Init
@@ -122,31 +122,21 @@ ExampleLayer::ExampleLayer()
 	m_TriVA->SetIndexBuffer(triIB);
 
 	// TEMP
-	// Load and compile the vertex shader
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
-
-	// Load and compile the fragment shader
-	// This is a simple shader that just outputs the texture color
 	Path fragmentSrc = "Assets/Shaders/Basic.frag";
-
 	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
 
-	// TEMP
-	// Load and compile the vertex shader
 	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
-
-	// Load and compile the fragment shader
-	// This is a simple shader that just outputs the texture color
 	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
-
 	m_FlatColourShader.reset(Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc));
 }
 
-ExampleLayer::~ExampleLayer()
+SandboxLayer::~SandboxLayer()
 {
+	IDRA_INFO("Example Layer Destroyed"); // #DEBUG
 }
 
-void ExampleLayer::OnUpdate(Idra::Timestep ts) 
+void SandboxLayer::OnUpdate(Idra::Timestep ts)
 {
 	ProcessKeyInput(ts);
 	ProcessMouseInput(ts);
@@ -173,7 +163,7 @@ void ExampleLayer::OnUpdate(Idra::Timestep ts)
 * Static Library builds are fine.
 * If we want to DLL, switch the MSVC to use DLL runtime library, in CMake
 */
-void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
+void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
@@ -218,28 +208,28 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 	*/
 }
 
-void ExampleLayer::OnAttach()
+void SandboxLayer::OnAttach()
 {
 	IDRA_INFO("Example Layer Attached"); // #DEBUG
 }
 
-void ExampleLayer::OnDetach()
+void SandboxLayer::OnDetach()
 {
 	IDRA_INFO("Example Layer Detached"); // #DEBUG
 }
 
-void ExampleLayer::OnEvent(Idra::Event& e) 
+void SandboxLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
 	m_EditorCameraController->OnEvent(*m_Camera, e);
 }
 
-void ExampleLayer::ProcessKeyInput(Idra::Timestep ts)
+void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
 {
 	
 }
 
-void ExampleLayer::ProcessMouseInput(Idra::Timestep ts)
+void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
 {
 	
 }
