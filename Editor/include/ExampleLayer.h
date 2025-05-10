@@ -4,6 +4,10 @@
 
 #include <glm/glm.hpp>
 
+#include <filesystem>
+
+using Path = std::filesystem::path;
+
 class ExampleLayer : public Idra::Layer
 {
 public:

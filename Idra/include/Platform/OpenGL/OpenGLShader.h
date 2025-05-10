@@ -30,6 +30,7 @@ namespace Idra {
 
 		void AttachShader(const Path& src, ShaderType type);
 	private:
+		const std::string LoadShaderFile(const Path& filepath);
 		unsigned int CompileShader(unsigned int type, const std::string& source);
 		int GetUniformLocation(const std::string& name);
 

@@ -9,6 +9,7 @@
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 
+
 ExampleLayer::ExampleLayer()
 	: Layer("Example")
 {
@@ -122,79 +123,21 @@ ExampleLayer::ExampleLayer()
 
 	// TEMP
 	// Load and compile the vertex shader
-	std::string vertexSrc = R"(
-			#version 460 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			out vec4 v_Color;
-			out vec3 v_Position;
-
-			uniform mat4 u_ViewProjection;
-
-			void main()
-			{
-				v_Color = a_Color;
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
-			}
-		)";
+	Path vertexSrc = "Assets/Shaders/Basic.vert";
 
 	// Load and compile the fragment shader
 	// This is a simple shader that just outputs the texture color
-	std::string fragmentSrc = R"(
-			#version 460 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec4 v_Color;
-			in vec3 v_Position;
-
-			void main()
-			{
-				color = v_Color;
-				//color = vec4(v_Position * 0.5 + 0.5, 1.0); //static color based on position
-				//color = vec4(0.8, 0.2, 0.3, 1.0); //static uniform color
-
-			}
-		)";
+	Path fragmentSrc = "Assets/Shaders/Basic.frag";
 
 	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
 
 	// TEMP
 	// Load and compile the vertex shader
-	std::string flatColourVertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-
-			out vec3 v_Position;
-
-			uniform mat4 u_ViewProjection;
-
-			void main()
-			{
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
-			}
-		)";
+	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
 
 	// Load and compile the fragment shader
 	// This is a simple shader that just outputs the texture color
-	std::string flatColourFragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			uniform vec3 v_Color;
-
-			void main()
-			{
-				color = vec4(v_Color, 1.0);
-			}
-		)";
+	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
 
 	m_FlatColourShader.reset(Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc));
 }
