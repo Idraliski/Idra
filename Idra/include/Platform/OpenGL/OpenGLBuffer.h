@@ -8,6 +8,7 @@ namespace Idra {
 	class IDRA_API OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
+		OpenGLVertexBuffer(const std::vector<float>& vertices);
 		OpenGLVertexBuffer(float* vertices, uint32_t size);
 		virtual ~OpenGLVertexBuffer();
 
@@ -24,6 +25,7 @@ namespace Idra {
 	class IDRA_API OpenGLIndexBuffer : public IndexBuffer
 	{
 	public:
+		OpenGLIndexBuffer(const std::vector<uint32_t> indices);
 		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
 		virtual ~OpenGLIndexBuffer();
 

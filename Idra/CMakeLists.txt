@@ -20,6 +20,7 @@ add_library(Idra STATIC
     "src/Renderer/Camera.cpp"
     "src/Renderer/CameraController.cpp"
     "src/Renderer/EditorCameraController.cpp"
+    "src/Renderer/Mesh.cpp"
     "src/Renderer/OrthographicCamera.cpp"
     "src/Renderer/PerspectiveCamera.cpp"
     "src/Renderer/RenderCommand.cpp"

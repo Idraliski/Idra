@@ -65,7 +65,7 @@ namespace Idra {
 	// VertexBuffer ////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////
 
-	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
+	VertexBuffer* VertexBuffer::Create(const std::vector<float>& vertices)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -73,7 +73,7 @@ namespace Idra {
 				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return new OpenGLVertexBuffer(vertices, size);
+				return new OpenGLVertexBuffer(vertices);
 			case RendererAPI::API::DirectX:
 				IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
 				return nullptr;
@@ -86,11 +86,31 @@ namespace Idra {
 		return nullptr;
 	}
 
+	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			return nullptr;
+		case RendererAPI::API::OpenGL:
+			return new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::API::DirectX:
+			IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
+			return nullptr;
+		case RendererAPI::API::Vulkan:
+			IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!");
+			return nullptr;
+		}
+		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
 	////////////////////////////////////////////////////////////////////////
 	// IndexBuffer /////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////
 
-	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	IndexBuffer* IndexBuffer::Create(const std::vector<uint32_t>& indices)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -98,7 +118,7 @@ namespace Idra {
 				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!"); 
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return new OpenGLIndexBuffer(indices, count);
+				return new OpenGLIndexBuffer(indices);
 			case RendererAPI::API::DirectX:
 				IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
 				return nullptr;
@@ -107,6 +127,26 @@ namespace Idra {
 				return nullptr;
 		}
 
+		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
+	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			return nullptr;
+		case RendererAPI::API::OpenGL:
+			return new OpenGLIndexBuffer(indices, count);
+		case RendererAPI::API::DirectX:
+			IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
+			return nullptr;
+		case RendererAPI::API::Vulkan:
+			IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!");
+			return nullptr;
+		}
 		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
