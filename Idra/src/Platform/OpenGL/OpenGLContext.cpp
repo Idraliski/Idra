@@ -24,11 +24,6 @@ namespace Idra {
 		m_Renderer = renderer ? renderer : "Unknown Renderer";
 		m_Version = version ? version : "Unknown Version";
 
-		IDRA_CORE_INFO("OpenGL Info:");
-		IDRA_CORE_INFO("  Vendor: {0}", vendor);
-		IDRA_CORE_INFO("  Renderer: {0}", renderer);
-		IDRA_CORE_INFO("  Version: {0}", version);
-
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

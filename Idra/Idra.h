@@ -15,6 +15,7 @@
 
 //---Renderer------------------------
 #include "Renderer/Camera.h"
+#include "Renderer/CameraController.h"
 
 #include "Renderer/Renderer.h"
 #include "Renderer/RenderCommand.h"

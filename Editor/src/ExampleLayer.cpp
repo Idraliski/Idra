@@ -4,7 +4,7 @@
 #include "Platform/OpenGL/OpenGLShader.h"
 //--------
 
-#include <Math/MathFormatters.h>
+#include <Math/MathFormatters.h> // to use glm::vec3, glm::vec4, etc. in fmt::format i.e., IDRA_INFO()
 #include <imgui.h>
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
@@ -12,12 +12,10 @@
 ExampleLayer::ExampleLayer()
 	: Layer("Example")
 {
-	auto width = Idra::Application::Get().GetWindow().GetWidth();
-	auto height = Idra::Application::Get().GetWindow().GetHeight();
-
+	// Camera Init
 	Idra::PerspectiveCameraSpec perspCameraSpec;
 	perspCameraSpec.FOV = 45.0f;
-	perspCameraSpec.AspectRatio = (float)width / (float)height;
+	perspCameraSpec.AspectRatio = (float)Idra::Application::Get().GetWindow().GetWidth() / (float)Idra::Application::Get().GetWindow().GetHeight();
 	perspCameraSpec.NearClip = 0.1f;
 	perspCameraSpec.FarClip = 1'000.0f;
 
@@ -31,6 +29,7 @@ ExampleLayer::ExampleLayer()
 
 	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec));
 	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
+	m_EditorCameraController.reset(Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera));
 
 	// TEMP DRAW DATA
 	m_VertexArray.reset(Idra::VertexArray::Create());
@@ -207,6 +206,10 @@ ExampleLayer::~ExampleLayer()
 void ExampleLayer::OnUpdate(Idra::Timestep ts) 
 {
 	ProcessKeyInput(ts);
+	ProcessMouseInput(ts);
+
+	// Update the camera
+	m_EditorCameraController->OnUpdate(*m_Camera, ts);
 
 	Idra::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
 	Idra::RenderCommand::Clear();
@@ -231,6 +234,10 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
+	// @TODO: delete demo window at some point
+	//static bool show = true;
+	//ImGui::ShowDemoWindow(&show);
+
 	// refresh FPS only after the FPS update interval
 	if (m_FPSUpdateCounter > m_FPSUpdateInterval)
 	{
@@ -238,13 +245,17 @@ void ExampleLayer::OnImGuiRender(Idra::Timestep ts)
 		m_CurrentFPS = 1.0f / ts;
 	}
 	else
-	{
 		m_FPSUpdateCounter += ts;
-	}
 
-
-	ImGui::Begin("Example Layer");
+	ImGui::Begin("Main Menu");
 	ImGui::Text("FPS: %.1f", m_CurrentFPS);
+	if (ImGui::TreeNode("RendererAPI Info: "))
+	{
+		ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
+		ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
+		ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
+		ImGui::TreePop();
+	}
 	if(ImGui::TreeNode("Camera")) 
 	{
 		ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
@@ -276,45 +287,16 @@ void ExampleLayer::OnDetach()
 
 void ExampleLayer::OnEvent(Idra::Event& e) 
 {
-	if (e.GetEventType() != Idra::EventType::MouseMoved)
-		IDRA_TRACE("Example Layer: {0}", e); // #DEBUG
+	Idra::EventDispatcher dispatcher(e);
+	m_EditorCameraController->OnEvent(*m_Camera, e);
 }
 
 void ExampleLayer::ProcessKeyInput(Idra::Timestep ts)
 {
-	float moveSpeed = 5.0f * ts;
-	float rotateSpeed = 50.0f * ts;
+	
+}
 
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_W))
-	{
-		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetForward());
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_S))
-	{
-		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetForward());
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_A))
-	{
-		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetRight());
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_D))
-	{
-		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetRight());
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_Q))
-	{
-		m_Camera->SetRotation(m_Camera->GetRotation() + rotateSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_E))
-	{
-		m_Camera->SetRotation(m_Camera->GetRotation() - rotateSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_SPACE))
-	{
-		m_Camera->SetPosition(m_Camera->GetPosition() + moveSpeed * m_Camera->GetUp());
-	}
-	if (Idra::Input::IsKeyPressed(IDRA_KEY_LEFT_CONTROL))
-	{
-		m_Camera->SetPosition(m_Camera->GetPosition() - moveSpeed * m_Camera->GetUp());
-	}
+void ExampleLayer::ProcessMouseInput(Idra::Timestep ts)
+{
+	
 }

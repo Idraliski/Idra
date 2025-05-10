@@ -22,6 +22,11 @@ namespace Idra {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		// Cursor
+		void SetCursorMode(CursorMode mode) override;
+		CursorMode GetCursorMode() const override { return m_CursorMode; }
+		void SetCursorPosition(float x, float y) override;
+
 		const std::string& GetVendor() const override { return m_RenderingContext->GetVendor(); }
 		const std::string& GetRenderer() const override { return m_RenderingContext->GetRenderer(); }
 		const std::string& GetVersion() const override { return m_RenderingContext->GetVersion(); }
@@ -35,6 +40,8 @@ namespace Idra {
 	private:
 		GLFWwindow* m_Window;
 		std::unique_ptr<RenderingContext> m_RenderingContext;
+
+		CursorMode m_CursorMode;
 
 		struct WindowData
 		{

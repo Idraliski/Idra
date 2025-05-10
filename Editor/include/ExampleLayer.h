@@ -19,6 +19,7 @@ public:
 
 private:
 	void ProcessKeyInput(Idra::Timestep ts);
+	void ProcessMouseInput(Idra::Timestep ts);
 
 private:
 	float m_FPSUpdateInterval = 0.4f;
@@ -34,6 +35,7 @@ private:
 	std::shared_ptr<Idra::VertexArray> m_TriVA;
 
 	std::shared_ptr<Idra::Camera> m_Camera;
+	std::shared_ptr<Idra::CameraController> m_EditorCameraController;
 };
 
 

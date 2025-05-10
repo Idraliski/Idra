@@ -65,24 +65,6 @@ namespace Idra
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnImGuiRender(Timestep ts)
-	{
-		IDRA_CORE_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
-
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-
-		ImGui::Begin("ImGuiLayer");
-		if (ImGui::TreeNode("RendererAPI Info: "))
-		{
-			ImGui::Text("  Vendor: %s", Idra::Application::Get().GetWindow().GetVendor().c_str());
-			ImGui::Text("  Renderer: %s", Idra::Application::Get().GetWindow().GetRenderer().c_str());
-			ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
-			ImGui::TreePop();
-		}
-		ImGui::End();
-	}
-
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();

@@ -11,12 +11,19 @@ namespace Idra {
 		unsigned int Height;
 
 		WindowProps(const std::string& title = "Idra Engine",
-				unsigned int width = 1280,
-				unsigned int height = 720)
+				unsigned int width = 1920,
+				unsigned int height = 1080)
 			: Title(title), Width(width), Height(height) 
 		{
 
 		}
+	};
+
+	enum class IDRA_API CursorMode
+	{
+		Normal = 0,
+		Hidden = 1,
+		Disabled = 2
 	};
 
 	// Interface representing a desktop system based Window
@@ -36,6 +43,11 @@ namespace Idra {
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
+		
+		// Cursor 
+		virtual void SetCursorMode(CursorMode mode) = 0;
+		virtual CursorMode GetCursorMode() const = 0;
+		virtual void SetCursorPosition(float x, float y) = 0;
 
 		virtual const std::string& GetVendor() const = 0;
 		virtual const std::string& GetRenderer() const = 0;
