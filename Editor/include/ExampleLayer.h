@@ -19,11 +19,16 @@ public:
 
 private:
 	void ProcessKeyInput(Idra::Timestep ts);
+	void ProcessMouseInput(Idra::Timestep ts);
 
 private:
 	float m_FPSUpdateInterval = 0.4f;
 	float m_FPSUpdateCounter = 0.0f;
 	float m_CurrentFPS = 0.0f;
+
+	bool isCameraLooking = false;
+
+	glm::vec2 m_LastMousePos = { 0.0f, 0.0f };
 
 	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
