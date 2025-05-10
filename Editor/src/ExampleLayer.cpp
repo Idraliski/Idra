@@ -288,7 +288,7 @@ void ExampleLayer::OnDetach()
 void ExampleLayer::OnEvent(Idra::Event& e) 
 {
 	Idra::EventDispatcher dispatcher(e);
-	m_EditorCameraController->OnEvent(*m_Camera, e);	
+	m_EditorCameraController->OnEvent(*m_Camera, e);
 }
 
 void ExampleLayer::ProcessKeyInput(Idra::Timestep ts)
