@@ -31,7 +31,7 @@ namespace Idra {
 		glDepthFunc(GL_LESS);
 
 		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT); // culling front because we are inverting the camera view matrix
+		glCullFace(GL_BACK);
 		glFrontFace(GL_CCW);
 	}
 

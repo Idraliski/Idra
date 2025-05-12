@@ -9,6 +9,9 @@ add_library(Idra STATIC
     "src/Core/Log.cpp"
     "src/ImGui/ImGuiBuild.cpp"
     "src/ImGui/ImGuiLayer.cpp"
+    "src/Model/Mesh.cpp"
+    "src/Model/Model.cpp"
+    "src/Model/ModelLoader.cpp" 
     "src/Platform/OpenGL/OpenGLBuffer.cpp"
     "src/Platform/OpenGL/OpenGLContext.cpp"
     "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
@@ -20,7 +23,6 @@ add_library(Idra STATIC
     "src/Renderer/Camera.cpp"
     "src/Renderer/CameraController.cpp"
     "src/Renderer/EditorCameraController.cpp"
-    "src/Renderer/Mesh.cpp"
     "src/Renderer/OrthographicCamera.cpp"
     "src/Renderer/PerspectiveCamera.cpp"
     "src/Renderer/RenderCommand.cpp"
@@ -46,7 +48,7 @@ target_compile_definitions(Idra PRIVATE
 )
 
 # link the vendor libraries
-target_link_libraries(Idra PUBLIC spdlog glad glfw imgui glm)
+target_link_libraries(Idra PUBLIC spdlog glad glfw imgui glm assimp)
 
 # Precompile headers
 target_precompile_headers(Idra PRIVATE "include/IdraPCH.h")

@@ -41,8 +41,11 @@ private:
 	// TEMP
 	std::shared_ptr<Idra::Shader> m_Shader;
 	std::shared_ptr<Idra::Shader> m_FlatColourShader;
-	std::shared_ptr<Idra::Mesh> m_CubeMesh;
-	std::shared_ptr<Idra::Mesh> m_TriangleMesh;
+	std::shared_ptr<Idra::Model> m_Model_Sphere;
+	std::shared_ptr<Idra::Model> m_Model_Cube;
+	std::shared_ptr<Idra::Model> m_Model_D20;
+
+	Idra::ModelLoaderType m_ModelLoaderType = Idra::ModelLoaderType::Assimp;
 
 	std::shared_ptr<Idra::Camera> m_Camera;
 	std::shared_ptr<Idra::CameraController> m_EditorCameraController;

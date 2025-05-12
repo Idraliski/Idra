@@ -1,6 +1,6 @@
 #include "IdraPCH.h"
 
-#include "Renderer/Mesh.h"
+#include "Model/Mesh.h"
 
 namespace Idra {
 	Mesh::Mesh(const std::vector<float>& vBO, const BufferLayout& bLO, const std::vector<uint32_t>& iBO)
@@ -17,12 +17,12 @@ namespace Idra {
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 	}
 
-	void Mesh::Bind() const 
+	void Mesh::Bind() const
 	{
 		m_VertexArray->Bind();
 	}
 
-	void Mesh::Unbind() const 
+	void Mesh::Unbind() const
 	{
 		m_VertexArray->Unbind();
 	}

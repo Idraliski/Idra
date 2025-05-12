@@ -21,9 +21,14 @@
 #include "Renderer/RenderCommand.h"
 
 #include "Renderer/Shader.h"
-#include "Renderer/Mesh.h"
 
 #include "ImGui/ImGuiLayer.h"
+
+//---Model---------------------------
+#include "Model/Mesh.h"
+#include "Model/Model.h"
+#include "Model/ModelLoader.h"
+
 //-----------------------------------
 
 //---Entry Point---------------------

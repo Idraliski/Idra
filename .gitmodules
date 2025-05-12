@@ -1,9 +1,12 @@
 [submodule "Idra/vendor/spdlog"]
 	path = Idra/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "Idra/Vendor/imgui"]
-	path = Idra/Vendor/imgui
+[submodule "Idra/vendor/imgui"]
+	path = Idra/vendor/imgui
 	url = https://github.com/Idraliski/imgui.git
 [submodule "Idra/vendor/glm"]
 	path = Idra/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Idra/vendor/assimp"]
+	path = Idra/vendor/assimp
+	url = https://github.com/assimp/assimp.git
