@@ -11,7 +11,6 @@ namespace Idra {
 	{
 	public:
 		Model(const std::string& name);
-		Model(const std::string& name, const std::vector<Mesh> meshes);
 		~Model();
 
 		inline const std::vector<Mesh>& GetMeshes() const { return m_Meshes; }
