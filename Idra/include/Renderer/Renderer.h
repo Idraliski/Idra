@@ -4,7 +4,8 @@
 
 #include "Renderer/Camera.h"
 #include "Renderer/RenderCommand.h"
-#include "Renderer/Mesh.h"
+#include "Model/Mesh.h"
+#include "Model/Model.h"
 #include "Renderer/Shader.h"
 
 #include <glm/glm.hpp>
@@ -17,6 +18,7 @@ namespace Idra {
 		static void EndScene();
 
 		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Mesh>& mesh);
+		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Model>& model);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 

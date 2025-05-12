@@ -61,6 +61,16 @@ namespace Idra {
 		std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
 		std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
 		std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+
+		enum class IDRA_API VertexFormat
+		{
+			Pos = 0,
+			PosNor = 1,
+			PosNorTex = 2,
+			PosTex = 3
+		};
+
+		static BufferLayout GetVertexFormat(VertexFormat format);
 	private:
 		void CalculateOffsetsAndStride();
 

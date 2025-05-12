@@ -14,6 +14,11 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <chrono>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include "Core/Log.h"
 

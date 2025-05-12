@@ -32,76 +32,10 @@ SandboxLayer::SandboxLayer()
 	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
 	m_EditorCameraController.reset(Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera));
 
-	// TEMP DRAW DATA
-	// 8 vertices: position (x, y, z), color (r, g, b, a)
-	std::vector<float> cubeVertices = {
-		// Front face
-		-0.75f, -0.75f,  -5.0f,  0.8f, 0.2f, 0.8f, 1.0f, // 0
-		 0.75f, -0.75f,  -5.0f,  0.2f, 0.3f, 0.8f, 1.0f, // 1
-		 0.75f,  0.75f,  -5.0f,  0.2f, 0.8f, 0.5f, 1.0f, // 2
-		-0.75f,  0.75f,  -5.0f,  0.6f, 0.4f, 0.4f, 1.0f, // 3
-
-		// Back face
-		-0.75f, -0.75f,  -3.5f,  0.5f, 0.1f, 0.9f, 1.0f, // 4
-		 0.75f, -0.75f,  -3.5f,  0.9f, 0.7f, 0.2f, 1.0f, // 5
-		 0.75f,  0.75f,  -3.5f,  0.2f, 0.6f, 0.3f, 1.0f, // 6
-		-0.75f,  0.75f,  -3.5f,  0.3f, 0.2f, 0.7f, 1.0f  // 7
-	};
-	Idra::BufferLayout cubeBufferlayout = {
-		{ Idra::ShaderDataType::Float3, "a_Position" },
-		{ Idra::ShaderDataType::Float4, "a_Color" }
-	};
-	std::vector<uint32_t> cubeIndices = {
-		// Front face
-		0, 1, 2, 2, 3, 0,
-		// Right face
-		1, 5, 6, 6, 2, 1,
-		// Back face
-		5, 4, 7, 7, 6, 5,
-		// Left face
-		4, 0, 3, 3, 7, 4,
-		// Top face
-		3, 2, 6, 6, 7, 3,
-		// Bottom face
-		4, 5, 1, 1, 0, 4
-	};
-	m_CubeMesh = std::make_shared<Idra::Mesh>(cubeVertices, cubeBufferlayout, cubeIndices);
-
-	// 6 vertices: front + back (x, y, z)
-	std::vector<float> prismVertices = {
-		// Front face
-		-0.5f, -0.5f, -1.0f,
-		 0.5f, -0.5f, -1.0f,
-		 0.0f,  0.5f, -1.0f,
-
-		 // Back face
-		 -0.5f, -0.5f, -3.0f,
-		  0.5f, -0.5f, -3.0f,
-		  0.0f,  0.5f, -3.0f
-	};
-	Idra::BufferLayout triangleBufferLayout{
-		{ Idra::ShaderDataType::Float3, "a_Position" }
-		};
-	std::vector<uint32_t> prismIndices = {
-		// Front triangle
-		0, 1, 2,
-
-		// Back triangle
-		3, 5, 4,
-
-		// Side 1
-		0, 2, 5,
-		5, 3, 0,
-
-		// Side 2
-		1, 4, 5,
-		5, 2, 1,
-
-		// Side 3 (bottom)
-		0, 3, 1,
-		1, 3, 4
-	};
-	m_TriangleMesh = std::make_shared<Idra::Mesh>(prismVertices, triangleBufferLayout, prismIndices);
+	// Load the model
+	m_Model_Sphere.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj"));
+	m_Model_Cube.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj"));
+	m_Model_D20.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj"));
 
 	// TEMP
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
@@ -133,10 +67,11 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	//Renderer::BeginScene(camera, lights, environment);
 
 	Idra::Renderer::BeginScene(m_Camera);
-	Idra::Renderer::Submit(m_Shader, m_CubeMesh);
+	Idra::Renderer::Submit(m_Shader, m_Model_Cube);
+	Idra::Renderer::Submit(m_Shader, m_Model_D20);
 	m_FlatColourShader->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
-	Idra::Renderer::Submit(m_FlatColourShader, m_TriangleMesh);
+	Idra::Renderer::Submit(m_FlatColourShader, m_Model_Sphere);
 	Idra::Renderer::EndScene();
 }
 

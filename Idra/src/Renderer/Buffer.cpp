@@ -61,6 +61,35 @@ namespace Idra {
 		}
 	}
 
+	BufferLayout BufferLayout::GetVertexFormat(VertexFormat format)
+	{
+		switch (format)
+		{
+			case VertexFormat::Pos: 
+				return { 
+					{ ShaderDataType::Float3, "a_Position" } 
+				};
+			case VertexFormat::PosNor: 
+				return { 
+					{ ShaderDataType::Float3, "a_Position" }, 
+					{ ShaderDataType::Float3, "a_Normal" } 
+				};
+			case VertexFormat::PosNorTex: 
+				return { 
+					{ ShaderDataType::Float3, "a_Position" }, 
+					{ ShaderDataType::Float3, "a_Normal" }, 
+					{ ShaderDataType::Float2, "a_TexCoord" } 
+				};
+			case VertexFormat::PosTex: 
+				return { 
+					{ ShaderDataType::Float3, "a_Position" }, 
+					{ ShaderDataType::Float2, "a_TexCoord" } 
+				};
+		}
+
+		IDRA_CORE_ASSERT(false, "Unknown vertex format!");
+		return {};
+	}
 	////////////////////////////////////////////////////////////////////////
 	// VertexBuffer ////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////
