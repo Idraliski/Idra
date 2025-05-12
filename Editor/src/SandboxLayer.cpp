@@ -37,7 +37,7 @@ SandboxLayer::SandboxLayer()
 	m_Model_Cube.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj"));
 	m_Model_D20.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj"));
 
-	// TEMP
+	// Shaders
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
 	Path fragmentSrc = "Assets/Shaders/Basic.frag";
 	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
