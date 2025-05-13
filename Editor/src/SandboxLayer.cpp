@@ -32,6 +32,10 @@ SandboxLayer::SandboxLayer()
 	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
 	m_EditorCameraController.reset(Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera));
 
+	// Set the camera position and rotation
+	m_Camera->SetPosition({ 3.0f, 2.0f, 10.0f });
+	m_Camera->SetRotation({ 0.0f, -1.0f, 0.0f });
+
 	// Load the model
 	m_Model_Sphere.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj"));
 	m_Model_Cube.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj"));
