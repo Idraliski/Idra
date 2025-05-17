@@ -9,9 +9,6 @@ add_library(Idra STATIC
     "src/Core/Log.cpp"
     "src/ImGui/ImGuiBuild.cpp"
     "src/ImGui/ImGuiLayer.cpp"
-    "src/Model/Mesh.cpp"
-    "src/Model/Model.cpp"
-    "src/Model/ModelLoader.cpp" 
     "src/Platform/OpenGL/OpenGLBuffer.cpp"
     "src/Platform/OpenGL/OpenGLContext.cpp"
     "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
@@ -31,6 +28,10 @@ add_library(Idra STATIC
     "src/Renderer/RendererContext.cpp"
     "src/Renderer/Shader.cpp"
     "src/Renderer/VertexArray.cpp"
+    "src/Resources/Image/Image.cpp" 
+    "src/Resources/Model/Mesh.cpp"
+    "src/Resources/Model/Model.cpp"
+    "src/Resources/Model/ModelLoader.cpp" 
 )
 
 # Set the output directories for the library

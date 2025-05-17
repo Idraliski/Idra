@@ -2,8 +2,8 @@
 
 #include "Core/Core.h"
 
-#include "Model/Model.h"
-#include "Model/Mesh.h"
+#include "Resources/Model/Model.h"
+#include "Resources/Model/Mesh.h"
 
 #include <vector>
 #include <filesystem>

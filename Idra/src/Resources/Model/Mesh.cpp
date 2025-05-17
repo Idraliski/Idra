@@ -1,6 +1,6 @@
 #include "IdraPCH.h"
 
-#include "Model/Mesh.h"
+#include "Resources/Model/Mesh.h"
 
 namespace Idra {
 	Mesh::Mesh(const std::vector<float>& vBO, const BufferLayout& bLO, const std::vector<uint32_t>& iBO)
