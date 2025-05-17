@@ -37,6 +37,11 @@ namespace Idra {
 			dataFormat = GL_RGBA;
 			internalFormat = GL_RGBA8;
 		}
+		else
+		{
+			IDRA_CORE_ASSERT(false, "Unknown number of channels!");
+			return;
+		}
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);

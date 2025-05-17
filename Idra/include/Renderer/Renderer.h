@@ -4,9 +4,9 @@
 
 #include "Renderer/Camera.h"
 #include "Renderer/RenderCommand.h"
+#include "Renderer/Shader.h"
 #include "Resources/Model/Mesh.h"
 #include "Resources/Model/Model.h"
-#include "Renderer/Shader.h"
 
 #include <glm/glm.hpp>
 
@@ -14,6 +14,8 @@ namespace Idra {
 	class IDRA_API Renderer
 	{
 	public:
+		static void Init();
+
 		static const void BeginScene(const std::shared_ptr<Camera>& camera);
 		static void EndScene();
 
