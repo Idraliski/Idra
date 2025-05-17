@@ -41,10 +41,19 @@ SandboxLayer::SandboxLayer()
 	m_Model_Cube.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj"));
 	m_Model_D20.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj"));
 
+	m_Texture.reset(Idra::Texture2D::Create("Assets/Models/ico-sphere1.png"));
+
 	// Shaders
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
 	Path fragmentSrc = "Assets/Shaders/Basic.frag";
 	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
+
+	Path textureVertexSrc = "Assets/Shaders/BasicTexture.vert";
+	Path textureFragmentSrc = "Assets/Shaders/BasicTexture.frag";
+	m_TextureShader.reset(Idra::Shader::Create(textureVertexSrc, textureFragmentSrc));
+
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->Bind();
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->SetUniform1i("u_Texture", 0);
 
 	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
 	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
@@ -71,11 +80,17 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	//Renderer::BeginScene(camera, lights, environment);
 
 	Idra::Renderer::BeginScene(m_Camera);
-	Idra::Renderer::Submit(m_Shader, m_Model_Cube);
-	Idra::Renderer::Submit(m_Shader, m_Model_D20);
+	//Idra::Renderer::Submit(m_Shader, m_Model_Cube);
+
+	m_Texture->Bind();
+	Idra::Renderer::Submit(m_TextureShader, m_Model_Sphere);
+
+	/*
 	m_FlatColourShader->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
-	Idra::Renderer::Submit(m_FlatColourShader, m_Model_Sphere);
+	Idra::Renderer::Submit(m_FlatColourShader, m_Model_D20);
+	*/
+
 	Idra::Renderer::EndScene();
 }
 

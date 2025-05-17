@@ -21,13 +21,14 @@
 #include "Renderer/RenderCommand.h"
 
 #include "Renderer/Shader.h"
+#include "Renderer/Texture.h"
 
 #include "ImGui/ImGuiLayer.h"
 
 //---Model---------------------------
-#include "Model/Mesh.h"
-#include "Model/Model.h"
-#include "Model/ModelLoader.h"
+#include "Resources/Model/Mesh.h"
+#include "Resources/Model/Model.h"
+#include "Resources/Model/ModelLoader.h"
 
 //-----------------------------------
 
