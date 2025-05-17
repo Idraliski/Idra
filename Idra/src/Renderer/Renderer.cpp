@@ -7,6 +7,11 @@
 namespace Idra {
 	Renderer::SceneData Renderer::s_SceneData;
 
+	void Renderer::Init()
+	{
+		RenderCommand::Init();
+	}
+
 	const void Renderer::BeginScene(const std::shared_ptr<Camera>& camera)
 	{
 		s_SceneData.ViewProjectionMatrix = camera->GetViewProjectionMatrix();

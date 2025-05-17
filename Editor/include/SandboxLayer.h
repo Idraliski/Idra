@@ -46,6 +46,7 @@ private:
 	std::shared_ptr<Idra::Model> m_Model_Cube;
 	std::shared_ptr<Idra::Model> m_Model_D20;
 	std::shared_ptr<Idra::Texture2D> m_Texture;
+	std::shared_ptr<Idra::Texture2D> m_AlphaTexture;
 
 	Idra::ModelLoaderType m_ModelLoaderType = Idra::ModelLoaderType::Assimp;
 

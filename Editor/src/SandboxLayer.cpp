@@ -15,18 +15,7 @@ SandboxLayer::SandboxLayer()
 {
 	// Camera Init
 	Idra::PerspectiveCameraSpec perspCameraSpec;
-	perspCameraSpec.FOV = 45.0f;
-	perspCameraSpec.AspectRatio = (float)Idra::Application::Get().GetWindow().GetWidth() / (float)Idra::Application::Get().GetWindow().GetHeight();
-	perspCameraSpec.NearClip = 0.1f;
-	perspCameraSpec.FarClip = 1'000.0f;
-
 	Idra::OrthographicCameraSpec orthoCameraSpec;
-	orthoCameraSpec.Left = -1.0f;
-	orthoCameraSpec.Right = 1.0f;
-	orthoCameraSpec.Bottom = -1.0f;
-	orthoCameraSpec.Top = 1.0f;
-	orthoCameraSpec.NearClip = 0.1f;
-	orthoCameraSpec.FarClip = 1'000.0f;
 
 	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec));
 	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
@@ -41,7 +30,9 @@ SandboxLayer::SandboxLayer()
 	m_Model_Cube.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj"));
 	m_Model_D20.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj"));
 
-	m_Texture.reset(Idra::Texture2D::Create("Assets/Models/ico-sphere1.png"));
+	// Load the texture
+	m_Texture.reset(Idra::Texture2D::Create("Assets/Textures/default.png"));
+	m_AlphaTexture.reset(Idra::Texture2D::Create("Assets/Textures/Alpha.png"));
 
 	// Shaders
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
@@ -80,11 +71,12 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	//Renderer::BeginScene(camera, lights, environment);
 
 	Idra::Renderer::BeginScene(m_Camera);
-	//Idra::Renderer::Submit(m_Shader, m_Model_Cube);
 
 	m_Texture->Bind();
 	Idra::Renderer::Submit(m_TextureShader, m_Model_Sphere);
 
+	m_AlphaTexture->Bind();
+	Idra::Renderer::Submit(m_TextureShader, m_Model_Cube);
 	/*
 	m_FlatColourShader->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
