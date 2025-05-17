@@ -40,10 +40,12 @@ private:
 
 	// TEMP
 	std::shared_ptr<Idra::Shader> m_Shader;
+	std::shared_ptr<Idra::Shader> m_TextureShader;
 	std::shared_ptr<Idra::Shader> m_FlatColourShader;
 	std::shared_ptr<Idra::Model> m_Model_Sphere;
 	std::shared_ptr<Idra::Model> m_Model_Cube;
 	std::shared_ptr<Idra::Model> m_Model_D20;
+	std::shared_ptr<Idra::Texture2D> m_Texture;
 
 	Idra::ModelLoaderType m_ModelLoaderType = Idra::ModelLoaderType::Assimp;
 

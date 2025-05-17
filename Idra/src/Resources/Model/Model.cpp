@@ -1,6 +1,6 @@
 #include "IdraPCH.h"
 
-#include "Model/Model.h"
+#include "Resources/Model/Model.h"
 
 namespace Idra {
 	Model::Model(const std::string& name)

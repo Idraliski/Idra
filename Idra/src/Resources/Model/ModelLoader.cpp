@@ -1,6 +1,6 @@
 #include "IdraPCH.h"
 
-#include "Model/ModelLoader.h"
+#include "Resources/Model/ModelLoader.h"
 
 namespace Idra {
 	Model* ModelLoader::LoadModel(ModelLoaderType type, Path source)

@@ -9,13 +9,11 @@ add_library(Idra STATIC
     "src/Core/Log.cpp"
     "src/ImGui/ImGuiBuild.cpp"
     "src/ImGui/ImGuiLayer.cpp"
-    "src/Model/Mesh.cpp"
-    "src/Model/Model.cpp"
-    "src/Model/ModelLoader.cpp" 
     "src/Platform/OpenGL/OpenGLBuffer.cpp"
     "src/Platform/OpenGL/OpenGLContext.cpp"
     "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
     "src/Platform/OpenGL/OpenGLShader.cpp"
+    "src/Platform/OpenGL/OpenGLTexture.cpp"
     "src/Platform/OpenGL/OpenGLVertexArray.cpp"
     "src/Platform/Windows/WindowsInput.cpp"
     "src/Platform/Windows/WindowsWindow.cpp"
@@ -30,7 +28,12 @@ add_library(Idra STATIC
     "src/Renderer/RendererAPI.cpp"
     "src/Renderer/RendererContext.cpp"
     "src/Renderer/Shader.cpp"
+    "src/Renderer/Texture.cpp"
     "src/Renderer/VertexArray.cpp"
+    "src/Resources/Image/Image.cpp" 
+    "src/Resources/Model/Mesh.cpp"
+    "src/Resources/Model/Model.cpp"
+    "src/Resources/Model/ModelLoader.cpp" 
 )
 
 # Set the output directories for the library
@@ -48,7 +51,7 @@ target_compile_definitions(Idra PRIVATE
 )
 
 # link the vendor libraries
-target_link_libraries(Idra PUBLIC spdlog glad glfw imgui glm assimp)
+target_link_libraries(Idra PUBLIC spdlog glad glfw imgui glm assimp stb)
 
 # Precompile headers
 target_precompile_headers(Idra PRIVATE "include/IdraPCH.h")

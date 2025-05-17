@@ -2,7 +2,7 @@
 
 #include "Core/Core.h"
 
-#include "Model/Mesh.h"
+#include "Resources/Model/Mesh.h"
 
 namespace Idra {
 	using Path = std::filesystem::path;

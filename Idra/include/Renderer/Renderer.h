@@ -4,8 +4,8 @@
 
 #include "Renderer/Camera.h"
 #include "Renderer/RenderCommand.h"
-#include "Model/Mesh.h"
-#include "Model/Model.h"
+#include "Resources/Model/Mesh.h"
+#include "Resources/Model/Model.h"
 #include "Renderer/Shader.h"
 
 #include <glm/glm.hpp>

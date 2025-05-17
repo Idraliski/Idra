@@ -4,6 +4,7 @@
 
 #include "Renderer/VertexArray.h"
 #include "Renderer/Buffer.h"
+#include "Renderer/Texture.h"
 
 namespace Idra {
 	class IDRA_API Mesh
@@ -19,5 +20,6 @@ namespace Idra {
 
 	private:
 		std::shared_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<Texture> m_Texture;
 	};
 }

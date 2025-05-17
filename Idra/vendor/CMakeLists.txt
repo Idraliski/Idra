@@ -8,3 +8,4 @@ set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(assimp)
+add_subdirectory(stb)
