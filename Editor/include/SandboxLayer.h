@@ -50,6 +50,7 @@ private:
 
 	// TEMP transforms
 	Idra::TransformComponent m_Transform_Sphere;
+	Idra::TransformComponent m_Transform_Sphere2;
 	Idra::TransformComponent m_Transform_Cube;
 	Idra::TransformComponent m_Transform_D20;
 
