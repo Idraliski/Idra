@@ -8,7 +8,7 @@ namespace Idra {
 		IDRA_CORE_ASSERT(std::filesystem::exists(filepath), "File does not exist!");
 		IDRA_CORE_ASSERT(std::filesystem::is_regular_file(filepath), "Path is not a file!");
 
-		std::ifstream file(filepath, std::ios::in);
+		std::ifstream file(filepath, std::ios::in | std::ios::binary);
 
 		// Check if the file was opened successfully
 		if (!file.is_open())
@@ -17,12 +17,16 @@ namespace Idra {
 			return "";
 		}
 
-		auto file_contents =
-			std::string(std::istreambuf_iterator<char>(file),
-				std::istreambuf_iterator<char>());
+		file.seekg(0, std::ios::end); // Move to the end of the file
+		size_t file_size = file.tellg(); // Get the current position in the file
+		IDRA_CORE_ASSERT(file_size != static_cast<size_t>(-1), "Failed to get file size!"); // Check if the file size is valid
+
+		std::string file_contents(file_size, '\0'); // Create a string with the size of the file
+		file.seekg(0, std::ios::beg); // Move back to the beginning of the file
+		file.read(&file_contents[0], file_size); // Read the file contents into the string
 
 		// Check if the file is empty
-		IDRA_CORE_ASSERT(!file_contents.empty(), "File is empty!");
+		IDRA_CORE_ASSERT(file_size > 0, "File is empty!"); // Check if the file is empty
 		IDRA_CORE_INFO("File loaded successfully: {0}", filepath.string()); // #DEBUG
 
 		return file_contents;
