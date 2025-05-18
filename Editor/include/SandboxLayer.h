@@ -39,14 +39,14 @@ private:
 	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
 	// TEMP
-	std::shared_ptr<Idra::Shader> m_Shader;
-	std::shared_ptr<Idra::Shader> m_TextureShader;
-	std::shared_ptr<Idra::Shader> m_FlatColourShader;
-	std::shared_ptr<Idra::Model> m_Model_Sphere;
-	std::shared_ptr<Idra::Model> m_Model_Cube;
-	std::shared_ptr<Idra::Model> m_Model_D20;
-	std::shared_ptr<Idra::Texture2D> m_Texture;
-	std::shared_ptr<Idra::Texture2D> m_AlphaTexture;
+	Idra::Ref<Idra::Shader> m_Shader;
+	Idra::Ref<Idra::Shader> m_TextureShader;
+	Idra::Ref<Idra::Shader> m_FlatColourShader;
+	Idra::Ref<Idra::Model> m_Model_Sphere;
+	Idra::Ref<Idra::Model> m_Model_Cube;
+	Idra::Ref<Idra::Model> m_Model_D20;
+	Idra::Ref<Idra::Texture2D> m_Texture;
+	Idra::Ref<Idra::Texture2D> m_AlphaTexture;
 
 	// TEMP transforms
 	Idra::TransformComponent m_Transform_Sphere;
@@ -55,8 +55,8 @@ private:
 
 	Idra::ModelLoaderType m_ModelLoaderType = Idra::ModelLoaderType::Assimp;
 
-	std::shared_ptr<Idra::Camera> m_Camera;
-	std::shared_ptr<Idra::CameraController> m_EditorCameraController;
+	Idra::Ref<Idra::Camera> m_Camera;
+	Idra::Ref<Idra::CameraController> m_EditorCameraController;
 };
 
 

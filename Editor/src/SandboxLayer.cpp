@@ -17,38 +17,38 @@ SandboxLayer::SandboxLayer()
 	Idra::PerspectiveCameraSpec perspCameraSpec;
 	Idra::OrthographicCameraSpec orthoCameraSpec;
 
-	m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec));
-	//m_Camera.reset(Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec));
-	m_EditorCameraController.reset(Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera));
+	m_Camera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec);
+	//m_Camera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec);
+	m_EditorCameraController = Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera);
 
 	// Set the camera position and rotation
 	m_Camera->SetPosition({ 3.0f, 2.0f, 10.0f });
 	m_Camera->SetRotation({ 0.0f, -1.0f, 0.0f });
 
 	// Load the model
-	m_Model_Sphere.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj"));
-	m_Model_Cube.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj"));
-	m_Model_D20.reset(Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj"));
+	m_Model_Sphere = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj");
+	m_Model_Cube = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj");
+	m_Model_D20 = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj");
 
 	// Load the texture
-	m_Texture.reset(Idra::Texture2D::Create("Assets/Textures/default.png"));
-	m_AlphaTexture.reset(Idra::Texture2D::Create("Assets/Textures/Alpha.png"));
+	m_Texture = Idra::Texture2D::Create("Assets/Textures/default.png");
+	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
 
 	// Shaders
 	Path vertexSrc = "Assets/Shaders/Basic.vert";
 	Path fragmentSrc = "Assets/Shaders/Basic.frag";
-	m_Shader.reset(Idra::Shader::Create(vertexSrc, fragmentSrc));
+	m_Shader = Idra::Shader::Create(vertexSrc, fragmentSrc);
 
 	Path textureVertexSrc = "Assets/Shaders/BasicTexture.vert";
 	Path textureFragmentSrc = "Assets/Shaders/BasicTexture.frag";
-	m_TextureShader.reset(Idra::Shader::Create(textureVertexSrc, textureFragmentSrc));
+	m_TextureShader = Idra::Shader::Create(textureVertexSrc, textureFragmentSrc);
 
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->SetUniform1i("u_Texture", 0);
 
 	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
 	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
-	m_FlatColourShader.reset(Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc));
+	m_FlatColourShader = Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc);
 
 	// Transforms
 	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };

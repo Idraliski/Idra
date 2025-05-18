@@ -42,7 +42,7 @@ namespace Idra {
 		* @param spec The camera specification (optional). Based on the type, it can be a PerspectiveCameraSpec or OrthographicCameraSpec.
 		* @return A pointer to the created camera, either PerspectiveCamera or OrthographicCamera.
 		*/
-		static Camera* CreateCamera(CameraProjectionType type, const void* spec = nullptr);
+		static Ref<Camera> CreateCamera(CameraProjectionType type, const void* spec = nullptr);
 
 		const float GetNearClip() const { return m_NearClip; }
 		void SetNearClip(float nearClip) { m_NearClip = nearClip; UpdateProjectionMatrix(); }

@@ -3,7 +3,7 @@
 #include "Resources/Model/ModelLoader.h"
 
 namespace Idra {
-	Model* ModelLoader::LoadModel(ModelLoaderType type, Path source)
+	Ref<Model> ModelLoader::LoadModel(ModelLoaderType type, Path source)
 	{
 		switch (type)
 		{
@@ -25,7 +25,7 @@ namespace Idra {
 					return nullptr;
 				}
 
-				Model* model = new Model(source.stem().string());
+				Ref<Model> model = CreateRef<Model>(source.stem().string());
 				ProcessAssimpNode(scene->mRootNode, scene, model);
 				return model;
 			}
@@ -48,7 +48,7 @@ namespace Idra {
 		}
 	}
 
-	void ModelLoader::ProcessAssimpNode(aiNode* node, const aiScene* scene, Model* model)
+	void ModelLoader::ProcessAssimpNode(aiNode* node, const aiScene* scene, Ref<Model> model)
 	{
 		// Process all the meshes in this node
 		for (uint32_t i = 0; i < node->mNumMeshes; i++)

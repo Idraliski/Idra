@@ -11,7 +11,7 @@ namespace Idra {
 
 	}
 
-	Camera* Camera::CreateCamera(CameraProjectionType type, const void* spec)
+	Ref<Camera> Camera::CreateCamera(CameraProjectionType type, const void* spec)
 	{
 		switch (type)
 		{
@@ -31,7 +31,7 @@ namespace Idra {
 					pSpec = &defaultSpec;
 				}
 
-				return new PerspectiveCamera(pSpec->FOV, pSpec->AspectRatio, pSpec->NearClip, pSpec->FarClip);
+				return CreateRef<PerspectiveCamera>(pSpec->FOV, pSpec->AspectRatio, pSpec->NearClip, pSpec->FarClip);
 			}
 
 			case CameraProjectionType::Orthographic:
@@ -46,7 +46,7 @@ namespace Idra {
 					oSpec = &defaultSpec;
 				}
 
-				return new OrthographicCamera(oSpec->Left, oSpec->Right, oSpec->Bottom, oSpec->Top, oSpec->NearClip, oSpec->FarClip);
+				return CreateRef<OrthographicCamera>(oSpec->Left, oSpec->Right, oSpec->Bottom, oSpec->Top, oSpec->NearClip, oSpec->FarClip);
 			}
 		}
 
