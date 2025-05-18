@@ -8,7 +8,7 @@ namespace Idra {
 		IDRA_CORE_ASSERT(std::filesystem::exists(filepath), "File does not exist!");
 		IDRA_CORE_ASSERT(std::filesystem::is_regular_file(filepath), "Path is not a file!");
 
-		std::ifstream file(filepath);
+		std::ifstream file(filepath, std::ios::in);
 
 		// Check if the file was opened successfully
 		if (!file.is_open())
