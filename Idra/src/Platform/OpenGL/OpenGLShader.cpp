@@ -1,7 +1,7 @@
 #include "IdraPCH.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
-#include "Core/FileLoader.h"
+#include "Resources/FileLoader.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>

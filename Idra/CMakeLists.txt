@@ -3,7 +3,6 @@ add_subdirectory(vendor)
 add_library(Idra STATIC 
     "src/IdraPCH.cpp"
     "src/Core/Application.cpp"
-    "src/Core/FileLoader.cpp"
     "src/Core/Layer.cpp"
     "src/Core/LayerStack.cpp"
     "src/Core/Log.cpp"
@@ -30,6 +29,7 @@ add_library(Idra STATIC
     "src/Renderer/Shader.cpp"
     "src/Renderer/Texture.cpp"
     "src/Renderer/VertexArray.cpp"
+    "src/Resources/FileLoader.cpp"
     "src/Resources/Image/Image.cpp" 
     "src/Resources/Model/Mesh.cpp"
     "src/Resources/Model/Model.cpp"

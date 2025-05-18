@@ -43,11 +43,11 @@ namespace Idra {
 			return;
 		}
 
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
-
 		// OpenGL expects image to start at bottom left, instead of top left
 		// image data is flipped vertically in Image class
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
 
 		// how the texture will be resampled down if it needs to be rendered smaller
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
