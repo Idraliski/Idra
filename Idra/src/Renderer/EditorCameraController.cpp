@@ -22,7 +22,7 @@ namespace Idra {
 	void EditorCameraController::OnUpdate(Camera& camera, Timestep ts)
 	{
 		ProcessKeyInput(camera, ts);
-		ProcessMouseInput(camera, ts);
+		ProcessMouseMove(camera, ts);
 	}
 
 	void EditorCameraController::OnEvent(Camera& camera, Event& e)
@@ -61,7 +61,7 @@ namespace Idra {
 		return false;
 	}
 
-	void EditorCameraController::ProcessMouseInput(Camera& camera, Timestep ts)
+	void EditorCameraController::ProcessMouseMove(Camera& camera, Timestep ts)
 	{
 		if (!m_IsCameraLooking)
 			return;

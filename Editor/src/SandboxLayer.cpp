@@ -49,6 +49,11 @@ SandboxLayer::SandboxLayer()
 	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
 	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
 	m_FlatColourShader.reset(Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc));
+
+	// Transforms
+	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };
+	m_Transform_Cube.Position = { 0.0f, 0.0f, 0.0f };
+	m_Transform_D20.Position = { 0.0f, 0.0f, -2.0f };
 }
 
 SandboxLayer::~SandboxLayer()
@@ -73,15 +78,15 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	Idra::Renderer::BeginScene(m_Camera);
 
 	m_Texture->Bind();
-	Idra::Renderer::Submit(m_TextureShader, m_Model_Sphere);
+	Idra::Renderer::Submit(m_TextureShader, m_Model_Sphere, m_Transform_Sphere);
 
-	m_AlphaTexture->Bind();
-	Idra::Renderer::Submit(m_TextureShader, m_Model_Cube);
-	/*
 	m_FlatColourShader->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
-	Idra::Renderer::Submit(m_FlatColourShader, m_Model_D20);
-	*/
+	Idra::Renderer::Submit(m_FlatColourShader, m_Model_D20, m_Transform_D20);
+
+	// anything with an alpha texture needs to be rendered last?
+	m_AlphaTexture->Bind();
+	Idra::Renderer::Submit(m_TextureShader, m_Model_Cube, m_Transform_Cube);
 
 	Idra::Renderer::EndScene();
 }
@@ -118,6 +123,13 @@ void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 		ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
 		ImGui::TreePop();
 	}
+	if (ImGui::TreeNode("Model"))
+	{
+		ImGui::Text("Model Loader Type: %s", Idra::ModelLoader::ModelLoaderTypeToString(m_ModelLoaderType).c_str());
+		ImGui::Text("Model %s Position: %.2f, %.2f, %.2f", m_Model_Sphere->GetName().c_str(), m_Transform_Sphere.Position.x, m_Transform_Sphere.Position.y, m_Transform_Sphere.Position.z);
+		ImGui::Text("Model %s Position: %.2f, %.2f, %.2f", m_Model_Cube->GetName().c_str(), m_Transform_Cube.Position.x, m_Transform_Cube.Position.y, m_Transform_Cube.Position.z);
+		ImGui::TreePop();
+	}
 	ImGui::ColorEdit3("Triangle Colour", glm::value_ptr(m_Colour));
 	ImGui::End();
 
@@ -151,7 +163,16 @@ void SandboxLayer::OnEvent(Idra::Event& e)
 
 void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
 {
-	
+	// TEMP Sphere movement
+	float moveSpeed = 1.0f;
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_UP))
+		m_Transform_Sphere.Position.y += moveSpeed * ts;
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_DOWN))
+		m_Transform_Sphere.Position.y -= moveSpeed * ts;
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_LEFT))
+		m_Transform_Sphere.Position.x -= moveSpeed * ts;
+	if (Idra::Input::IsKeyPressed(IDRA_KEY_RIGHT))
+		m_Transform_Sphere.Position.x += moveSpeed * ts;
 }
 
 void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
