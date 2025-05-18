@@ -2,7 +2,6 @@
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 #include "Resources/Image/Image.h"
-#include "Resources/FileLoader.h"
 
 #include <glad/glad.h>
 
@@ -10,12 +9,12 @@ namespace Idra {
 	OpenGLTexture2D::OpenGLTexture2D(const Path& path, bool flipImage)
 		: m_Path(path)
 	{
-		Ref<Image> image = FileLoader::LoadFileAsImage(path, flipImage);
+		Image image(path, flipImage);
 
-		m_Width = image->GetWidth();
-		m_Height = image->GetHeight();
+		m_Width = image.GetWidth();
+		m_Height = image.GetHeight();
 
-		int channels = image->GetChannels();
+		int channels = image.GetChannels();
 		GLenum dataFormat = 0, internalFormat = 0;
 		
 		if (channels == 1)
@@ -58,7 +57,7 @@ namespace Idra {
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, image->GetData());
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, image.GetData());
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()
