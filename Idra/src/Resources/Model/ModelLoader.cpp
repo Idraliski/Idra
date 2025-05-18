@@ -38,6 +38,16 @@ namespace Idra {
 		}
 	}
 
+	std::string ModelLoader::ModelLoaderTypeToString(ModelLoaderType type)
+	{
+		switch (type)
+		{
+			case ModelLoaderType::Assimp: return "Assimp";
+			case ModelLoaderType::MD2: return "MD2";
+			default: return "Unknown";
+		}
+	}
+
 	void ModelLoader::ProcessAssimpNode(aiNode* node, const aiScene* scene, Model* model)
 	{
 		// Process all the meshes in this node

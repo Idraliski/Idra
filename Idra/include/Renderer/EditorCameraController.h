@@ -28,7 +28,7 @@ namespace Idra {
 		bool OnMouseButtonReleased(MouseButtonReleasedEvent& e);
 
 	private:
-		void ProcessMouseInput(Camera& camera, Timestep ts);
+		void ProcessMouseMove(Camera& camera, Timestep ts);
 		void ProcessKeyInput(Camera& camera, Timestep ts);
 
 	private:

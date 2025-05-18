@@ -13,6 +13,11 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
+//---Model---------------------------
+#include "Resources/Model/Mesh.h"
+#include "Resources/Model/Model.h"
+#include "Resources/Model/ModelLoader.h"
+
 //---Renderer------------------------
 #include "Renderer/Camera.h"
 #include "Renderer/CameraController.h"
@@ -25,10 +30,8 @@
 
 #include "ImGui/ImGuiLayer.h"
 
-//---Model---------------------------
-#include "Resources/Model/Mesh.h"
-#include "Resources/Model/Model.h"
-#include "Resources/Model/ModelLoader.h"
+//---Scene--------------------------
+#include "Scene/Components.h"
 
 //-----------------------------------
 

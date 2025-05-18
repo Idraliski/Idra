@@ -48,6 +48,11 @@ private:
 	std::shared_ptr<Idra::Texture2D> m_Texture;
 	std::shared_ptr<Idra::Texture2D> m_AlphaTexture;
 
+	// TEMP transforms
+	Idra::TransformComponent m_Transform_Sphere;
+	Idra::TransformComponent m_Transform_Cube;
+	Idra::TransformComponent m_Transform_D20;
+
 	Idra::ModelLoaderType m_ModelLoaderType = Idra::ModelLoaderType::Assimp;
 
 	std::shared_ptr<Idra::Camera> m_Camera;
