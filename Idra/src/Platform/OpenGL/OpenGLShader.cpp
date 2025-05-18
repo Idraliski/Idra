@@ -7,6 +7,53 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Idra {
+
+	static GLenum ShaderTypeFromString(const std::string& type)
+	{
+		if (type == "vertex")
+			return GL_VERTEX_SHADER;
+		else if (type == "fragment" || type == "pixel")
+			return GL_FRAGMENT_SHADER;
+		else if (type == "geometry")
+			return GL_GEOMETRY_SHADER;
+		else if (type == "tess_control")
+			return GL_TESS_CONTROL_SHADER;
+		else if (type == "tess_evaluation")
+			return GL_TESS_EVALUATION_SHADER;
+		else if (type == "compute")
+			return GL_COMPUTE_SHADER;
+
+		IDRA_CORE_ASSERT(false, "Unknown shader type!");
+		return 0;
+	}
+
+	OpenGLShader::OpenGLShader(const Path& src)
+		: m_RendererID(0)
+	{
+		// Compile and link the shader program
+		m_RendererID = glCreateProgram();
+		IDRA_CORE_ASSERT(m_RendererID, "Failed to create shader program!");
+
+		// Load the shader source code from file
+		std::string shaderSrc = FileLoader::LoadFileAsString(src);
+		auto shaderSources = ParseShader(shaderSrc);
+		std::vector<GLuint> shaders;
+
+		for (auto& kv : shaderSources)
+		{
+			GLuint shader = CompileShader(kv.first, kv.second);
+			shaders.push_back(shader);
+		}
+
+		glLinkProgram(m_RendererID);
+
+		for (auto& shader : shaders)
+		{
+			glDetachShader(m_RendererID, shader);
+			glDeleteShader(shader);
+		}
+	}
+
 	OpenGLShader::OpenGLShader(const Path& vertexSrc, const Path& fragmentSrc)
 		: m_RendererID(0)
 	{
@@ -21,8 +68,6 @@ namespace Idra {
 		GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrcStr);
 		GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrcStr);
 
-		glAttachShader(m_RendererID, vertexShader);
-		glAttachShader(m_RendererID, fragmentShader);
 		glLinkProgram(m_RendererID);
 
 		glDetachShader(m_RendererID, vertexShader);
@@ -126,10 +171,38 @@ namespace Idra {
 
 		GLuint shader = CompileShader(glType, shaderSrc);
 
-		glAttachShader(m_RendererID, shader);
 		glLinkProgram(m_RendererID);
 		glDetachShader(m_RendererID, shader);
 		glDeleteShader(shader);
+	}
+
+	std::unordered_map<unsigned int, std::string> OpenGLShader::ParseShader(const std::string& src)
+	{
+		std::unordered_map<unsigned int, std::string> shaderSources;
+
+		const char* typeToken = "#type";
+		size_t typeTokenLength = strlen(typeToken);
+		size_t pos = src.find(typeToken, 0);
+		IDRA_CORE_ASSERT(pos != std::string::npos, "Cannot Find #type");
+
+		while (pos != std::string::npos)
+		{
+			size_t eol = src.find_first_of("\r\n", pos);
+			IDRA_CORE_ASSERT(eol != std::string::npos, "Syntax error");
+
+			size_t begin = pos + typeTokenLength + 1;
+			std::string type = src.substr(begin, eol - begin);
+			IDRA_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified!");
+
+			size_t nextLinePos = src.find_first_not_of("\r\n", eol);
+			pos = src.find(typeToken, nextLinePos);
+			shaderSources[ShaderTypeFromString(type)] = 
+				(pos == std::string::npos) 
+					? src.substr(nextLinePos) 
+					: src.substr(nextLinePos, pos - nextLinePos);
+		}
+
+		return shaderSources;
 	}
 
 	unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& source)
@@ -177,6 +250,7 @@ namespace Idra {
 			IDRA_CORE_ASSERT(false, "Shader compilation failed!");
 		}
 
+		glAttachShader(m_RendererID, shader);
 		return shader;
 	}
 

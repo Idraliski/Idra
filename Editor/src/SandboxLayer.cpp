@@ -35,13 +35,11 @@ SandboxLayer::SandboxLayer()
 	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
 
 	// Shaders
-	Path vertexSrc = "Assets/Shaders/Basic.vert";
-	Path fragmentSrc = "Assets/Shaders/Basic.frag";
-	m_Shader = Idra::Shader::Create(vertexSrc, fragmentSrc);
+	Path glsl = "Assets/Shaders/Basic.glsl";
+	m_Shader = Idra::Shader::Create(glsl);
 
-	Path textureVertexSrc = "Assets/Shaders/BasicTexture.vert";
-	Path textureFragmentSrc = "Assets/Shaders/BasicTexture.frag";
-	m_TextureShader = Idra::Shader::Create(textureVertexSrc, textureFragmentSrc);
+	Path textureGLSL = "Assets/Shaders/BasicTexture.glsl";
+	m_TextureShader = Idra::Shader::Create(textureGLSL);
 
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->SetUniform1i("u_Texture", 0);
@@ -52,6 +50,7 @@ SandboxLayer::SandboxLayer()
 
 	// Transforms
 	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };
+	m_Transform_Sphere2.Position = { -2.0f, 2.0f, 0.0f };
 	m_Transform_Cube.Position = { 0.0f, 0.0f, 0.0f };
 	m_Transform_D20.Position = { 0.0f, 0.0f, -2.0f };
 }
@@ -79,6 +78,8 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 
 	m_Texture->Bind();
 	Idra::Renderer::Submit(m_TextureShader, m_Model_Sphere, m_Transform_Sphere);
+
+	Idra::Renderer::Submit(m_Shader, m_Model_Sphere, m_Transform_Sphere2);
 
 	m_FlatColourShader->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);

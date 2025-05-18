@@ -26,6 +26,7 @@ namespace Idra {
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
+		static Ref<Shader> Create(const Path& src);
 		static Ref<Shader> Create(const Path& vertexSrc, const Path& fragmentSrc);		
 	};
 }

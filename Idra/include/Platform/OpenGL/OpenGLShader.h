@@ -5,15 +5,15 @@
 #include "Renderer/Shader.h"
 
 #include <glm/glm.hpp>
+#include <unordered_map>
 
 namespace Idra {
 	class IDRA_API OpenGLShader : public Shader
 	{
 	public:
+		OpenGLShader(const Path& src);
 		OpenGLShader(const Path& vertexSrc, const Path& fragmentSrc);
 		~OpenGLShader();
-
-		uint32_t GetRendererID() const { return m_RendererID; }
 
 		void Bind() const override;
 		void Unbind() const override;
@@ -31,6 +31,7 @@ namespace Idra {
 		void AttachShader(const Path& src, ShaderType type);
 
 	private:
+		std::unordered_map<unsigned int, std::string> ParseShader(const std::string& src);
 		unsigned int CompileShader(unsigned int type, const std::string& source);
 		int GetUniformLocation(const std::string& name);
 
