@@ -59,7 +59,7 @@ namespace Idra {
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
-		m_RenderingContext.reset(RenderingContext::Create(m_Window));
+		m_RenderingContext = RenderingContext::Create(m_Window);
 		m_RenderingContext->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);

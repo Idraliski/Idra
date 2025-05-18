@@ -4,7 +4,7 @@
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Idra {
-	Shader* Shader::Create(const Path& vertexSrc, const Path& fragmentSrc)
+	Ref<Shader> Shader::Create(const Path& vertexSrc, const Path& fragmentSrc)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -12,7 +12,7 @@ namespace Idra {
 				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!"); 
 				return nullptr;
 			case RendererAPI::API::OpenGL: 
-				return new OpenGLShader(vertexSrc, fragmentSrc);
+				return CreateRef<OpenGLShader>(vertexSrc, fragmentSrc);
 			case RendererAPI::API::Vulkan: 
 				IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!"); 
 				return nullptr;

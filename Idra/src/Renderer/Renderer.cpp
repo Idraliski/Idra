@@ -12,7 +12,7 @@ namespace Idra {
 		RenderCommand::Init();
 	}
 
-	const void Renderer::BeginScene(const std::shared_ptr<Camera>& camera)
+	const void Renderer::BeginScene(const Ref<Camera>& camera)
 	{
 		s_SceneData.ViewProjectionMatrix = camera->GetViewProjectionMatrix();
 	}
@@ -22,7 +22,7 @@ namespace Idra {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Mesh>& mesh, const TransformComponent& transform)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<Mesh>& mesh, const TransformComponent& transform)
 	{
 		shader->Bind();
 		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
@@ -33,7 +33,7 @@ namespace Idra {
 		RenderCommand::DrawIndexed(mesh->GetVertexArray());
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Model>& model, const TransformComponent& transform)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<Model>& model, const TransformComponent& transform)
 	{
 		shader->Bind();
 		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);

@@ -6,7 +6,7 @@
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 namespace Idra {
-	VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -14,7 +14,7 @@ namespace Idra {
 				IDRA_ASSERT(false, "RendererAPI::None is currently not supported!"); 
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return new OpenGLVertexArray();
+				return CreateRef<OpenGLVertexArray>();
 			case RendererAPI::API::DirectX:
 				IDRA_ASSERT(false, "RendererAPI::DirectX is currently not supported!");
 				return nullptr;

@@ -23,11 +23,11 @@ namespace Idra {
 	class IDRA_API ModelLoader
 	{
 	public:
-		static Model* LoadModel(ModelLoaderType type, Path source);
+		static Ref<Model> LoadModel(ModelLoaderType type, Path source);
 
 		static std::string ModelLoaderTypeToString(ModelLoaderType type);
 	private:
-		static void ProcessAssimpNode(aiNode* node, const aiScene* scene, Model* model);
+		static void ProcessAssimpNode(aiNode* node, const aiScene* scene, Ref<Model> model);
 		static Mesh ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene);
 	};
 }

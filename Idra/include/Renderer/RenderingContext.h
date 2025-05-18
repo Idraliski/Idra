@@ -18,6 +18,6 @@ namespace Idra {
 		virtual const std::string& GetVendor() const = 0;
 		virtual const std::string& GetVersion() const = 0;
 
-		static RenderingContext* Create(GLFWwindow* windowHandle);
+		static Scope<RenderingContext> Create(GLFWwindow* windowHandle);
 	};
 }

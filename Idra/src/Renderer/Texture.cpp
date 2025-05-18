@@ -6,7 +6,7 @@
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Idra {
-	Texture2D* Texture2D::Create(const Path& path)
+	Ref<Texture2D> Texture2D::Create(const Path& path)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -15,7 +15,7 @@ namespace Idra {
 			return nullptr;
 
 		case RendererAPI::API::OpenGL:
-			return new OpenGLTexture2D(path);
+			return CreateRef<OpenGLTexture2D>(path);
 
 		case RendererAPI::API::DirectX:
 			IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");

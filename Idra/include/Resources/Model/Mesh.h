@@ -16,10 +16,10 @@ namespace Idra {
 		void Bind() const;
 		void Unbind() const;
 
-		inline const std::shared_ptr<VertexArray>& GetVertexArray() const { return m_VertexArray; }
+		inline const Ref<VertexArray>& GetVertexArray() const { return m_VertexArray; }
 
 	private:
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<Texture> m_Texture;
+		Ref<VertexArray> m_VertexArray;
+		Ref<Texture> m_Texture;
 	};
 }

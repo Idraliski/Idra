@@ -17,11 +17,11 @@ namespace Idra {
 	public:
 		static void Init();
 
-		static const void BeginScene(const std::shared_ptr<Camera>& camera);
+		static const void BeginScene(const Ref<Camera>& camera);
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Mesh>& mesh, const TransformComponent& transform);
-		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<Model>& model, const TransformComponent& transform);
+		static void Submit(const Ref<Shader>& shader, const Ref<Mesh>& mesh, const TransformComponent& transform);
+		static void Submit(const Ref<Shader>& shader, const Ref<Model>& model, const TransformComponent& transform);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 

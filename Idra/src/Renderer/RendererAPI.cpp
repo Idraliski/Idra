@@ -6,7 +6,7 @@ namespace Idra {
 	// @TODO: Set this to the renderer API of your choice
 	RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
 
-	RendererAPI* RendererAPI::Create()
+	Scope<RendererAPI> RendererAPI::Create()
 	{
 		switch (s_API)
 		{
@@ -14,7 +14,7 @@ namespace Idra {
 				IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 				return nullptr;
 			case RendererAPI::API::OpenGL:
-				return new OpenGLRendererAPI();
+				return CreateScope<OpenGLRendererAPI>();
 			case RendererAPI::API::DirectX:
 				IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
 				return nullptr;
