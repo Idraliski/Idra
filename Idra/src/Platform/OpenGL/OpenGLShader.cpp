@@ -28,7 +28,7 @@ namespace Idra {
 	}
 
 	OpenGLShader::OpenGLShader(const Path& src)
-		: m_RendererID(0)
+		: m_RendererID(0), m_Name(src.stem().string())
 	{
 		// Compile and link the shader program
 		m_RendererID = glCreateProgram();
@@ -37,6 +37,10 @@ namespace Idra {
 		// Load the shader source code from file
 		std::string shaderSrc = FileLoader::LoadFileAsString(src);
 		auto shaderSources = ParseShader(shaderSrc);
+		IDRA_CORE_ASSERT(shaderSources.size() > 0, "No shader sources found!");
+		IDRA_CORE_ASSERT(shaderSources.find(GL_VERTEX_SHADER) != shaderSources.end(), "Vertex shader not found!");
+		IDRA_CORE_ASSERT(shaderSources.find(GL_FRAGMENT_SHADER) != shaderSources.end(), "Fragment shader not found!");
+
 		std::vector<GLuint> shaders;
 
 		for (auto& kv : shaderSources)
@@ -55,7 +59,7 @@ namespace Idra {
 	}
 
 	OpenGLShader::OpenGLShader(const Path& vertexSrc, const Path& fragmentSrc)
-		: m_RendererID(0)
+		: m_RendererID(0), m_Name(vertexSrc.stem().string())
 	{
 		// Compile and link the shader program
 		m_RendererID = glCreateProgram();

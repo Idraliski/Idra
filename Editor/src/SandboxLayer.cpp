@@ -35,18 +35,18 @@ SandboxLayer::SandboxLayer()
 	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
 
 	// Shaders
-	Path glsl = "Assets/Shaders/Basic.glsl";
-	m_Shader = Idra::Shader::Create(glsl);
-
+	Path BasicGLSL = "Assets/Shaders/Basic.glsl";
 	Path textureGLSL = "Assets/Shaders/BasicTexture.glsl";
-	m_TextureShader = Idra::Shader::Create(textureGLSL);
-
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->Bind();
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_TextureShader)->SetUniform1i("u_Texture", 0);
-
 	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
 	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
-	m_FlatColourShader = Idra::Shader::Create(flatColourVertexSrc, flatColourFragmentSrc);
+
+	m_ShaderLibrary.Load(BasicGLSL);
+	auto flatColourShader = m_ShaderLibrary.Load("FlatColour", flatColourVertexSrc, flatColourFragmentSrc);
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->Bind();
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->SetUniform3f("v_Color", m_Colour);
+	auto textureShader = m_ShaderLibrary.Load("Texture", textureGLSL);
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->Bind();
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->SetUniform1i("u_Texture", 0);
 
 	// Transforms
 	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };
@@ -66,7 +66,7 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	ProcessMouseInput(ts);
 
 	// Update the camera
-	m_EditorCameraController->OnUpdate(*m_Camera, ts);
+	m_EditorCameraController->OnUpdate(m_Camera, ts);
 
 	Idra::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
 	Idra::RenderCommand::Clear();
@@ -76,18 +76,19 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 
 	Idra::Renderer::BeginScene(m_Camera);
 
+	auto basicShader = m_ShaderLibrary.Get("Basic");
+	auto textureShader = m_ShaderLibrary.Get("Texture");
+	auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
+
 	m_Texture->Bind();
-	Idra::Renderer::Submit(m_TextureShader, m_Model_Sphere, m_Transform_Sphere);
+	Idra::Renderer::Submit(textureShader, m_Model_Sphere, m_Transform_Sphere);
 
-	Idra::Renderer::Submit(m_Shader, m_Model_Sphere, m_Transform_Sphere2);
-
-	m_FlatColourShader->Bind();
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(m_FlatColourShader)->SetUniform3f("v_Color", m_Colour);
-	Idra::Renderer::Submit(m_FlatColourShader, m_Model_D20, m_Transform_D20);
+	Idra::Renderer::Submit(basicShader, m_Model_Sphere, m_Transform_Sphere2);
+	Idra::Renderer::Submit(flatColourShader, m_Model_D20, m_Transform_D20);
 
 	// anything with an alpha texture needs to be rendered last?
 	m_AlphaTexture->Bind();
-	Idra::Renderer::Submit(m_TextureShader, m_Model_Cube, m_Transform_Cube);
+	Idra::Renderer::Submit(textureShader, m_Model_Cube, m_Transform_Cube);
 
 	Idra::Renderer::EndScene();
 }
@@ -157,7 +158,7 @@ void SandboxLayer::OnDetach()
 void SandboxLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
-	m_EditorCameraController->OnEvent(*m_Camera, e);
+	m_EditorCameraController->OnEvent(m_Camera, e);
 
 	dispatcher.Dispatch<Idra::KeyPressedEvent>(IDRA_BIND_EVENT_FN(SandboxLayer::OnKeyPressed));
 }

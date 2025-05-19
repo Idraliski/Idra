@@ -21,7 +21,7 @@ namespace Idra {
 
 		static Ref<CameraController> CreateCameraController(CameraControllerType type);
 
-		virtual void OnUpdate(Camera& camera, Timestep ts) = 0;
-		virtual void OnEvent(Camera& camera, Event& e) = 0;
+		virtual void OnUpdate(Ref<Camera> camera, Timestep ts) = 0;
+		virtual void OnEvent(Ref<Camera> camera, Event& e) = 0;
 	};
 }

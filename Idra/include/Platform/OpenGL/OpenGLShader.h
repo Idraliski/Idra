@@ -18,6 +18,9 @@ namespace Idra {
 		void Bind() const override;
 		void Unbind() const override;
 
+		const std::string& GetName() const override { return m_Name; }
+		void SetName(const std::string& name) { m_Name = name; }
+
 		void SetUniform1f(const std::string& name, float value);
 		void SetUniform2f(const std::string& name, const glm::vec2& value);
 		void SetUniform3f(const std::string& name, const glm::vec3& value);
@@ -37,6 +40,7 @@ namespace Idra {
 
 	private:
 		uint32_t m_RendererID = 0;
+		std::string m_Name;
 		std::unordered_map<std::string, int> m_UniformLocationCache;
 	};
 }
