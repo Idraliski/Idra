@@ -22,7 +22,7 @@ namespace Idra {
 	class IDRA_API Texture2D : public Texture
 	{
 	public:
-		static Ref<Texture2D> Create(const Path& path);
+		static Ref<Texture2D> Create(const Path& path, bool flipImage = true);
 	};
 
 	// @TODO: make a Texture3D & TextureCube class

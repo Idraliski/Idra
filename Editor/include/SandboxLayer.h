@@ -44,15 +44,21 @@ private:
 	Idra::Ref<Idra::Model> m_Model_Sphere;
 	Idra::Ref<Idra::Model> m_Model_Cube;
 	Idra::Ref<Idra::Model> m_Model_D20;
+	Idra::Ref<Idra::Model> m_Model_WoodBench;
+	Idra::Ref<Idra::Model> m_Model_MetalTable;
 
 	Idra::Ref<Idra::Texture2D> m_Texture;
 	Idra::Ref<Idra::Texture2D> m_AlphaTexture;
+	Idra::Ref<Idra::Texture2D> m_Texture_MetalTable;
+	Idra::Ref<Idra::Texture2D> m_Texture_WoodBench;
 
 	// TEMP transforms
 	Idra::TransformComponent m_Transform_Sphere;
 	Idra::TransformComponent m_Transform_Sphere2;
 	Idra::TransformComponent m_Transform_Cube;
 	Idra::TransformComponent m_Transform_D20;
+	Idra::TransformComponent m_Transform_WoodBench;
+	Idra::TransformComponent m_Transform_MetalTable;
 
 	Idra::ModelLoaderType m_ModelLoaderType = Idra::ModelLoaderType::Assimp;
 
