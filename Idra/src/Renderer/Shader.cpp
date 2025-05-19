@@ -1,3 +1,5 @@
+#include "IdraPCH.h"
+
 #include "Renderer/Shader.h"
 
 #include "Renderer/Renderer.h"
@@ -44,5 +46,53 @@ namespace Idra {
 
 		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
+	}
+
+	void ShaderLibrary::Add(const Ref<Shader>& shader)
+	{
+		const std::string& name = shader->GetName();
+		IDRA_CORE_ASSERT(!DoesExists(name), "Shader already exists!");
+		m_Shaders[name] = shader;
+	}
+
+	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
+	{
+		IDRA_CORE_ASSERT(!DoesExists(name), "Shader already exists!");
+		m_Shaders[name] = shader;
+	}
+
+	Ref<Shader> ShaderLibrary::Load(const Path& path)
+	{
+		auto shader = Shader::Create(path);
+		Add(shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, const Path& path)
+	{
+		auto shader = Shader::Create(path);
+		shader->SetName(name);
+		Add(shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, 
+		const Path& vertexSrc, const Path& fragmentSrc)
+	{
+		auto shader = Shader::Create(vertexSrc, fragmentSrc);
+		shader->SetName(name);
+		Add(shader);
+		return shader;
+	}
+
+	Ref<Shader> ShaderLibrary::Get(const std::string& name)
+	{
+		IDRA_CORE_ASSERT(DoesExists(name), "Shader not found!");
+		return m_Shaders[name];
+	}
+
+	bool ShaderLibrary::DoesExists(const std::string& name)
+	{
+		return m_Shaders.find(name) != m_Shaders.end();
 	}
 }

@@ -39,12 +39,12 @@ private:
 	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
 	// TEMP
-	Idra::Ref<Idra::Shader> m_Shader;
-	Idra::Ref<Idra::Shader> m_TextureShader;
-	Idra::Ref<Idra::Shader> m_FlatColourShader;
+	Idra::ShaderLibrary m_ShaderLibrary;
+
 	Idra::Ref<Idra::Model> m_Model_Sphere;
 	Idra::Ref<Idra::Model> m_Model_Cube;
 	Idra::Ref<Idra::Model> m_Model_D20;
+
 	Idra::Ref<Idra::Texture2D> m_Texture;
 	Idra::Ref<Idra::Texture2D> m_AlphaTexture;
 

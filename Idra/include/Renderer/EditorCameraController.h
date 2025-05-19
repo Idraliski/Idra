@@ -15,8 +15,8 @@ namespace Idra {
 		EditorCameraController(bool isCameraLooking = false, bool isCameraMoving = true);
 		~EditorCameraController() override;
 
-		void OnUpdate(Camera& camera, Timestep ts) override;
-		void OnEvent(Camera& camera, Event& e) override;
+		void OnUpdate(Ref<Camera> camera, Timestep ts) override;
+		void OnEvent(Ref<Camera> camera, Event& e) override;
 
 		const bool IsCameraLooking() const { return m_IsCameraLooking; }
 		void SetCameraLooking(bool looking) { m_IsCameraLooking = looking; }
@@ -28,8 +28,8 @@ namespace Idra {
 		bool OnMouseButtonReleased(MouseButtonReleasedEvent& e);
 
 	private:
-		void ProcessMouseMove(Camera& camera, Timestep ts);
-		void ProcessKeyInput(Camera& camera, Timestep ts);
+		void ProcessMouseMove(Ref<Camera> camera, Timestep ts);
+		void ProcessKeyInput(Ref<Camera> camera, Timestep ts);
 
 	private:
 		bool m_IsCameraLooking;
