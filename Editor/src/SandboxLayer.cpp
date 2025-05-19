@@ -29,10 +29,14 @@ SandboxLayer::SandboxLayer()
 	m_Model_Sphere = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj");
 	m_Model_Cube = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj");
 	m_Model_D20 = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj");
+	m_Model_WoodBench = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/WoodBench.obj");
+	m_Model_MetalTable = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/MetalTable.obj");
 
 	// Load the texture
 	m_Texture = Idra::Texture2D::Create("Assets/Textures/default.png");
 	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
+	m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg", false);
+	m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png", false);
 
 	// Shaders
 	Path BasicGLSL = "Assets/Shaders/Basic.glsl";
@@ -53,6 +57,8 @@ SandboxLayer::SandboxLayer()
 	m_Transform_Sphere2.Position = { -2.0f, 2.0f, 0.0f };
 	m_Transform_Cube.Position = { 0.0f, 0.0f, 0.0f };
 	m_Transform_D20.Position = { 0.0f, 0.0f, -2.0f };
+	m_Transform_WoodBench.Position = { 10.0f, 0.0f, -20.0f };
+	m_Transform_MetalTable.Position = { -10.0f, 0.0f, -10.0f };
 }
 
 SandboxLayer::~SandboxLayer()
@@ -82,6 +88,10 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 
 	m_Texture->Bind();
 	Idra::Renderer::Submit(textureShader, m_Model_Sphere, m_Transform_Sphere);
+	m_Texture_MetalTable->Bind();
+	Idra::Renderer::Submit(textureShader, m_Model_MetalTable, m_Transform_MetalTable);
+	m_Texture_WoodBench->Bind();
+	Idra::Renderer::Submit(textureShader, m_Model_WoodBench, m_Transform_WoodBench);
 
 	Idra::Renderer::Submit(basicShader, m_Model_Sphere, m_Transform_Sphere2);
 	Idra::Renderer::Submit(flatColourShader, m_Model_D20, m_Transform_D20);
