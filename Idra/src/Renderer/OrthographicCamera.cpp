@@ -12,8 +12,6 @@ namespace Idra {
 
 	void OrthographicCamera::SetZoomLevel(float zoomLevel)
 	{
-		// Zooms in opposite direction to perspective camera
-		// will not be able to figure out
 		m_ZoomLevel = glm::clamp(zoomLevel, 0.1f, 50.0f);
 
 		UpdateProjectionMatrix();
@@ -37,7 +35,7 @@ namespace Idra {
 
 	void OrthographicCamera::UpdateProjectionMatrix()
 	{
-		m_ProjectionMatrix = glm::ortho(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel, m_NearClip, m_FarClip);
+		m_ProjectionMatrix = glm::ortho(-m_AspectRatio * 1/m_ZoomLevel, m_AspectRatio * 1/m_ZoomLevel, -1/m_ZoomLevel, 1/m_ZoomLevel, m_NearClip, m_FarClip);
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 }

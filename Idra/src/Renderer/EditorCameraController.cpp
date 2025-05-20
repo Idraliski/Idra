@@ -89,7 +89,7 @@ namespace Idra {
 		if (!m_IsCameraLooking)
 			return;
 
-		float rotateSpeed = m_RotationSpeed * ts;
+		float rotateSpeed = m_RotationSpeed * ts / camera->GetZoomLevel();
 
 		auto currMousePos = Idra::Input::GetMousePosition();
 		glm::vec2 mousePos = { currMousePos.first, currMousePos.second };
@@ -104,7 +104,7 @@ namespace Idra {
 		if (!m_IsCameraMoving)
 			return;
 
-		float moveSpeed = m_MovementSpeed * ts;
+		float moveSpeed = m_MovementSpeed * ts / camera->GetZoomLevel();
 
 		if (Idra::Input::IsKeyPressed(IDRA_KEY_W))
 			camera->SetPosition(camera->GetPosition() + camera->GetForward() * moveSpeed);
