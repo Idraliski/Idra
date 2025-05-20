@@ -31,7 +31,8 @@
 
 #define BIT(x) (1 << x)
 
-#define IDRA_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1) // #DEBUG
+#define IDRA_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+#define IDRA_BIND_EVENT_WITH_ARGS(fn, ...) [&](auto& e) { return fn(e, __VA_ARGS__); }
 
 namespace Idra {
 	template<typename T> 

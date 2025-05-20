@@ -5,8 +5,8 @@
 #include "Renderer/PerspectiveCamera.h"
 
 namespace Idra {
-	Camera::Camera(float nearClip, float farClip)
-		: m_NearClip(nearClip), m_FarClip(farClip)
+	Camera::Camera(float nearClip, float farClip, float zoomLevel)
+		: m_NearClip(nearClip), m_FarClip(farClip), m_ZoomLevel(zoomLevel)
 	{
 
 	}
