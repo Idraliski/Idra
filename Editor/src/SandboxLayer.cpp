@@ -31,18 +31,30 @@ SandboxLayer::SandboxLayer()
 	m_Model_D20 = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj");
 	m_Model_WoodBench = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/WoodBench.obj");
 	m_Model_MetalTable = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/MetalTable.obj");
+	m_Model_Skybox = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Skybox.obj");
 
 	// Load the texture
 	m_Texture = Idra::Texture2D::Create("Assets/Textures/default.png");
 	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
-	m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg", false);
-	m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png", false);
+	m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg");
+	m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png");
+	m_Texture_Skybox = Idra::TextureCube::Create(
+		{ 
+			"Assets/Textures/Skybox/default/right.jpg",
+			"Assets/Textures/Skybox/default/left.jpg",
+			"Assets/Textures/Skybox/default/top.jpg",
+			"Assets/Textures/Skybox/default/bottom.jpg",
+			"Assets/Textures/Skybox/default/front.jpg",
+			"Assets/Textures/Skybox/default/back.jpg"
+		}, false
+	);
 
 	// Shaders
 	Path BasicGLSL = "Assets/Shaders/Basic.glsl";
 	Path textureGLSL = "Assets/Shaders/BasicTexture.glsl";
 	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
 	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
+	Path skyboxGLSL = "Assets/Shaders/Skybox.glsl";
 
 	m_ShaderLibrary.Load(BasicGLSL);
 	auto flatColourShader = m_ShaderLibrary.Load("FlatColour", flatColourVertexSrc, flatColourFragmentSrc);
@@ -51,6 +63,9 @@ SandboxLayer::SandboxLayer()
 	auto textureShader = m_ShaderLibrary.Load("Texture", textureGLSL);
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->SetUniform1i("u_Texture", 0);
+	auto skyboxShader = m_ShaderLibrary.Load("Skybox", skyboxGLSL);
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(skyboxShader)->Bind();
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(skyboxShader)->SetUniform1i("u_Skybox", 0);
 
 	// Transforms
 	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };
@@ -80,11 +95,13 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	// Ideally, we would have a Renderer class that handles all the rendering
 	//Renderer::BeginScene(camera, lights, environment);
 
-	Idra::Renderer::BeginScene(m_Camera);
-
 	auto basicShader = m_ShaderLibrary.Get("Basic");
 	auto textureShader = m_ShaderLibrary.Get("Texture");
 	auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
+	auto skyboxShader = m_ShaderLibrary.Get("Skybox");
+
+	m_Texture_Skybox->Bind();
+	Idra::Renderer::BeginScene(m_Camera, skyboxShader, m_Model_Skybox);
 
 	m_Texture->Bind();
 	Idra::Renderer::Submit(textureShader, m_Model_Sphere, m_Transform_Sphere);
@@ -95,8 +112,9 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 
 	Idra::Renderer::Submit(basicShader, m_Model_Sphere, m_Transform_Sphere2);
 	Idra::Renderer::Submit(flatColourShader, m_Model_D20, m_Transform_D20);
-
-	// anything with an alpha texture needs to be rendered last?
+	
+	// anything with an alpha texture needs to be rendered last? Even after Skybox
+	// might be worth creating a SubmitTransparent function
 	m_AlphaTexture->Bind();
 	Idra::Renderer::Submit(textureShader, m_Model_Cube, m_Transform_Cube);
 

@@ -33,4 +33,33 @@ namespace Idra {
 	{
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 	}
+
+	void OpenGLRendererAPI::SetDepthFunction(DepthFunction depthFunc)
+	{
+		switch (depthFunc)
+		{
+		case DepthFunction::Less:
+			glDepthFunc(GL_LESS);
+			break;
+		case DepthFunction::LEqual:
+			glDepthFunc(GL_LEQUAL);
+			break;
+		}
+	}
+
+	void OpenGLRendererAPI::SetCullFace(CullFace cullFace)
+	{
+		switch (cullFace)
+		{
+		case CullFace::Front:
+			glCullFace(GL_FRONT);
+			break;
+		case CullFace::Back:
+			glCullFace(GL_BACK);
+			break;
+		case CullFace::FrontAndBack:
+			glCullFace(GL_FRONT_AND_BACK);
+			break;
+		}
+	}
 }

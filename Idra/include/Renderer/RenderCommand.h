@@ -27,6 +27,16 @@ namespace Idra {
 		{ 
 			s_RendererAPI->DrawIndexed(vertexArray); 
 		}
+
+		inline static void SetDepthFunction(RendererAPI::DepthFunction depthFunc)
+		{
+			s_RendererAPI->SetDepthFunction(depthFunc);
+		}
+
+		inline static void SetCullFace(RendererAPI::CullFace cullFace)
+		{
+			s_RendererAPI->SetCullFace(cullFace);
+		}
 	private:
 		static Scope<RendererAPI> s_RendererAPI;
 	};

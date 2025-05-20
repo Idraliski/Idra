@@ -51,18 +51,19 @@ namespace Idra {
 	void ShaderLibrary::Add(const Ref<Shader>& shader)
 	{
 		const std::string& name = shader->GetName();
-		IDRA_CORE_ASSERT(!DoesExists(name), "Shader already exists!");
 		m_Shaders[name] = shader;
 	}
 
 	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{
-		IDRA_CORE_ASSERT(!DoesExists(name), "Shader already exists!");
 		m_Shaders[name] = shader;
 	}
 
 	Ref<Shader> ShaderLibrary::Load(const Path& path)
 	{
+		if (DoesExists(path.stem().string()))
+			return Get(path.stem().string());
+
 		auto shader = Shader::Create(path);
 		Add(shader);
 		return shader;
@@ -70,6 +71,9 @@ namespace Idra {
 
 	Ref<Shader> ShaderLibrary::Load(const std::string& name, const Path& path)
 	{
+		if (DoesExists(name))
+			return Get(name);
+
 		auto shader = Shader::Create(path);
 		shader->SetName(name);
 		Add(shader);
@@ -79,6 +83,9 @@ namespace Idra {
 	Ref<Shader> ShaderLibrary::Load(const std::string& name, 
 		const Path& vertexSrc, const Path& fragmentSrc)
 	{
+		if (DoesExists(name))
+			return Get(name);
+
 		auto shader = Shader::Create(vertexSrc, fragmentSrc);
 		shader->SetName(name);
 		Add(shader);

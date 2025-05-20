@@ -39,18 +39,23 @@ private:
 	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
 	// TEMP
+	// shader library
 	Idra::ShaderLibrary m_ShaderLibrary;
 
+	// Models
 	Idra::Ref<Idra::Model> m_Model_Sphere;
 	Idra::Ref<Idra::Model> m_Model_Cube;
 	Idra::Ref<Idra::Model> m_Model_D20;
 	Idra::Ref<Idra::Model> m_Model_WoodBench;
 	Idra::Ref<Idra::Model> m_Model_MetalTable;
+	Idra::Ref<Idra::Model> m_Model_Skybox;
 
+	// Textures
 	Idra::Ref<Idra::Texture2D> m_Texture;
 	Idra::Ref<Idra::Texture2D> m_AlphaTexture;
 	Idra::Ref<Idra::Texture2D> m_Texture_MetalTable;
 	Idra::Ref<Idra::Texture2D> m_Texture_WoodBench;
+	Idra::Ref<Idra::TextureCube> m_Texture_Skybox;
 
 	// TEMP transforms
 	Idra::TransformComponent m_Transform_Sphere;

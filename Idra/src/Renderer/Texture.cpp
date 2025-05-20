@@ -29,4 +29,29 @@ namespace Idra {
 		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
+
+	Ref<TextureCube> TextureCube::Create(const  std::vector<Path>& paths, bool flipImage)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			IDRA_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			return nullptr;
+
+		case RendererAPI::API::OpenGL:
+			return CreateRef<OpenGLTextureCube>(paths, flipImage);
+
+		case RendererAPI::API::DirectX:
+			IDRA_CORE_ASSERT(false, "RendererAPI::DirectX is not supported!");
+			return nullptr;
+
+		case RendererAPI::API::Vulkan:
+			IDRA_CORE_ASSERT(false, "RendererAPI::Vulkan is not supported!");
+			return nullptr;
+
+		}
+
+		IDRA_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
 }
