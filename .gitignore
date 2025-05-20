@@ -8,4 +8,15 @@ build/
 *.zip
 *.bat
 
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.ico
+
+*.obj
+*.mtl
+
 CMakeSettings.json
