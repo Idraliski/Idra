@@ -17,11 +17,16 @@ namespace Idra {
 			IDRA_CORE_ERROR("Failed to load image (using default image): {0}", path.string());
 			std::string defaultImage = "Assets/Textures/default.png";
 			m_ImageData = stbi_load(defaultImage.c_str(), &m_Width, &m_Height, &m_Channels, 0);
+			IDRA_CORE_ASSERT(m_ImageData, "Failed to load default image!");
+			return;
 		}
+
+		IDRA_CORE_INFO("Loaded Image {0}", path.string());
 	}
 
 	Image::~Image()
 	{
-		stbi_image_free(m_ImageData);
+		if (m_ImageData) 
+			stbi_image_free(m_ImageData);
 	}
 }
