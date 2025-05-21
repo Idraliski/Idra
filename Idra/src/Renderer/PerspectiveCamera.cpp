@@ -19,8 +19,6 @@ namespace Idra {
 
 	void PerspectiveCamera::OnResize(float width, float height)
 	{
-		if (height == 0)
-			height = 1;
 		m_AspectRatio = width / height;
 		UpdateProjectionMatrix();
 	}

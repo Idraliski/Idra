@@ -23,13 +23,14 @@ namespace Idra {
 		static void Submit(const Ref<Shader>& shader, const Ref<Mesh>& mesh, const TransformComponent& transform);
 		static void Submit(const Ref<Shader>& shader, const Ref<Model>& model, const TransformComponent& transform);
 
-		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	private:
 		static void DrawSkybox(const Ref<Shader>& shader, const Ref<Model>& model);
 
 	private:
 		struct SceneData
 		{
+			glm::mat4 PerspectiveProjectionMatrix;
 			glm::mat4 ViewProjectionMatrix;
 			glm::mat4 ProjectionMatrix;
 			glm::mat4 ViewMatrix;

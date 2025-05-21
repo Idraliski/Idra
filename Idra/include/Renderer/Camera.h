@@ -55,6 +55,8 @@ namespace Idra {
 		const float GetFarClip() const { return m_FarClip; }
 		void SetFarClip(float farClip) { m_FarClip = farClip; UpdateProjectionMatrix(); }
 
+		const CameraProjectionType GetProjectionType() const { return m_ProjectionType; }
+
 		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 		const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }

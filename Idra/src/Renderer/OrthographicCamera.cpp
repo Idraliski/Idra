@@ -19,9 +19,8 @@ namespace Idra {
 
 	void OrthographicCamera::OnResize(float width, float height)
 	{
-		if (height == 0)
-			height = 1;
 		m_AspectRatio = width / height;
+		UpdateProjectionMatrix();
 	}
 
 	void OrthographicCamera::SetProjection(float aspectRatio, float nearClip, float farClip)
