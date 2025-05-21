@@ -17,6 +17,8 @@ namespace Idra {
 		s_SceneData.ViewProjectionMatrix = camera->GetViewProjectionMatrix();
 		s_SceneData.ProjectionMatrix = camera->GetProjectionMatrix();
 		s_SceneData.ViewMatrix = camera->GetViewMatrix();
+		if (camera->GetProjectionType() == CameraProjectionType::Perspective)
+			s_SceneData.PerspectiveProjectionMatrix = camera->GetProjectionMatrix();
 
 		if (skyboxShader && skyboxModel)
 			DrawSkybox(skyboxShader, skyboxModel);
@@ -60,7 +62,7 @@ namespace Idra {
 	{
 		//remove translation from view matrix
 		glm::mat4 view = glm::mat4(glm::mat3(s_SceneData.ViewMatrix));
-		glm::mat4 projection = s_SceneData.ProjectionMatrix;
+		glm::mat4 projection = s_SceneData.PerspectiveProjectionMatrix;
 		glm::mat4 viewProjection = projection * view;
 
 		shader->Bind();

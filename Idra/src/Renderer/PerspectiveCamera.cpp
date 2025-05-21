@@ -10,6 +10,19 @@ namespace Idra {
 		UpdateProjectionMatrix();
 	}
 
+	void PerspectiveCamera::SetZoomLevel(float zoomLevel)
+	{
+		float BaseFOV = 45.0f;
+		m_ZoomLevel = glm::clamp(zoomLevel, 0.30f, 10.0f);
+		SetFOV(BaseFOV / m_ZoomLevel);
+	}
+
+	void PerspectiveCamera::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		UpdateProjectionMatrix();
+	}
+
 	void PerspectiveCamera::SetProjection(float fov, float aspectRatio, float nearClip, float farClip)
 	{
 		m_FOV = fov;

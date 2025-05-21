@@ -69,6 +69,7 @@ namespace Idra {
 			}
 			return false;
 		}
+
 	private:
 		Event& m_Event;
 	};

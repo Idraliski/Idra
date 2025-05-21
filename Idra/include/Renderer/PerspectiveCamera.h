@@ -10,6 +10,9 @@ namespace Idra {
 		PerspectiveCamera(float fov = 45.0f, float aspectRatio = 16.0f/ 9.0f, float nearClip = 0.1f, float farClip = 1'000.f);
 		~PerspectiveCamera() = default;
 
+		void SetZoomLevel(float zoomLevel) override;
+		void OnResize(float width, float height) override;
+
 		void SetProjection(float fov = 45.0f, float aspectRatio = 16.0f / 9.0f, float nearClip = 0.1f, float farClip = 1'000.0f);
 
 		const float GetFOV() const { return m_FOV; }

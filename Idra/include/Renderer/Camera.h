@@ -33,7 +33,7 @@ namespace Idra {
 	class IDRA_API Camera
 	{
 	public:
-		Camera(float nearClip, float farClip);
+		Camera(float nearClip, float farClip, float zoomLevel = 1);
 		virtual ~Camera() = default;
 
 		/**
@@ -44,11 +44,18 @@ namespace Idra {
 		*/
 		static Ref<Camera> CreateCamera(CameraProjectionType type, const void* spec = nullptr);
 
+		const float GetZoomLevel() const { return m_ZoomLevel; }
+		virtual void SetZoomLevel(float zoomLevel) = 0;
+
+		virtual void OnResize(float width, float height) = 0;
+
 		const float GetNearClip() const { return m_NearClip; }
 		void SetNearClip(float nearClip) { m_NearClip = nearClip; UpdateProjectionMatrix(); }
 
 		const float GetFarClip() const { return m_FarClip; }
 		void SetFarClip(float farClip) { m_FarClip = farClip; UpdateProjectionMatrix(); }
+
+		const CameraProjectionType GetProjectionType() const { return m_ProjectionType; }
 
 		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
@@ -64,11 +71,6 @@ namespace Idra {
 		const glm::vec3 GetRight() const { return m_Orientation * glm::vec3(1.0f, 0.0f, 0.0f); }
 		const glm::vec3 GetUp() const { return m_Orientation * glm::vec3(0.0f, 1.0f, 0.0f); }
 
-		// Movement getters/setters
-		const float GetMovementSpeed() const { return m_MovementSpeed; }
-		void SetMovementSpeed(float speed) { m_MovementSpeed = speed; }
-		const float GetRotationSpeed() const { return m_RotationSpeed; }
-		void SetRotationSpeed(float speed) { m_RotationSpeed = speed; }
 	protected:
 		// Quaternion rotation is used to represent the camera's orientation
 		// only used internally to update the view matrix
@@ -83,6 +85,7 @@ namespace Idra {
 
 		float m_NearClip;
 		float m_FarClip;
+		float m_ZoomLevel;
 
 		glm::mat4 m_ProjectionMatrix = { 1.0f };
 		glm::mat4 m_ViewMatrix = { 1.0f };
@@ -94,9 +97,6 @@ namespace Idra {
 		glm::vec3 m_Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::quat m_Orientation = { 1.0f, 0.0f, 0.0f, 0.0f };
 
-		// Movement data
-		// @TODO: Move this to a component system once ECS is implemented
-		float m_MovementSpeed = 5.0f;
-		float m_RotationSpeed = 50.0f;
+		
 	};
 }

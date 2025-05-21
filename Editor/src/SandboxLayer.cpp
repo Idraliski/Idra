@@ -17,13 +17,17 @@ SandboxLayer::SandboxLayer()
 	Idra::PerspectiveCameraSpec perspCameraSpec;
 	Idra::OrthographicCameraSpec orthoCameraSpec;
 
-	m_Camera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec);
-	//m_Camera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec);
+	m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec);
+	m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec);
 	m_EditorCameraController = Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera);
 
 	// Set the camera position and rotation
-	m_Camera->SetPosition({ 3.0f, 2.0f, 10.0f });
-	m_Camera->SetRotation({ 0.0f, -1.0f, 0.0f });
+	m_PerspectiveCamera->SetPosition({ 0.0f, 0.0f, 10.0f });
+	m_PerspectiveCamera->SetRotation({ 0.0f, -1.0f, 0.0f });
+	m_OrthoCamera->SetPosition({ 0.0f, 0.0f, 10.0f });
+	m_OrthoCamera->SetRotation({ 0.0f, -1.0f, 0.0f });
+
+	m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
 
 	// Load the model
 	m_Model_Sphere = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj");
@@ -87,6 +91,7 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	ProcessMouseInput(ts);
 
 	// Update the camera
+	m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
 	m_EditorCameraController->OnUpdate(m_Camera, ts);
 
 	Idra::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
@@ -149,8 +154,10 @@ void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 	}
 	if(ImGui::TreeNode("Camera")) 
 	{
+		ImGui::Text("Camera Type: %s", m_UsePerspectiveCamera ? "Perspective" : "Orthographic");
 		ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
 		ImGui::Text("Camera Rotation: %.2f, %.2f, %.2f", m_Camera->GetRotation().x, m_Camera->GetRotation().y, m_Camera->GetRotation().z);
+		ImGui::Text("Camera Zoom Level: %.2f", m_Camera->GetZoomLevel());
 		ImGui::TreePop();
 	}
 	if (ImGui::TreeNode("Model"))
@@ -214,5 +221,10 @@ bool SandboxLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
 {
 	if (e.GetKeyCode() == IDRA_KEY_ESCAPE)
 		Idra::Application::Get().SetRunning(false);
+
+	if (e.GetKeyCode() == IDRA_KEY_F1)
+	{
+		m_UsePerspectiveCamera = !m_UsePerspectiveCamera;
+	}
 	return false;
 }
