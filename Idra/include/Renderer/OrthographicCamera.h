@@ -11,7 +11,7 @@ namespace Idra {
 		~OrthographicCamera() = default;
 
 		void SetZoomLevel(float zoomLevel) override;
-		void OnResize(float width, float height) override;
+		void OnWindowResize(float width, float height) override;
 
 		void SetProjection(float aspectRatio, float nearClip = 0.1f, float farClip = 1'000.0f);
 

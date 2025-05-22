@@ -17,7 +17,7 @@ namespace Idra {
 		UpdateProjectionMatrix();
 	}
 
-	void OrthographicCamera::OnResize(float width, float height)
+	void OrthographicCamera::OnWindowResize(float width, float height)
 	{
 		m_AspectRatio = width / height;
 		UpdateProjectionMatrix();

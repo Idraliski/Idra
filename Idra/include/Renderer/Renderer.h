@@ -24,6 +24,8 @@ namespace Idra {
 		static void Submit(const Ref<Shader>& shader, const Ref<Model>& model, const TransformComponent& transform);
 
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+
+		static void OnWindowResize(uint32_t width, uint32_t height);
 	private:
 		static void DrawSkybox(const Ref<Shader>& shader, const Ref<Model>& model);
 
