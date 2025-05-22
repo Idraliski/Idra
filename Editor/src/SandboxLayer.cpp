@@ -62,8 +62,6 @@ SandboxLayer::SandboxLayer()
 
 	m_ShaderLibrary.Load(BasicGLSL);
 	auto flatColourShader = m_ShaderLibrary.Load("FlatColour", flatColourVertexSrc, flatColourFragmentSrc);
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->Bind();
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->SetUniform3f("v_Color", m_Colour);
 	auto textureShader = m_ShaderLibrary.Load("Texture", textureGLSL);
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->Bind();
 	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->SetUniform1i("u_Texture", 0);
@@ -103,6 +101,8 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	auto basicShader = m_ShaderLibrary.Get("Basic");
 	auto textureShader = m_ShaderLibrary.Get("Texture");
 	auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->Bind();
+	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->SetUniform3f("v_Color", m_Colour);
 	auto skyboxShader = m_ShaderLibrary.Get("Skybox");
 
 	m_Texture_Skybox->Bind();
