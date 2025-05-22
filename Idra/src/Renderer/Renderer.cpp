@@ -58,6 +58,11 @@ namespace Idra {
 		}
 	}
 
+	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+	{
+		RenderCommand::SetViewport(0, 0, width, height);
+	}
+
 	void Renderer::DrawSkybox(const Ref<Shader>& shader, const Ref<Model>& model)
 	{
 		//remove translation from view matrix

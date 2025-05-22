@@ -78,8 +78,7 @@ namespace Idra {
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 			return false;
 
-		IDRA_CORE_INFO("Window resized to {0}, {1}", e.GetWidth(), e.GetHeight());
-		camera->OnResize((float)e.GetWidth(), (float)e.GetHeight());
+		camera->OnWindowResize((float)e.GetWidth(), (float)e.GetHeight());
 
 		return false;
 	}

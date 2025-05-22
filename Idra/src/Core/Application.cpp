@@ -38,8 +38,11 @@ namespace Idra {
 			Timestep ts = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(ts);
+			if (!m_IsMinimized)
+			{
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(ts);
+			}
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
@@ -64,6 +67,7 @@ namespace Idra {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(IDRA_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(IDRA_BIND_EVENT_FN(Application::OnWindowResize));
 
 		// Going backwards through the layer stack
 		// This way, the overlay layers will get the event first 
@@ -75,6 +79,21 @@ namespace Idra {
 			if (e.Handled)
 				break;
 		}
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_IsMinimized = true;
+			return false;
+		}
+
+		m_IsMinimized = false;
+
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

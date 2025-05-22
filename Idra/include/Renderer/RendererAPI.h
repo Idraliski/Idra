@@ -38,6 +38,8 @@ namespace Idra {
 
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
 
+		virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+
 		virtual void SetDepthFunction(DepthFunction depthFunc) = 0;
 		virtual void SetCullFace(CullFace cullFace) = 0;
 

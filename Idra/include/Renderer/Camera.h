@@ -47,7 +47,7 @@ namespace Idra {
 		const float GetZoomLevel() const { return m_ZoomLevel; }
 		virtual void SetZoomLevel(float zoomLevel) = 0;
 
-		virtual void OnResize(float width, float height) = 0;
+		virtual void OnWindowResize(float width, float height) = 0;
 
 		const float GetNearClip() const { return m_NearClip; }
 		void SetNearClip(float nearClip) { m_NearClip = nearClip; UpdateProjectionMatrix(); }

@@ -17,7 +17,7 @@ namespace Idra {
 		SetFOV(BaseFOV / m_ZoomLevel);
 	}
 
-	void PerspectiveCamera::OnResize(float width, float height)
+	void PerspectiveCamera::OnWindowResize(float width, float height)
 	{
 		m_AspectRatio = width / height;
 		UpdateProjectionMatrix();

@@ -193,7 +193,8 @@ void SandboxLayer::OnDetach()
 void SandboxLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
-	m_EditorCameraController->OnEvent(m_Camera, e);
+	m_EditorCameraController->OnEvent(m_PerspectiveCamera, e);
+	m_EditorCameraController->OnEvent(m_OrthoCamera, e);
 
 	dispatcher.Dispatch<Idra::KeyPressedEvent>(IDRA_BIND_EVENT_FN(SandboxLayer::OnKeyPressed));
 }

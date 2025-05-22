@@ -15,6 +15,8 @@ namespace Idra {
 
 		void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
 
+		void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
+
 		void SetDepthFunction(DepthFunction depthFunc) override;
 		void SetCullFace(CullFace cullFace) override;
 	};

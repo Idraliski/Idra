@@ -30,11 +30,13 @@ namespace Idra {
 		inline void SetRunning(bool running) { m_IsRunning = running; }
 
 	private:
+		bool OnWindowResize(WindowResizeEvent& e);
 		bool OnWindowClose(WindowCloseEvent& e);
 
 	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
+		bool m_IsMinimized = false;
 		bool m_IsRunning = true;
 		LayerStack m_LayerStack;
 		float m_LastFrameTime = 0.0f;

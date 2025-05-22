@@ -28,6 +28,11 @@ namespace Idra {
 			s_RendererAPI->DrawIndexed(vertexArray); 
 		}
 
+		inline static void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+		{
+			s_RendererAPI->SetViewport(x, y, width, height);
+		}
+
 		inline static void SetDepthFunction(RendererAPI::DepthFunction depthFunc)
 		{
 			s_RendererAPI->SetDepthFunction(depthFunc);
