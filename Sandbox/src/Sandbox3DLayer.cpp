@@ -13,7 +13,6 @@ Sandbox3DLayer::Sandbox3DLayer()
 	: Layer("3D Layer Example")
 {
 	// Camera Init
-
 	m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective);
 	m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic);
 
@@ -167,25 +166,16 @@ void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 	}
 	ImGui::ColorEdit3("Triangle Colour", glm::value_ptr(m_Colour));
 	ImGui::End();
-
-	/** some ideas for future on rendering a viewport in imgui
-	// Render scene to an offscreen framebuffer (FBO)
-	ImTextureID sceneTexture = (ImTextureID)(intptr_t)myFramebuffer->GetColorAttachmentRendererID();
-
-	ImGui::Begin("Scene");
-	ImGui::Image(sceneTexture, ImVec2(width, height));
-	ImGui::End();
-	*/
 }
 
 void Sandbox3DLayer::OnAttach()
 {
-	IDRA_INFO("Example Layer Attached"); // #DEBUG
+	IDRA_INFO("Sandbox 3D Layer Attached"); // #DEBUG
 }
 
 void Sandbox3DLayer::OnDetach()
 {
-	IDRA_INFO("Example Layer Detached"); // #DEBUG
+	IDRA_INFO("Sandbox 3D Layer Detached"); // #DEBUG
 }
 
 void Sandbox3DLayer::OnEvent(Idra::Event& e)

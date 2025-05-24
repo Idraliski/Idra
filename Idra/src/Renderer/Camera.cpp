@@ -27,7 +27,7 @@ namespace Idra {
 				PerspectiveCameraSpec defaultSpec;
 				if (!pSpec)
 				{
-					IDRA_CORE_WARN("CameraProjectionType::Perspective spec is null, using default values!");
+					IDRA_CORE_INFO("CameraProjectionType::Perspective spec is null, using default values!");
 					pSpec = &defaultSpec;
 				}
 
@@ -42,7 +42,7 @@ namespace Idra {
 				OrthographicCameraSpec defaultSpec;
 				if (!oSpec)
 				{
-					IDRA_CORE_WARN("CameraProjectionType::Orthographic spec is null, using default values!");
+					IDRA_CORE_INFO("CameraProjectionType::Orthographic spec is null, using default values!");
 					oSpec = &defaultSpec;
 				}
 

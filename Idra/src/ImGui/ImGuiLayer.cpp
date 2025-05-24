@@ -23,8 +23,6 @@ namespace Idra
 
 	void ImGuiLayer::OnAttach()
 	{
-		IDRA_INFO("ImGui Layer Attached"); // #DEBUG
-
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -58,8 +56,6 @@ namespace Idra
 
 	void ImGuiLayer::OnDetach()
 	{
-		IDRA_INFO("ImGui Layer Detached"); // #DEBUG
-
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();

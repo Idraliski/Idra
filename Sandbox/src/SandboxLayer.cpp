@@ -182,12 +182,12 @@ void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 
 void SandboxLayer::OnAttach()
 {
-	IDRA_INFO("Example Layer Attached"); // #DEBUG
+	IDRA_INFO("Sandbox Layer Attached"); // #DEBUG
 }
 
 void SandboxLayer::OnDetach()
 {
-	IDRA_INFO("Example Layer Detached"); // #DEBUG
+	IDRA_INFO("Sandbox Layer Detached"); // #DEBUG
 }
 
 void SandboxLayer::OnEvent(Idra::Event& e)
