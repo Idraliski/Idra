@@ -2,17 +2,19 @@
 #include "Core/EntryPoint.h"
 
 #include "SandboxLayer.h"
+#include "Sandbox3DLayer.h"
 
-class Editor : public Idra::Application
+class SandboxEditor : public Idra::Application
 {
 public:
-	Editor() 
+	SandboxEditor()
 	{
 		IDRA_INFO("Editor Created"); // #DEBUG
-		PushLayer(new SandboxLayer());
+		//PushLayer(new SandboxLayer());
+		PushLayer(new Sandbox3DLayer());
 	}
 
-	~Editor() 
+	~SandboxEditor()
 	{
 		IDRA_INFO("Editor Destroyed"); // #DEBUG
 	}
@@ -20,5 +22,5 @@ public:
 
 Idra::Application* Idra::CreateApplication()
 {
-	return new Editor();
+	return new SandboxEditor();
 }
