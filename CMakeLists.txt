@@ -9,7 +9,7 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 add_subdirectory(Idra)
-add_subdirectory(Editor)
+add_subdirectory(Sandbox)
 
 set_target_properties(${CMAKE_TARGET_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 

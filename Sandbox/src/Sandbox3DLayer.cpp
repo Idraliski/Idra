@@ -1,24 +1,21 @@
-#include "SandboxLayer.h"
+#include "Sandbox3DLayer.h"
 
 //--TEMP--
 #include "Platform/OpenGL/OpenGLShader.h"
 //--------
 
-#include <Math/MathFormatters.h> // to use glm::vec3, glm::vec4, etc. in fmt::format i.e., IDRA_INFO()
 #include <imgui.h>
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 
 
-SandboxLayer::SandboxLayer()
-	: Layer("Example")
+Sandbox3DLayer::Sandbox3DLayer()
+	: Layer("3D Layer Example")
 {
 	// Camera Init
-	Idra::PerspectiveCameraSpec perspCameraSpec;
-	Idra::OrthographicCameraSpec orthoCameraSpec;
+	m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective);
+	m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic);
 
-	m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective, &perspCameraSpec);
-	m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic, &orthoCameraSpec);
 	m_EditorCameraController = Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera);
 
 	// Set the camera position and rotation
@@ -43,7 +40,7 @@ SandboxLayer::SandboxLayer()
 	m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg");
 	m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png");
 	m_Texture_Skybox = Idra::TextureCube::Create(
-		{ 
+		{
 			"Assets/Textures/Skybox/default/right.jpg",
 			"Assets/Textures/Skybox/default/left.jpg",
 			"Assets/Textures/Skybox/default/top.jpg",
@@ -78,12 +75,12 @@ SandboxLayer::SandboxLayer()
 	m_Transform_MetalTable.Position = { -10.0f, 0.0f, -10.0f };
 }
 
-SandboxLayer::~SandboxLayer()
+Sandbox3DLayer::~Sandbox3DLayer()
 {
 	IDRA_INFO("Example Layer Destroyed"); // #DEBUG
 }
 
-void SandboxLayer::OnUpdate(Idra::Timestep ts)
+void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 {
 	ProcessKeyInput(ts);
 	ProcessMouseInput(ts);
@@ -117,7 +114,7 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 
 	Idra::Renderer::Submit(basicShader, m_Model_Sphere, m_Transform_Sphere2);
 	Idra::Renderer::Submit(flatColourShader, m_Model_D20, m_Transform_D20);
-	
+
 	// anything with an alpha texture needs to be rendered last? Even after Skybox
 	// might be worth creating a SubmitTransparent function
 	m_AlphaTexture->Bind();
@@ -126,7 +123,7 @@ void SandboxLayer::OnUpdate(Idra::Timestep ts)
 	Idra::Renderer::EndScene();
 }
 
-void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
+void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
@@ -152,7 +149,7 @@ void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 		ImGui::Text("  Version: %s", Idra::Application::Get().GetWindow().GetVersion().c_str());
 		ImGui::TreePop();
 	}
-	if(ImGui::TreeNode("Camera")) 
+	if (ImGui::TreeNode("Camera"))
 	{
 		ImGui::Text("Camera Type: %s", m_UsePerspectiveCamera ? "Perspective" : "Orthographic");
 		ImGui::Text("Camera Position: %.2f, %.2f, %.2f", m_Camera->GetPosition().x, m_Camera->GetPosition().y, m_Camera->GetPosition().z);
@@ -169,37 +166,27 @@ void SandboxLayer::OnImGuiRender(Idra::Timestep ts)
 	}
 	ImGui::ColorEdit3("Triangle Colour", glm::value_ptr(m_Colour));
 	ImGui::End();
-
-	/** some ideas for future on rendering a viewport in imgui
-	// Render scene to an offscreen framebuffer (FBO)
-	ImTextureID sceneTexture = (ImTextureID)(intptr_t)myFramebuffer->GetColorAttachmentRendererID();
-
-	ImGui::Begin("Scene");
-	ImGui::Image(sceneTexture, ImVec2(width, height));
-	ImGui::End();
-	*/
 }
 
-void SandboxLayer::OnAttach()
+void Sandbox3DLayer::OnAttach()
 {
-	IDRA_INFO("Example Layer Attached"); // #DEBUG
+	IDRA_INFO("Sandbox 3D Layer Attached"); // #DEBUG
 }
 
-void SandboxLayer::OnDetach()
+void Sandbox3DLayer::OnDetach()
 {
-	IDRA_INFO("Example Layer Detached"); // #DEBUG
+	IDRA_INFO("Sandbox 3D Layer Detached"); // #DEBUG
 }
 
-void SandboxLayer::OnEvent(Idra::Event& e)
+void Sandbox3DLayer::OnEvent(Idra::Event& e)
 {
 	Idra::EventDispatcher dispatcher(e);
-	m_EditorCameraController->OnEvent(m_PerspectiveCamera, e);
-	m_EditorCameraController->OnEvent(m_OrthoCamera, e);
+	m_EditorCameraController->OnEvent(m_Camera, e);
 
-	dispatcher.Dispatch<Idra::KeyPressedEvent>(IDRA_BIND_EVENT_FN(SandboxLayer::OnKeyPressed));
+	dispatcher.Dispatch<Idra::KeyPressedEvent>(IDRA_BIND_EVENT_FN(Sandbox3DLayer::OnKeyPressed));
 }
 
-void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
+void Sandbox3DLayer::ProcessKeyInput(Idra::Timestep ts)
 {
 	// TEMP Sphere movement
 	float moveSpeed = 1.0f;
@@ -213,12 +200,12 @@ void SandboxLayer::ProcessKeyInput(Idra::Timestep ts)
 		m_Transform_Sphere.Position.x += moveSpeed * ts;
 }
 
-void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
+void Sandbox3DLayer::ProcessMouseInput(Idra::Timestep ts)
 {
-	
+
 }
 
-bool SandboxLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
+bool Sandbox3DLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
 {
 	if (e.GetKeyCode() == IDRA_KEY_ESCAPE)
 		Idra::Application::Get().SetRunning(false);
