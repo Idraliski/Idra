@@ -5,8 +5,6 @@
 #include <chrono>
 #include <string>
 
-
-
 namespace Idra {
 	template<typename Fn>
 	class IDRA_API Timer

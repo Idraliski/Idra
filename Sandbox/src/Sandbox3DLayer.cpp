@@ -89,19 +89,22 @@ void Sandbox3DLayer::OnDetach()
 
 void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 {
-	IDRA_PROFILE_SCOPE("Sandbox3DLayer::OnUpdate");
-	ProcessKeyInput(ts);
-	ProcessMouseInput(ts);
+	IDRA_PROFILE_SCOPE("OnUpdate");
+	{
+		IDRA_PROFILE_SCOPE("ProcessInputs");
+		ProcessKeyInput(ts);
+		ProcessMouseInput(ts);
+	}
 
 	{
-		IDRA_PROFILE_SCOPE("Sandbox3DLayer::CameraUpdate");
+		IDRA_PROFILE_SCOPE("CameraUpdate");
 		// Update the camera
 		m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
 		m_EditorCameraController->OnUpdate(m_Camera, ts);
 	}
 
 	{
-		IDRA_PROFILE_SCOPE("Sandbox3DLayer::RenderScene");
+		IDRA_PROFILE_SCOPE("RenderScene");
 		auto basicShader = m_ShaderLibrary.Get("Basic");
 		auto textureShader = m_ShaderLibrary.Get("Texture");
 		auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
@@ -176,10 +179,10 @@ void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 
 	if (ImGui::TreeNode("ProfileResults"))
 	{
-		for (auto& result : m_ProfileResults)
-		{
-			ImGui::Text("%.3f ms : %s", result.Time, result.Name );
-		}
+			for (auto& result : m_ProfileResults)
+			{
+				ImGui::Text("%.3f ms : %s", result.Time, result.Name );
+			}
 		ImGui::TreePop();
 	}
 		
