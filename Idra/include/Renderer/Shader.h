@@ -4,6 +4,8 @@
 
 #include <filesystem>
 #include <string>
+#include <unordered_map>
+#include <glm/glm.hpp>
 
 namespace Idra {
 	using Path = ::std::filesystem::path;
@@ -28,6 +30,16 @@ namespace Idra {
 
 		virtual const std::string& GetName() const = 0;
 		virtual void SetName(const std::string& name) = 0;
+
+		virtual void SetUniform1f(const std::string& name, float value) = 0;
+		virtual void SetUniform2f(const std::string& name, const glm::vec2& value) = 0;
+		virtual void SetUniform3f(const std::string& name, const glm::vec3& value) = 0;
+		virtual void SetUniform4f(const std::string& name, const glm::vec4& value) = 0;
+
+		virtual void SetUniform1i(const std::string& name, int value) = 0;
+
+		virtual void SetUniformMat3f(const std::string& name, const glm::mat3& matrix) = 0;
+		virtual void SetUniformMat4f(const std::string& name, const glm::mat4& matrix) = 0;
 
 		static Ref<Shader> Create(const Path& src);
 		static Ref<Shader> Create(const Path& vertexSrc, const Path& fragmentSrc);

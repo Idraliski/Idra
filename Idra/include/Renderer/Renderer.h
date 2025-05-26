@@ -17,6 +17,8 @@ namespace Idra {
 	public:
 		static void Init();
 
+		static void OnWindowResize(uint32_t width, uint32_t height);
+
 		static const void BeginScene(const Ref<Camera>& camera, const Ref<Shader>& skyboxShader, const Ref<Model>& skyboxModel);
 		static void EndScene();
 
@@ -25,7 +27,6 @@ namespace Idra {
 
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
-		static void OnWindowResize(uint32_t width, uint32_t height);
 	private:
 		static void DrawSkybox(const Ref<Shader>& shader, const Ref<Model>& model);
 

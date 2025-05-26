@@ -2,8 +2,6 @@
 
 #include "Renderer/Renderer.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 namespace Idra {
 	Renderer::SceneData Renderer::s_SceneData;
 
@@ -12,8 +10,16 @@ namespace Idra {
 		RenderCommand::Init();
 	}
 
+	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+	{
+		RenderCommand::SetViewport(0, 0, width, height);
+	}
+
 	const void Renderer::BeginScene(const Ref<Camera>& camera, const Ref<Shader>& skyboxShader, const Ref<Model>& skyboxModel)
 	{
+		RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
+		RenderCommand::Clear();
+
 		s_SceneData.ViewProjectionMatrix = camera->GetViewProjectionMatrix();
 		s_SceneData.ProjectionMatrix = camera->GetProjectionMatrix();
 		s_SceneData.ViewMatrix = camera->GetViewMatrix();
@@ -22,6 +28,7 @@ namespace Idra {
 
 		if (skyboxShader && skyboxModel)
 			DrawSkybox(skyboxShader, skyboxModel);
+
 	}
 
 	void Renderer::EndScene()
@@ -36,8 +43,8 @@ namespace Idra {
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<Mesh>& mesh, const TransformComponent& transform)
 	{
 		shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_Transform", transform.getTransformMatrix());
+		shader->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
+		shader->SetUniformMat4f("u_Transform", transform.getTransformMatrix());
 
 		// @TODO: put this into a render queue
 		mesh->Bind();
@@ -47,8 +54,8 @@ namespace Idra {
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<Model>& model, const TransformComponent& transform)
 	{
 		shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_Transform", transform.getTransformMatrix());
+		shader->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
+		shader->SetUniformMat4f("u_Transform", transform.getTransformMatrix());
 
 		// @TODO: put this into a render queue
 		for (const auto& mesh : model->GetMeshes())
@@ -56,11 +63,6 @@ namespace Idra {
 			mesh.Bind();
 			RenderCommand::DrawIndexed(mesh.GetVertexArray());
 		}
-	}
-
-	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
-	{
-		RenderCommand::SetViewport(0, 0, width, height);
 	}
 
 	void Renderer::DrawSkybox(const Ref<Shader>& shader, const Ref<Model>& model)
@@ -71,7 +73,7 @@ namespace Idra {
 		glm::mat4 viewProjection = projection * view;
 
 		shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4f("u_ViewProjection", viewProjection);
+		shader->SetUniformMat4f("u_ViewProjection", viewProjection);
 
 		//  change depth function so depth test passes when
 		//  values are equal to depth buffer's content

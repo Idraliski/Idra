@@ -39,7 +39,7 @@ namespace Idra {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
-		std::unique_ptr<RenderingContext> m_RenderingContext;
+		Scope<RenderingContext> m_RenderingContext;
 
 		CursorMode m_CursorMode;
 

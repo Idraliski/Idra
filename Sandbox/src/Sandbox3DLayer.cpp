@@ -1,9 +1,5 @@
 #include "Sandbox3DLayer.h"
 
-//--TEMP--
-#include "Platform/OpenGL/OpenGLShader.h"
-//--------
-
 #include <imgui.h>
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
@@ -35,7 +31,7 @@ Sandbox3DLayer::Sandbox3DLayer()
 	m_Model_Skybox = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Skybox.obj");
 
 	// Load the texture
-	m_Texture = Idra::Texture2D::Create("Assets/Textures/default.png");
+	m_Texture = Idra::Texture2D::Create("Assets/Textures/ico-sphere.png");
 	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
 	m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg");
 	m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png");
@@ -60,11 +56,11 @@ Sandbox3DLayer::Sandbox3DLayer()
 	m_ShaderLibrary.Load(BasicGLSL);
 	auto flatColourShader = m_ShaderLibrary.Load("FlatColour", flatColourVertexSrc, flatColourFragmentSrc);
 	auto textureShader = m_ShaderLibrary.Load("Texture", textureGLSL);
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->Bind();
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(textureShader)->SetUniform1i("u_Texture", 0);
+	textureShader->Bind();
+	textureShader->SetUniform1i("u_Texture", 0);
 	auto skyboxShader = m_ShaderLibrary.Load("Skybox", skyboxGLSL);
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(skyboxShader)->Bind();
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(skyboxShader)->SetUniform1i("u_Skybox", 0);
+	skyboxShader->Bind();
+	skyboxShader->SetUniform1i("u_Skybox", 0);
 
 	// Transforms
 	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };
@@ -80,6 +76,16 @@ Sandbox3DLayer::~Sandbox3DLayer()
 	IDRA_INFO("Example Layer Destroyed"); // #DEBUG
 }
 
+void Sandbox3DLayer::OnAttach()
+{
+	IDRA_INFO("Sandbox 3D Layer Attached"); // #DEBUG
+}
+
+void Sandbox3DLayer::OnDetach()
+{
+	IDRA_INFO("Sandbox 3D Layer Detached"); // #DEBUG
+}
+
 void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 {
 	ProcessKeyInput(ts);
@@ -89,17 +95,11 @@ void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 	m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
 	m_EditorCameraController->OnUpdate(m_Camera, ts);
 
-	Idra::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
-	Idra::RenderCommand::Clear();
-
-	// Ideally, we would have a Renderer class that handles all the rendering
-	//Renderer::BeginScene(camera, lights, environment);
-
 	auto basicShader = m_ShaderLibrary.Get("Basic");
 	auto textureShader = m_ShaderLibrary.Get("Texture");
 	auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->Bind();
-	std::dynamic_pointer_cast<Idra::OpenGLShader>(flatColourShader)->SetUniform3f("v_Color", m_Colour);
+	flatColourShader->Bind();
+	flatColourShader->SetUniform3f("v_Color", m_Colour);
 	auto skyboxShader = m_ShaderLibrary.Get("Skybox");
 
 	m_Texture_Skybox->Bind();
@@ -168,15 +168,7 @@ void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 	ImGui::End();
 }
 
-void Sandbox3DLayer::OnAttach()
-{
-	IDRA_INFO("Sandbox 3D Layer Attached"); // #DEBUG
-}
 
-void Sandbox3DLayer::OnDetach()
-{
-	IDRA_INFO("Sandbox 3D Layer Detached"); // #DEBUG
-}
 
 void Sandbox3DLayer::OnEvent(Idra::Event& e)
 {
@@ -191,13 +183,25 @@ void Sandbox3DLayer::ProcessKeyInput(Idra::Timestep ts)
 	// TEMP Sphere movement
 	float moveSpeed = 1.0f;
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_UP))
+	{
 		m_Transform_Sphere.Position.y += moveSpeed * ts;
+		m_Transform_Sphere.Dirty = true; 
+	}
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_DOWN))
+	{
 		m_Transform_Sphere.Position.y -= moveSpeed * ts;
+		m_Transform_Sphere.Dirty = true;
+	}
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_LEFT))
+	{
 		m_Transform_Sphere.Position.x -= moveSpeed * ts;
+		m_Transform_Sphere.Dirty = true;
+	}
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_RIGHT))
+	{
 		m_Transform_Sphere.Position.x += moveSpeed * ts;
+		m_Transform_Sphere.Dirty = true;
+	}
 }
 
 void Sandbox3DLayer::ProcessMouseInput(Idra::Timestep ts)
