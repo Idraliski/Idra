@@ -32,7 +32,7 @@ namespace Idra {
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual ~Window() {}
+		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
 
@@ -57,6 +57,6 @@ namespace Idra {
 
 		virtual float GetTime() const = 0;
 
-		static Window* Create(const WindowProps& props = WindowProps());
+		static Scope<Window> Create(const WindowProps& props = WindowProps());
 	};
 } // namespace Idra

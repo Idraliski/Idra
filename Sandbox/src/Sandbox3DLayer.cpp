@@ -4,6 +4,7 @@
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 
+#define IDRA_PROFILE_SCOPE(name) Idra::Timer timer##__LINE__(name, [&](ProfileResult profileResult) { m_ProfileResults.push_back(profileResult); })
 
 Sandbox3DLayer::Sandbox3DLayer()
 	: Layer("3D Layer Example")
@@ -88,39 +89,49 @@ void Sandbox3DLayer::OnDetach()
 
 void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 {
-	ProcessKeyInput(ts);
-	ProcessMouseInput(ts);
+	IDRA_PROFILE_SCOPE("OnUpdate");
+	{
+		IDRA_PROFILE_SCOPE("ProcessInputs");
+		ProcessKeyInput(ts);
+		ProcessMouseInput(ts);
+	}
 
-	// Update the camera
-	m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
-	m_EditorCameraController->OnUpdate(m_Camera, ts);
+	{
+		IDRA_PROFILE_SCOPE("CameraUpdate");
+		// Update the camera
+		m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
+		m_EditorCameraController->OnUpdate(m_Camera, ts);
+	}
 
-	auto basicShader = m_ShaderLibrary.Get("Basic");
-	auto textureShader = m_ShaderLibrary.Get("Texture");
-	auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
-	flatColourShader->Bind();
-	flatColourShader->SetUniform3f("v_Color", m_Colour);
-	auto skyboxShader = m_ShaderLibrary.Get("Skybox");
+	{
+		IDRA_PROFILE_SCOPE("RenderScene");
+		auto basicShader = m_ShaderLibrary.Get("Basic");
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+		auto flatColourShader = m_ShaderLibrary.Get("FlatColour");
+		flatColourShader->Bind();
+		flatColourShader->SetUniform3f("v_Color", m_Colour);
+		auto skyboxShader = m_ShaderLibrary.Get("Skybox");
 
-	m_Texture_Skybox->Bind();
-	Idra::Renderer::BeginScene(m_Camera, skyboxShader, m_Model_Skybox);
+		m_Texture_Skybox->Bind();
+		Idra::Renderer::BeginScene(m_Camera, skyboxShader, m_Model_Skybox);
 
-	m_Texture->Bind();
-	Idra::Renderer::Submit(textureShader, m_Model_Sphere, m_Transform_Sphere);
-	m_Texture_MetalTable->Bind();
-	Idra::Renderer::Submit(textureShader, m_Model_MetalTable, m_Transform_MetalTable);
-	m_Texture_WoodBench->Bind();
-	Idra::Renderer::Submit(textureShader, m_Model_WoodBench, m_Transform_WoodBench);
+		m_Texture->Bind();
+		Idra::Renderer::Submit(textureShader, m_Model_Sphere, m_Transform_Sphere);
+		m_Texture_MetalTable->Bind();
+		Idra::Renderer::Submit(textureShader, m_Model_MetalTable, m_Transform_MetalTable);
+		m_Texture_WoodBench->Bind();
+		Idra::Renderer::Submit(textureShader, m_Model_WoodBench, m_Transform_WoodBench);
 
-	Idra::Renderer::Submit(basicShader, m_Model_Sphere, m_Transform_Sphere2);
-	Idra::Renderer::Submit(flatColourShader, m_Model_D20, m_Transform_D20);
+		Idra::Renderer::Submit(basicShader, m_Model_Sphere, m_Transform_Sphere2);
+		Idra::Renderer::Submit(flatColourShader, m_Model_D20, m_Transform_D20);
 
-	// anything with an alpha texture needs to be rendered last? Even after Skybox
-	// might be worth creating a SubmitTransparent function
-	m_AlphaTexture->Bind();
-	Idra::Renderer::Submit(textureShader, m_Model_Cube, m_Transform_Cube);
+		// anything with an alpha texture needs to be rendered last? Even after Skybox
+		// might be worth creating a SubmitTransparent function
+		m_AlphaTexture->Bind();
+		Idra::Renderer::Submit(textureShader, m_Model_Cube, m_Transform_Cube);
 
-	Idra::Renderer::EndScene();
+		Idra::Renderer::EndScene();
+	}
 }
 
 void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
@@ -164,8 +175,19 @@ void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 		ImGui::Text("Model %s Position: %.2f, %.2f, %.2f", m_Model_Cube->GetName().c_str(), m_Transform_Cube.Position.x, m_Transform_Cube.Position.y, m_Transform_Cube.Position.z);
 		ImGui::TreePop();
 	}
-	ImGui::ColorEdit3("Triangle Colour", glm::value_ptr(m_Colour));
+	ImGui::ColorEdit3("D20 Colour", glm::value_ptr(m_Colour));
+
+	if (ImGui::TreeNode("ProfileResults"))
+	{
+			for (auto& result : m_ProfileResults)
+			{
+				ImGui::Text("%.3f ms : %s", result.Time, result.Name );
+			}
+		ImGui::TreePop();
+	}
+		
 	ImGui::End();
+	m_ProfileResults.clear();
 }
 
 

@@ -10,7 +10,7 @@ namespace Idra {
 	{
 	public:
 		WindowsWindow(const WindowProps& props);
-		virtual ~WindowsWindow();
+		~WindowsWindow() override;
 
 		void OnUpdate() override;
 
@@ -31,7 +31,7 @@ namespace Idra {
 		const std::string& GetRenderer() const override { return m_RenderingContext->GetRenderer(); }
 		const std::string& GetVersion() const override { return m_RenderingContext->GetVersion(); }
 
-		inline virtual void* GetNativeWindow() const override { return m_Window; }
+		virtual void* GetNativeWindow() const override { return m_Window; }
 
 		virtual float GetTime() const override;
 	private:
