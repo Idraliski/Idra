@@ -24,10 +24,10 @@ namespace Idra {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
-		inline Window& GetWindow() { return *m_Window; }
-		inline static Application& Get() { return *s_Instance; }
+		Window& GetWindow() { return *m_Window; }
+		static Application& Get() { return *s_Instance; }
 
-		inline void SetRunning(bool running) { m_IsRunning = running; }
+		void SetRunning(bool running) { m_IsRunning = running; }
 
 	private:
 		bool OnWindowResize(WindowResizeEvent& e);
