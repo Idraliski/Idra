@@ -38,6 +38,8 @@ namespace Idra {
 	OpenGLTexture2D::OpenGLTexture2D(const Path& path, bool flipImage)
 		: m_Path(path)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		Image image(path, flipImage);
 
 		m_Width = image.GetWidth();
@@ -66,22 +68,30 @@ namespace Idra {
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glDeleteTextures(1, &m_RendererID);
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
 	void OpenGLTexture2D::Unbind(uint32_t slot) const
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, 0);
 	}
 
 	OpenGLTextureCube::OpenGLTextureCube(const std::vector<Path>& paths, bool flipImage)
 		: m_Paths(paths)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_CORE_ASSERT(paths.size() == 6, "Cube map must have 6 images!");
 
 		bool initialized = false;
@@ -125,16 +135,22 @@ namespace Idra {
 
 	OpenGLTextureCube::~OpenGLTextureCube()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glDeleteTextures(1, &m_RendererID);
 	}
 
 	void OpenGLTextureCube::Bind(uint32_t slot) const
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
 	void OpenGLTextureCube::Unbind(uint32_t slot) const
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, 0);
 	}
 }

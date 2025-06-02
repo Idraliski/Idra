@@ -7,6 +7,8 @@
 namespace Idra {
 	Image::Image(const Path& path, bool flipImage)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Load the image data
 		stbi_set_flip_vertically_on_load(flipImage);
 
@@ -26,6 +28,8 @@ namespace Idra {
 
 	Image::~Image()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (m_ImageData) 
 			stbi_image_free(m_ImageData);
 	}

@@ -8,6 +8,7 @@ namespace Idra {
 	Camera::Camera(float nearClip, float farClip, float zoomLevel)
 		: m_NearClip(nearClip), m_FarClip(farClip), m_ZoomLevel(zoomLevel)
 	{
+		IDRA_PROFILE_FUNCTION();
 
 	}
 
@@ -56,6 +57,8 @@ namespace Idra {
 
 	void Camera::UpdateViewMatrix()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Update the view matrix based on the camera's position and orientation
 		// The view matrix is the inverse of the camera's transformation matrix
 		// The other common option is to use glm::lookAt, but this is more efficient and flexible
@@ -69,7 +72,10 @@ namespace Idra {
 	}
 
 	void Camera::SetRotation(const glm::vec3& rotation)
-	{ 
+	{
+		IDRA_PROFILE_FUNCTION();
+
+		// @TODO Move this to a systems function for all rotations on entities
 		auto wrap = [](float angle) {
 			return glm::mod(angle + 180.0f, 360.0f) - 180.0f;
 		};

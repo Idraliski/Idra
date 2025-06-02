@@ -7,11 +7,15 @@ namespace Idra {
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
 		: m_WindowHandle(windowHandle)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_CORE_ASSERT(windowHandle, "Window handle is null!");
 	}
 
 	void OpenGLContext::Init()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		IDRA_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -27,6 +31,8 @@ namespace Idra {
 
 	void OpenGLContext::SwapBuffers()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

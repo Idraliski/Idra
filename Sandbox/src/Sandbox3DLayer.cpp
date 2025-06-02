@@ -9,59 +9,75 @@ Sandbox3DLayer::Sandbox3DLayer()
 {
 	IDRA_PROFILE_FUNCTION();
 
-	// Camera Init
-	m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective);
-	m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic);
+	{
+		IDRA_PROFILE_SCOPE("Sandbox3DLayer Camera Init");
 
-	m_EditorCameraController = Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera);
+		// Camera Init
+		m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective);
+		m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic);
 
-	// Set the camera position and rotation
-	m_PerspectiveCamera->SetPosition({ 0.0f, 0.0f, 10.0f });
-	m_PerspectiveCamera->SetRotation({ 0.0f, -1.0f, 0.0f });
-	m_OrthoCamera->SetPosition({ 0.0f, 0.0f, 10.0f });
-	m_OrthoCamera->SetRotation({ 0.0f, -1.0f, 0.0f });
+		m_EditorCameraController = Idra::CameraController::CreateCameraController(Idra::CameraControllerType::EditorCamera);
 
-	m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
+		// Set the camera position and rotation
+		m_PerspectiveCamera->SetPosition({ 0.0f, 0.0f, 10.0f });
+		m_PerspectiveCamera->SetRotation({ 0.0f, -1.0f, 0.0f });
+		m_OrthoCamera->SetPosition({ 0.0f, 0.0f, 10.0f });
+		m_OrthoCamera->SetRotation({ 0.0f, -1.0f, 0.0f });
 
-	// Load the model
-	m_Model_Sphere = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj");
-	m_Model_Cube = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj");
-	m_Model_D20 = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj");
-	m_Model_WoodBench = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/WoodBench.obj");
-	m_Model_MetalTable = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/MetalTable.obj");
-	m_Model_Skybox = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Skybox.obj");
+		m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
+	}
 
-	// Load the texture
-	m_Texture = Idra::Texture2D::Create("Assets/Textures/ico-sphere.png");
-	m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
-	m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg");
-	m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png");
-	m_Texture_Skybox = Idra::TextureCube::Create(
-		{
-			"Assets/Textures/Skybox/default/right.jpg",
-			"Assets/Textures/Skybox/default/left.jpg",
-			"Assets/Textures/Skybox/default/top.jpg",
-			"Assets/Textures/Skybox/default/bottom.jpg",
-			"Assets/Textures/Skybox/default/front.jpg",
-			"Assets/Textures/Skybox/default/back.jpg"
-		}, false
-	);
+	{
+		IDRA_PROFILE_SCOPE("Sandbox3DLayer Model Init");
 
-	// Shaders
-	Path BasicGLSL = "Assets/Shaders/Basic.glsl";
-	Path textureGLSL = "Assets/Shaders/BasicTexture.glsl";
-	Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
-	Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
-	Path skyboxGLSL = "Assets/Shaders/Skybox.glsl";
+		// Load the model
+		m_Model_Sphere = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/ico-sphere.obj");
+		m_Model_Cube = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/cube.obj");
+		m_Model_D20 = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/D20.obj");
+		m_Model_WoodBench = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/WoodBench.obj");
+		m_Model_MetalTable = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Furniture/MetalTable.obj");
+		m_Model_Skybox = Idra::ModelLoader::LoadModel(m_ModelLoaderType, "Assets/Models/Skybox.obj");
+	}
 
-	m_ShaderLibrary.Load(BasicGLSL);
-	auto flatColourShader = m_ShaderLibrary.Load("FlatColour", flatColourVertexSrc, flatColourFragmentSrc);
-	auto textureShader = m_ShaderLibrary.Load("Texture", textureGLSL);
-	textureShader->Bind();
-	textureShader->SetUniform1i("u_Texture", 0);
-	auto skyboxShader = m_ShaderLibrary.Load("Skybox", skyboxGLSL);
-	skyboxShader->Bind();
-	skyboxShader->SetUniform1i("u_Skybox", 0);
+	{
+		IDRA_PROFILE_SCOPE("Sandbox3DLayer Texture Init");
+
+		// Load the texture
+		m_Texture = Idra::Texture2D::Create("Assets/Textures/ico-sphere.png");
+		m_AlphaTexture = Idra::Texture2D::Create("Assets/Textures/Alpha.png");
+		m_Texture_MetalTable = Idra::Texture2D::Create("Assets/Textures/MetalSteelWorn.jpg");
+		m_Texture_WoodBench = Idra::Texture2D::Create("Assets/Textures/WoodBench.png");
+		m_Texture_Skybox = Idra::TextureCube::Create(
+			{
+				"Assets/Textures/Skybox/default/right.jpg",
+				"Assets/Textures/Skybox/default/left.jpg",
+				"Assets/Textures/Skybox/default/top.jpg",
+				"Assets/Textures/Skybox/default/bottom.jpg",
+				"Assets/Textures/Skybox/default/front.jpg",
+				"Assets/Textures/Skybox/default/back.jpg"
+			}, false
+		);
+	}
+
+	{
+		IDRA_PROFILE_SCOPE("Sandbox3DLayer Shader Init");
+
+		// Shaders
+		Path BasicGLSL = "Assets/Shaders/Basic.glsl";
+		Path textureGLSL = "Assets/Shaders/BasicTexture.glsl";
+		Path flatColourVertexSrc = "Assets/Shaders/FlatColour.vert";
+		Path flatColourFragmentSrc = "Assets/Shaders/FlatColour.frag";
+		Path skyboxGLSL = "Assets/Shaders/Skybox.glsl";
+
+		m_ShaderLibrary.Load(BasicGLSL);
+		auto flatColourShader = m_ShaderLibrary.Load("FlatColour", flatColourVertexSrc, flatColourFragmentSrc);
+		auto textureShader = m_ShaderLibrary.Load("Texture", textureGLSL);
+		textureShader->Bind();
+		textureShader->SetUniform1i("u_Texture", 0);
+		auto skyboxShader = m_ShaderLibrary.Load("Skybox", skyboxGLSL);
+		skyboxShader->Bind();
+		skyboxShader->SetUniform1i("u_Skybox", 0);
+	}
 
 	// Transforms
 	m_Transform_Sphere.Position = { 0.0f, 2.0f, 0.0f };
@@ -74,34 +90,35 @@ Sandbox3DLayer::Sandbox3DLayer()
 
 Sandbox3DLayer::~Sandbox3DLayer()
 {
+	IDRA_PROFILE_FUNCTION();
+
 	IDRA_INFO("Example Layer Destroyed"); // #DEBUG
 }
 
 void Sandbox3DLayer::OnAttach()
 {
+	IDRA_PROFILE_FUNCTION();
+
 	IDRA_INFO("Sandbox 3D Layer Attached"); // #DEBUG
 }
 
 void Sandbox3DLayer::OnDetach()
 {
+	IDRA_PROFILE_FUNCTION();
+
 	IDRA_INFO("Sandbox 3D Layer Detached"); // #DEBUG
 }
 
 void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 {
 	IDRA_PROFILE_FUNCTION();
-	{
-		IDRA_PROFILE_SCOPE("ProcessInputs");
-		ProcessKeyInput(ts);
-		ProcessMouseInput(ts);
-	}
 
-	{
-		IDRA_PROFILE_SCOPE("CameraUpdate");
-		// Update the camera
-		m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
-		m_EditorCameraController->OnUpdate(m_Camera, ts);
-	}
+	ProcessKeyInput(ts);
+	ProcessMouseInput(ts);
+
+	// Update the camera
+	m_Camera = m_UsePerspectiveCamera ? m_PerspectiveCamera : m_OrthoCamera;
+	m_EditorCameraController->OnUpdate(m_Camera, ts);
 
 	{
 		IDRA_PROFILE_SCOPE("RenderScene");
@@ -137,6 +154,7 @@ void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 {
 	IDRA_PROFILE_FUNCTION();
+
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
 	// @TODO: delete demo window at some point
@@ -183,6 +201,8 @@ void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 
 void Sandbox3DLayer::OnEvent(Idra::Event& e)
 {
+	IDRA_PROFILE_FUNCTION();
+
 	Idra::EventDispatcher dispatcher(e);
 	m_EditorCameraController->OnEvent(m_Camera, e);
 
@@ -191,6 +211,8 @@ void Sandbox3DLayer::OnEvent(Idra::Event& e)
 
 void Sandbox3DLayer::ProcessKeyInput(Idra::Timestep ts)
 {
+	IDRA_PROFILE_FUNCTION();
+
 	// TEMP Sphere movement
 	float moveSpeed = 1.0f;
 	if (Idra::Input::IsKeyPressed(IDRA_KEY_UP))
@@ -217,11 +239,14 @@ void Sandbox3DLayer::ProcessKeyInput(Idra::Timestep ts)
 
 void Sandbox3DLayer::ProcessMouseInput(Idra::Timestep ts)
 {
+	IDRA_PROFILE_FUNCTION();
 
 }
 
 bool Sandbox3DLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
 {
+	IDRA_PROFILE_FUNCTION();
+
 	if (e.GetKeyCode() == IDRA_KEY_ESCAPE)
 		Idra::Application::Get().SetRunning(false);
 

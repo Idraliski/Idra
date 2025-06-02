@@ -33,10 +33,12 @@ namespace Idra {
 		void EndSession();
 
 		void WriteProfile(const ProfileResult& result);
-		void WriteHeader();
-		void WriteFooter();
 
 		static Instrumentor& Get();
+
+	private:
+		void WriteHeader();
+		void WriteFooter();
 
 	private:
 		InstrumentorSession* m_CurrentSession;
@@ -62,13 +64,13 @@ namespace Idra {
 
 #define IDRA_PROFILE 1
 #if IDRA_PROFILE
-#define IDRA_PROFILE_BEGIN_SESSION(name, filepath) ::Idra::Instrumentor::Get().BeginSession(name, filepath)
-#define IDRA_PROFILE_END_SESSION() ::Idra::Instrumentor::Get().EndSession()
-#define IDRA_PROFILE_SCOPE(name) ::Idra::InstrumentorTimer timer##__LINE__(name)
-#define IDRA_PROFILE_FUNCTION() IDRA_PROFILE_SCOPE(__FUNCSIG__)
+	#define IDRA_PROFILE_BEGIN_SESSION(name, filepath) ::Idra::Instrumentor::Get().BeginSession(name, filepath)
+	#define IDRA_PROFILE_END_SESSION() ::Idra::Instrumentor::Get().EndSession()
+	#define IDRA_PROFILE_SCOPE(name) ::Idra::InstrumentorTimer timer##__LINE__(name)
+	#define IDRA_PROFILE_FUNCTION() IDRA_PROFILE_SCOPE(__FUNCSIG__)
 #else
-#define IDRA_PROFILE_BEGIN_SESSION(name, filepath)
-#define IDRA_PROFILE_END_SESSION()
-#define IDRA_PROFILE_SCOPE(name)
-#define IDRA_PROFILE_FUNCTION()
+	#define IDRA_PROFILE_BEGIN_SESSION(name, filepath)
+	#define IDRA_PROFILE_END_SESSION()
+	#define IDRA_PROFILE_SCOPE(name)
+	#define IDRA_PROFILE_FUNCTION()
 #endif
