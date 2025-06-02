@@ -4,11 +4,11 @@
 #include <memory>
 #include <glm/gtc/type_ptr.hpp>
 
-#define IDRA_PROFILE_SCOPE(name) Idra::Timer timer##__LINE__(name, [&](ProfileResult profileResult) { m_ProfileResults.push_back(profileResult); })
-
 Sandbox3DLayer::Sandbox3DLayer()
 	: Layer("3D Layer Example")
 {
+	IDRA_PROFILE_FUNCTION();
+
 	// Camera Init
 	m_PerspectiveCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Perspective);
 	m_OrthoCamera = Idra::Camera::CreateCamera(Idra::CameraProjectionType::Orthographic);
@@ -89,7 +89,7 @@ void Sandbox3DLayer::OnDetach()
 
 void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 {
-	IDRA_PROFILE_SCOPE("OnUpdate");
+	IDRA_PROFILE_FUNCTION();
 	{
 		IDRA_PROFILE_SCOPE("ProcessInputs");
 		ProcessKeyInput(ts);
@@ -136,6 +136,7 @@ void Sandbox3DLayer::OnUpdate(Idra::Timestep ts)
 
 void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 {
+	IDRA_PROFILE_FUNCTION();
 	IDRA_ASSERT(ImGui::GetCurrentContext(), "No ImGui context available!");
 
 	// @TODO: delete demo window at some point
@@ -176,21 +177,9 @@ void Sandbox3DLayer::OnImGuiRender(Idra::Timestep ts)
 		ImGui::TreePop();
 	}
 	ImGui::ColorEdit3("D20 Colour", glm::value_ptr(m_Colour));
-
-	if (ImGui::TreeNode("ProfileResults"))
-	{
-			for (auto& result : m_ProfileResults)
-			{
-				ImGui::Text("%.3f ms : %s", result.Time, result.Name );
-			}
-		ImGui::TreePop();
-	}
 		
 	ImGui::End();
-	m_ProfileResults.clear();
 }
-
-
 
 void Sandbox3DLayer::OnEvent(Idra::Event& e)
 {
