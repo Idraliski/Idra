@@ -30,6 +30,8 @@ namespace Idra {
 	OpenGLShader::OpenGLShader(const Path& src)
 		: m_RendererID(0), m_Name(src.stem().string())
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Compile and link the shader program
 		m_RendererID = glCreateProgram();
 		IDRA_CORE_ASSERT(m_RendererID, "Failed to create shader program!");
@@ -61,6 +63,8 @@ namespace Idra {
 	OpenGLShader::OpenGLShader(const Path& vertexSrc, const Path& fragmentSrc)
 		: m_RendererID(0), m_Name(vertexSrc.stem().string())
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Compile and link the shader program
 		m_RendererID = glCreateProgram();
 		IDRA_CORE_ASSERT(m_RendererID, "Failed to create shader program!");
@@ -82,56 +86,78 @@ namespace Idra {
 
 	OpenGLShader::~OpenGLShader()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Bind() const
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetUniform1f(const std::string& name, float value)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniform1f(GetUniformLocation(name), value);
 	}
 
 	void OpenGLShader::SetUniform2f(const std::string& name, const glm::vec2& value)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniform2f(GetUniformLocation(name), value.x, value.y);
 	}
 
 	void OpenGLShader::SetUniform3f(const std::string& name, const glm::vec3& value)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::SetUniform4f(const std::string& name, const glm::vec4& value)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniform4f(GetUniformLocation(name), value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::SetUniform1i(const std::string& name, int value)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniform1i(GetUniformLocation(name), value);
 	}
 
 	void OpenGLShader::SetUniformMat3f(const std::string& name, const glm::mat3& matrix)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::AttachShader(const Path& src, ShaderType type)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_CORE_ASSERT(m_RendererID, "Shader program not created!");
 
 		GLuint glType;
@@ -182,6 +208,8 @@ namespace Idra {
 
 	std::unordered_map<unsigned int, std::string> OpenGLShader::ParseShader(const std::string& src)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		std::unordered_map<unsigned int, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -211,6 +239,8 @@ namespace Idra {
 
 	unsigned int OpenGLShader::CompileShader(unsigned int type, const std::string& source)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		GLuint shader = glCreateShader(type);
 
 		// Attach the shader source code to GL
@@ -260,6 +290,8 @@ namespace Idra {
 
 	int OpenGLShader::GetUniformLocation(const std::string& name)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Check if the uniform location is already cached
 		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 			return m_UniformLocationCache[name];

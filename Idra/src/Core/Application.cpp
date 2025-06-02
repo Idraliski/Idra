@@ -10,6 +10,8 @@ namespace Idra {
 
 	Application::Application()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_WARN("Application Created"); // #DEBUG
 		IDRA_ASSERT(!s_Instance, "Application already exists!"); // #DEBUG
 		s_Instance = this;
@@ -25,29 +27,43 @@ namespace Idra {
 
 	Application::~Application()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_WARN("Application Destroyed"); // #DEBUG
 	}
 
 	void Application::Run()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_INFO("Application Running"); // #DEBUG
 
 		while (m_IsRunning)
 		{
+			IDRA_PROFILE_SCOPE("Application Run Loop");
+
 			float time = m_Window->GetTime();
 			Timestep ts = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_IsMinimized)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(ts);
-			}
+				{
+					IDRA_PROFILE_SCOPE("LayerStack Update");
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender(ts);
-			m_ImGuiLayer->End();
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(ts);
+				}
+
+				m_ImGuiLayer->Begin();
+				{
+					IDRA_PROFILE_SCOPE("ImGui Layer Render");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender(ts);
+				}
+				m_ImGuiLayer->End();
+			}
 
 			m_Window->OnUpdate();
 		}
@@ -55,16 +71,22 @@ namespace Idra {
 
 	void Application::PushLayer(Layer* layer)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(overlay);
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(IDRA_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(IDRA_BIND_EVENT_FN(Application::OnWindowResize));
@@ -83,6 +105,8 @@ namespace Idra {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_IsMinimized = true;

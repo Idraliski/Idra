@@ -7,16 +7,22 @@ namespace Idra {
 
 	void Renderer::Init()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		RenderCommand::SetViewport(0, 0, width, height);
 	}
 
 	const void Renderer::BeginScene(const Ref<Camera>& camera, const Ref<Shader>& skyboxShader, const Ref<Model>& skyboxModel)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
 		RenderCommand::Clear();
 
@@ -33,6 +39,8 @@ namespace Idra {
 
 	void Renderer::EndScene()
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Future render queue implementation
 
 		// RenderCommand::Flush();
@@ -42,6 +50,8 @@ namespace Idra {
 
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<Mesh>& mesh, const TransformComponent& transform)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		shader->Bind();
 		shader->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
 		shader->SetUniformMat4f("u_Transform", transform.getTransformMatrix());
@@ -53,6 +63,8 @@ namespace Idra {
 
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<Model>& model, const TransformComponent& transform)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		shader->Bind();
 		shader->SetUniformMat4f("u_ViewProjection", s_SceneData.ViewProjectionMatrix);
 		shader->SetUniformMat4f("u_Transform", transform.getTransformMatrix());
@@ -67,6 +79,8 @@ namespace Idra {
 
 	void Renderer::DrawSkybox(const Ref<Shader>& shader, const Ref<Model>& model)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		//remove translation from view matrix
 		glm::mat4 view = glm::mat4(glm::mat3(s_SceneData.ViewMatrix));
 		glm::mat4 projection = s_SceneData.PerspectiveProjectionMatrix;

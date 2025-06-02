@@ -11,22 +11,28 @@ namespace Idra {
 	EditorCameraController::EditorCameraController(bool isCameraMoving)
 		: m_IsCameraLooking(false), m_IsCameraMoving(isCameraMoving)
 	{
+		IDRA_PROFILE_FUNCTION();
 
 	}
 
 	EditorCameraController::~EditorCameraController()
 	{
+		IDRA_PROFILE_FUNCTION();
 
 	}
 
 	void EditorCameraController::OnUpdate(Ref<Camera> camera, Timestep ts)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		ProcessKeyInput(camera, ts);
 		ProcessMouseMove(camera, ts);
 	}
 
 	void EditorCameraController::OnEvent(Ref<Camera> camera, Event& e)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		EventDispatcher Dispatcher(e);
 		Dispatcher.Dispatch<MouseButtonPressedEvent>(IDRA_BIND_EVENT_FN(EditorCameraController::OnMouseButtonPressed));
 		Dispatcher.Dispatch<MouseButtonReleasedEvent>(IDRA_BIND_EVENT_FN(EditorCameraController::OnMouseButtonReleased));
@@ -36,6 +42,8 @@ namespace Idra {
 
 	bool EditorCameraController::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (e.GetMouseButton() == IDRA_MOUSE_BUTTON_2)
 		{
 			m_IsCameraLooking = true;
@@ -52,6 +60,8 @@ namespace Idra {
 
 	bool EditorCameraController::OnMouseButtonReleased(MouseButtonReleasedEvent& e)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (e.GetMouseButton() == IDRA_MOUSE_BUTTON_2)
 		{
 			m_IsCameraLooking = false;
@@ -65,6 +75,8 @@ namespace Idra {
 
 	bool EditorCameraController::OnMouseScrolled(MouseScrolledEvent& e, const Ref<Camera>& camera)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (e.GetYOffset() != 0.0f)
 		{
 			camera->SetZoomLevel(camera->GetZoomLevel() + e.GetYOffset() * m_ZoomSpeed);
@@ -75,6 +87,8 @@ namespace Idra {
 
 	bool EditorCameraController::OnWindowResize(WindowResizeEvent& e, const Ref<Camera>& camera)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 			return false;
 
@@ -85,6 +99,8 @@ namespace Idra {
 
 	void EditorCameraController::ProcessMouseMove(Ref<Camera> camera, Timestep ts)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (!m_IsCameraLooking)
 			return;
 
@@ -100,6 +116,8 @@ namespace Idra {
 
 	void EditorCameraController::ProcessKeyInput(Ref<Camera> camera, Timestep ts)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (!m_IsCameraMoving)
 			return;
 

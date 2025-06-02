@@ -61,6 +61,8 @@ namespace Idra {
 
 	Ref<Shader> ShaderLibrary::Load(const Path& path)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (DoesExists(path.stem().string()))
 			return Get(path.stem().string());
 
@@ -71,6 +73,8 @@ namespace Idra {
 
 	Ref<Shader> ShaderLibrary::Load(const std::string& name, const Path& path)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (DoesExists(name))
 			return Get(name);
 
@@ -83,6 +87,8 @@ namespace Idra {
 	Ref<Shader> ShaderLibrary::Load(const std::string& name, 
 		const Path& vertexSrc, const Path& fragmentSrc)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		if (DoesExists(name))
 			return Get(name);
 

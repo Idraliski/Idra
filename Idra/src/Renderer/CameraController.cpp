@@ -23,4 +23,3 @@ namespace Idra {
         return nullptr;
     }
 }
-

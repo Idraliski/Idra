@@ -5,6 +5,8 @@
 namespace Idra {
 	const std::string FileLoader::LoadFileAsString(const Path& filepath)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_CORE_ASSERT(std::filesystem::exists(filepath), "File does not exist!");
 		IDRA_CORE_ASSERT(std::filesystem::is_regular_file(filepath), "Path is not a file!");
 

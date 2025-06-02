@@ -23,6 +23,9 @@ namespace Idra {
 
 		const glm::mat4& getTransformMatrix() const
 		{
+			IDRA_PROFILE_FUNCTION();
+
+			// @TODO: Move this to a system function for all transforms
 			if (!Dirty)
 				return CachedTransformMatrix;
 

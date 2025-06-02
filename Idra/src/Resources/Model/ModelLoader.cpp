@@ -5,18 +5,26 @@
 namespace Idra {
 	Ref<Model> ModelLoader::LoadModel(ModelLoaderType type, Path source)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		switch (type)
 		{
 			case ModelLoaderType::Assimp:
 			{
 				Assimp::Importer importer;
-				const aiScene* scene = importer.ReadFile(source.string(), 
-					aiProcess_Triangulate | 
-					aiProcess_JoinIdenticalVertices |
-					aiProcess_ValidateDataStructure |
-					aiProcess_GenSmoothNormals |
-					aiProcess_CalcTangentSpace
-				);
+				const aiScene* scene;
+
+				{
+					IDRA_PROFILE_SCOPE("Assimp Reading");
+
+					scene = importer.ReadFile(source.string(),
+						aiProcess_Triangulate | 
+						aiProcess_JoinIdenticalVertices |
+						aiProcess_ValidateDataStructure |
+						aiProcess_GenSmoothNormals |
+						aiProcess_CalcTangentSpace
+					);
+				}
 
 				if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 				{
@@ -24,9 +32,13 @@ namespace Idra {
 					return nullptr;
 				}
 
-				Ref<Model> model = CreateRef<Model>(source.stem().string());
-				ProcessAssimpNode(scene->mRootNode, scene, model);
-				return model;
+				{
+					IDRA_PROFILE_SCOPE("Assimp Model Creation");
+
+					Ref<Model> model = CreateRef<Model>(source.stem().string());
+					ProcessAssimpNode(scene->mRootNode, scene, model);
+					return model;
+				}
 			}
 			case ModelLoaderType::MD2:
 				IDRA_CORE_ERROR("ModelLoader: MD2 model loader not implemented yet!");
@@ -49,6 +61,8 @@ namespace Idra {
 
 	void ModelLoader::ProcessAssimpNode(aiNode* node, const aiScene* scene, Ref<Model> model)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		// Process all the meshes in this node
 		for (uint32_t i = 0; i < node->mNumMeshes; i++)
 		{
@@ -63,6 +77,8 @@ namespace Idra {
 
 	Mesh ModelLoader::ProcessAssimpMesh(aiMesh* mesh, const aiScene* scene)
 	{
+		IDRA_PROFILE_FUNCTION();
+
 		IDRA_CORE_ASSERT(mesh->HasPositions(), "Mesh has no positions!"); // #DEBUG
 
 		std::vector<float> vertices;
