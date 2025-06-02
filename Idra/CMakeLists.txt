@@ -7,6 +7,7 @@ add_library(Idra STATIC
     "src/Core/LayerStack.cpp"
     "src/Core/Log.cpp"
     "src/Core/Window.cpp"
+    "src/Debug/Instrumentor.cpp"
     "src/ImGui/ImGuiBuild.cpp"
     "src/ImGui/ImGuiLayer.cpp"
     "src/Platform/OpenGL/OpenGLBuffer.cpp"

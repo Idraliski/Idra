@@ -69,13 +69,4 @@ private:
 	Idra::Ref<Idra::Camera> m_PerspectiveCamera;
 	Idra::Ref<Idra::Camera> m_Camera;
 	Idra::Ref<Idra::CameraController> m_EditorCameraController;
-
-	// Timer
-	struct ProfileResult
-	{
-		const char* Name;
-		float Time;
-	};
-
-	std::vector<ProfileResult> m_ProfileResults;
 };

@@ -22,6 +22,7 @@
 #include <assimp/postprocess.h>
 
 #include "Core/Log.h"
+#include "Debug/Instrumentor.h"
 
 #ifdef _WIN32
 	#include <Windows.h>

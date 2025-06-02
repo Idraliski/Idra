@@ -9,6 +9,8 @@
 #include "Core/Timer.h"
 #include "Core/Timestep.h"
 
+#include "Debug/Instrumentor.h"
+
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
