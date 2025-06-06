@@ -14,8 +14,8 @@ namespace Idra {
 	class IDRA_API Application
 	{
 	public:
-		Application();
-		~Application();
+		Application(const WindowProps& winProps = WindowProps());
+		virtual ~Application();
 
 		void Close();
 
