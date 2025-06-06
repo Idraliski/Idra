@@ -220,7 +220,7 @@ void SandboxLayer::ProcessMouseInput(Idra::Timestep ts)
 bool SandboxLayer::OnKeyPressed(Idra::KeyPressedEvent& e)
 {
 	if (e.GetKeyCode() == IDRA_KEY_ESCAPE)
-		Idra::Application::Get().SetRunning(false);
+		Idra::Application::Get().Close();
 
 	if (e.GetKeyCode() == IDRA_KEY_F1)
 	{

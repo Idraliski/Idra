@@ -17,7 +17,7 @@ namespace Idra {
 		Application();
 		~Application();
 
-		void Run();
+		void Close();
 
 		void OnEvent(Event& e);
 
@@ -27,7 +27,7 @@ namespace Idra {
 		Window& GetWindow() { return *m_Window; }
 		static Application& Get() { return *s_Instance; }
 
-		void SetRunning(bool running) { m_IsRunning = running; }
+		void Run();
 
 	private:
 		bool OnWindowResize(WindowResizeEvent& e);

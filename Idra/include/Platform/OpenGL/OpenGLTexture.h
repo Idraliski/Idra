@@ -15,6 +15,7 @@ namespace Idra {
 
 		void Bind(uint32_t slot = 0) const override;
 		void Unbind(uint32_t slot = 0) const override;
+		uint32_t GetRendererID() const override { return m_RendererID; }
 
 		uint32_t GetWidth() const override { return m_Width; }
 		uint32_t GetHeight() const override { return m_Height; }
@@ -33,6 +34,7 @@ namespace Idra {
 
 		void Bind(uint32_t slot = 0) const override;
 		void Unbind(uint32_t slot = 0) const override;
+		uint32_t GetRendererID() const override { return m_RendererID; }
 
 		uint32_t GetWidth() const override { return m_Width; }
 		uint32_t GetHeight() const override { return m_Height; }
