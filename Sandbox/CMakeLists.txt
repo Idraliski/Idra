@@ -1,6 +1,6 @@
 # Define the editor executable
 add_executable(Sandbox 
-    "src/SandboxEditor.cpp" 
+    "src/Sandbox.cpp" 
     "src/SandboxLayer.cpp"
     "src/Sandbox3DLayer.cpp"
 )
