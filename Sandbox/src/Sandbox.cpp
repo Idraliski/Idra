@@ -4,23 +4,24 @@
 #include "SandboxLayer.h"
 #include "Sandbox3DLayer.h"
 
-class SandboxEditor : public Idra::Application
+class Sandbox : public Idra::Application
 {
 public:
-	SandboxEditor()
+	Sandbox()
+		: Application(Idra::WindowProps{ "Sandbox", 1280, 720 })
 	{
-		IDRA_INFO("Sandbox Editor Created"); // #DEBUG
+		IDRA_WARN("Sandbox Created"); // #DEBUG
 		//PushLayer(new SandboxLayer());
 		PushLayer(new Sandbox3DLayer());
 	}
 
-	~SandboxEditor()
+	~Sandbox()
 	{
-		IDRA_INFO("Sandbox Editor Destroyed"); // #DEBUG
+		IDRA_WARN("Sandbox Destroyed"); // #DEBUG
 	}
 };
 
 Idra::Application* Idra::CreateApplication()
 {
-	return new SandboxEditor();
+	return new Sandbox();
 }

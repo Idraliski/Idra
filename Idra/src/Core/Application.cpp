@@ -8,7 +8,7 @@ namespace Idra {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const WindowProps& winProps)
 	{
 		IDRA_PROFILE_FUNCTION();
 
@@ -16,7 +16,7 @@ namespace Idra {
 		IDRA_ASSERT(!s_Instance, "Application already exists!"); // #DEBUG
 		s_Instance = this;
 
-		m_Window = Window::Create();
+		m_Window = Window::Create(winProps);
 		m_Window->SetEventCallback(IDRA_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();

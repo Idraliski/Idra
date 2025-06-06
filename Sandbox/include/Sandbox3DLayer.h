@@ -35,9 +35,6 @@ private:
 	glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
 	// TEMP
-	// Frame Buffer
-	Idra::Ref<Idra::FrameBuffer> m_FrameBuffer;
-
 	// shader library
 	Idra::ShaderLibrary m_ShaderLibrary;
 
