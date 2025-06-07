@@ -81,7 +81,7 @@ namespace Idra {
 		};
 		m_Rotation = rotation; 
 		// clamp rotation to 360 degrees
-		m_Rotation.x = wrap(rotation.x);
+		m_Rotation.x = glm::clamp(wrap(rotation.x), -89.0f, 89.0f);
 		m_Rotation.y = wrap(rotation.y);
 		m_Rotation.z = wrap(rotation.z);
 
