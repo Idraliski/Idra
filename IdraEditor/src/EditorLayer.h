@@ -33,6 +33,8 @@ namespace Idra {
 
 		glm::vec3 m_Colour = { 0.2f, 0.3f, 0.8f };
 
+		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+
 		// TEMP
 		// Frame Buffer
 		Ref<FrameBuffer> m_FrameBuffer;

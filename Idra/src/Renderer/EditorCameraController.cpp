@@ -40,6 +40,17 @@ namespace Idra {
 		Dispatcher.Dispatch<WindowResizeEvent>(IDRA_BIND_EVENT_WITH_ARGS(EditorCameraController::OnWindowResize, camera));
 	}
 
+	void EditorCameraController::OnResize(uint32_t width, uint32_t height, const Ref<Camera>& camera)
+	{
+		IDRA_PROFILE_FUNCTION();
+
+		if (width == 0 || height == 0)
+			return;
+
+		m_LastMousePos = { (float)width / 2.0f, (float)height / 2.0f };
+		camera->OnWindowResize((float)width, (float)height);
+	}
+
 	bool EditorCameraController::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
 		IDRA_PROFILE_FUNCTION();
@@ -89,10 +100,7 @@ namespace Idra {
 	{
 		IDRA_PROFILE_FUNCTION();
 
-		if (e.GetWidth() == 0 || e.GetHeight() == 0)
-			return false;
-
-		camera->OnWindowResize((float)e.GetWidth(), (float)e.GetHeight());
+		OnResize((float)e.GetWidth(), (float)e.GetHeight(), camera);
 
 		return false;
 	}
