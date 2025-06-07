@@ -25,6 +25,8 @@ namespace Idra {
 		const glm::vec2& GetLastMousePos() const { return m_LastMousePos; }
 		void SetLastMousePos(const glm::vec2& pos) { m_LastMousePos = pos; }
 
+		void OnResize(uint32_t width, uint32_t height, const Ref<Camera>& camera) override;
+
 	private:
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		bool OnMouseButtonReleased(MouseButtonReleasedEvent& e);

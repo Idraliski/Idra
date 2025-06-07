@@ -23,5 +23,6 @@ namespace Idra {
 
 		virtual void OnUpdate(Ref<Camera> camera, Timestep ts) = 0;
 		virtual void OnEvent(Ref<Camera> camera, Event& e) = 0;
+		virtual void OnResize(uint32_t width, uint32_t height, const Ref<Camera>& camera) = 0;
 	};
 }

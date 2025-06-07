@@ -8,7 +8,7 @@ namespace Idra {
 	{
 	public:
 		IdraEditor()
-			: Application(WindowProps{ "Idra Editor", 1280, 720 })
+			: Application(WindowProps{ "Idra Editor", 1920, 1080 })
 		{
 			IDRA_WARN("Idra Editor Created"); // #DEBUG
 
